@@ -7,7 +7,10 @@ public class Player : MonoBehaviour
     Animator anim;
 
     float move;
-    float speed;
+    public float speed;
+
+    public int doubleJump =0;
+    public float forcejump;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,8 +29,10 @@ public class Player : MonoBehaviour
         move = Input.GetAxisRaw("Horizontal");
         if(move != 0) { anim.SetBool("Run", true); }
         else { anim.SetBool("Run", false); }
-        FLIP(move);
         rb.linearVelocity = new Vector2(move * speed, rb.linearVelocity.y);
+
+        FLIP(move);
+        JUMP();
     }
     public void FLIP(float move)
     {
@@ -35,6 +40,15 @@ public class Player : MonoBehaviour
         {
             if(move > 0.1f) { transform.rotation = Quaternion.Euler(0, 0, 0); }
             else { transform.rotation = Quaternion.Euler(0, 180, 0); }
+        }
+    }
+    public void JUMP()
+    {
+        if (Input.GetKey(KeyCode.Space) && doubleJump < 2)
+        {
+            doubleJump++;
+            anim.SetBool("Jump", true);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, forcejump);
         }
     }
 }
