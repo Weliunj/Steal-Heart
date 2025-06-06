@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     public void MOVE()
     {
         move = Input.GetAxisRaw("Horizontal");
-        if(move > Mathf.Abs(0.1f)) { anim.SetBool("Run", true); }
+        if(move != 0) { anim.SetBool("Run", true); }
         else { anim.SetBool("Run", false); }
         FLIP(move);
         rb.linearVelocity = new Vector2(move * speed, rb.linearVelocity.y);
