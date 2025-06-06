@@ -19,8 +19,17 @@ public class Ground : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("CheckJump"))
         {
-            player.anim.SetBool("Jump", false);
+            player.anim.SetBool("Jump_E", true);
             player.doubleJump = 0;
         }
+    }
+    public void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("CheckJump"))
+        {
+            player.anim.SetBool("Jump_E", false);
+            player.anim.SetTrigger("Jump");
+            
+        } 
     }
 }
