@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 24349536}
   m_Layer: 0
   m_Name: PlayerManager
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -275,7 +275,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!70 &24349534
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -342,6 +342,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3120a361620f01c408a4395a9fbadac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
+  speed: 5
+  doubleJump: 0
+  forcejump: 4
 --- !u!1 &46085539
 GameObject:
   m_ObjectHideFlags: 0
@@ -4431,7 +4435,7 @@ GameObject:
   - component: {fileID: 1694242881}
   m_Layer: 0
   m_Name: CheckGround
-  m_TagString: Untagged
+  m_TagString: CheckJump
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5812,6 +5816,7 @@ GameObject:
   - component: {fileID: 2036511163}
   - component: {fileID: 2036511162}
   - component: {fileID: 2036511161}
+  - component: {fileID: 2036511164}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -10342,6 +10347,18 @@ TilemapCollider2D:
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0
   m_UseDelaunayMesh: 0
+--- !u!114 &2036511164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036511157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48616444c69816843ba81115d46c88ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2055180852
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ public class Ground : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player = new Player();
+        player = FindObjectOfType<Player>();
     }
 
     // Update is called once per frame
@@ -19,6 +19,7 @@ public class Ground : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("CheckJump"))
         {
+            player.anim.SetBool("Jump", false);
             player.doubleJump = 0;
         }
     }
