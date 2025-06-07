@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     public int doubleJump =0;
     public float forcejump;
 
-    float dashcd = 0f;
+    public float dashcd = 0f;
     float dashDirec;
 
     public string atktype;
@@ -112,7 +112,7 @@ public class Player : MonoBehaviour
             atk2cd -= Time.deltaTime;
             if((dashcd > 0.95f && dashcd < 1.35f))
             {
-                rb.linearVelocity = new Vector2(dashDirec * speed*1.1f, rb.linearVelocity.y);
+                rb.linearVelocity = new Vector2(dashDirec * speed*1.1f, rb.linearVelocity.y*0.5f);
             }
         }
         else
