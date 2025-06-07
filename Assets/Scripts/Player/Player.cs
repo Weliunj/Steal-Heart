@@ -5,6 +5,7 @@ using UnityEngine;
 
 public partial class Player : MonoBehaviour
 {
+    public DataManager dataManager;
     public Rigidbody2D rb;
     public Animator anim;
 
@@ -42,28 +43,35 @@ public partial class Player : MonoBehaviour
         if (dead) return; // Nếu đã chết rồi, không xử lý gì tiếp
 
         HPCheck();
+        BUFFS();
+
         MOVE();
         DASH();
         ATK();
     }
     public void MOVE()
     {
-        if (dashDirec != 0 && dashcd > 1.26f) // không cho di chuyển khi đang dash
+        if(holdTime <= 0f)
         {
-            rb.linearVelocity = new Vector2(dashDirec * speed * 2f, 0);
-            anim.SetTrigger("Dash");
-        }
-        else if (atk1cd <= 0f && atk2cd <= 0f && dashcd < 1.23f )
-        {
-            move = Input.GetAxisRaw("Horizontal");
-            if (move != 0) { anim.SetBool("Run", true); audioSources[0].Play();  }
-            else { anim.SetBool("Run", false); audioSources[0].Pause(); }
-            rb.linearVelocity = new Vector2(move * speed, rb.linearVelocity.y);
+            if (dashDirec != 0 && dashcd > 1.26f) // không cho di chuyển khi đang dash
+            {
+                rb.linearVelocity = new Vector2(dashDirec * speed * 2f * (1.15f * speed_Buff), 0);
+                anim.SetTrigger("Dash");
+            }
+            else if (atk1cd <= 0f && atk2cd <= 0f && dashcd < 1.23f)
+            {
+                move = Input.GetAxisRaw("Horizontal");
+                if (move != 0) { anim.SetBool("Run", true); audioSources[0].Play(); }
+                else { anim.SetBool("Run", false); audioSources[0].Pause(); }
 
-            FLIP(move);
+                rb.linearVelocity = new Vector2(move * speed * speed_Buff, rb.linearVelocity.y);
+
+                FLIP(move);
+            }
+            else { rb.linearVelocity = new Vector2(rb.linearVelocity.x / 5, rb.linearVelocity.y); anim.SetBool("Run", false); }
+            JUMP();
         }
-        else { rb.linearVelocity = new Vector2(rb.linearVelocity.x /5, rb.linearVelocity.y); anim.SetBool("Run", false); }
-        JUMP();
+        else { anim.SetBool("Run", false); rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); }
     }
     public void FLIP(float move)
     {
@@ -75,8 +83,10 @@ public partial class Player : MonoBehaviour
     }
     public void JUMP()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && doubleJump < 2)
+        int countjump = Jump_Buff + 2;
+        if (Input.GetKeyDown(KeyCode.Space) && doubleJump < countjump)
         {
+            dashcd = 0.1f;
             audioSources[4].Play();
             doubleJump++;
             anim.SetTrigger("Jump");
