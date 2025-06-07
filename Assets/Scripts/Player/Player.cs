@@ -3,11 +3,12 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public partial class Player : MonoBehaviour
 {
     public Rigidbody2D rb;
     public Animator anim;
 
+    private bool dead = false   ;
     float move;
     public float speed;
 
@@ -20,16 +21,27 @@ public class Player : MonoBehaviour
     public string atktype;
     float atk1cd = 0f;
     float atk2cd = 0f;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    public AudioSource[] audioSources;      //0: Run, 1: Atk1, 2: Atk2, 3: Atk3, 4: Jump, 5: Jump
+
     void Start()
     {
+        HPSetup();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
+
+        audioSources = GetComponentsInChildren<AudioSource>();
+        foreach(AudioSource source in audioSources) { source.playOnAwake = false; }
+        audioSources[0].loop = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Hp <= 0 && !dead) { dead = true;  anim.SetTrigger("Dead"); audioSources[4].Stop(); audioSources[4].Play(); }
+        if (dead) return; // Nếu đã chết rồi, không xử lý gì tiếp
+
+        HPCheck();
         MOVE();
         DASH();
         ATK();
@@ -44,13 +56,13 @@ public class Player : MonoBehaviour
         else if (atk1cd <= 0f && atk2cd <= 0f && dashcd < 1.23f )
         {
             move = Input.GetAxisRaw("Horizontal");
-            if (move != 0) { anim.SetBool("Run", true); }
-            else { anim.SetBool("Run", false); }
+            if (move != 0) { anim.SetBool("Run", true); audioSources[0].Play();  }
+            else { anim.SetBool("Run", false); audioSources[0].Pause(); }
             rb.linearVelocity = new Vector2(move * speed, rb.linearVelocity.y);
 
             FLIP(move);
         }
-        else { rb.linearVelocity = new Vector2(rb.linearVelocity.x /5, rb.linearVelocity.y / 2); anim.SetBool("Run", false); }
+        else { rb.linearVelocity = new Vector2(rb.linearVelocity.x /5, rb.linearVelocity.y); anim.SetBool("Run", false); }
         JUMP();
     }
     public void FLIP(float move)
@@ -65,6 +77,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && doubleJump < 2)
         {
+            audioSources[4].Play();
             doubleJump++;
             anim.SetTrigger("Jump");
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, forcejump);
@@ -101,6 +114,7 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.J))
             {
+                audioSources[1].Stop(); audioSources[1].Play();
                 atktype = "Atk1";
                 anim.SetTrigger(atktype);
                 atk1cd = 0.4f;
@@ -119,6 +133,7 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.K) && (dashcd > 0.8f && dashcd < 1.35f))
             {
+                audioSources[3].Stop(); audioSources[3].Play();
                 atk2cd = 0.70f;
                 atktype = "Atk3";
                 anim.SetTrigger("Atk2");
@@ -127,6 +142,7 @@ public class Player : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.K))
             {
+                audioSources[2].Stop(); audioSources[2].Play();
                 atktype = "Atk2";
                 anim.SetTrigger(atktype);
                 atk2cd = 0.70f;
