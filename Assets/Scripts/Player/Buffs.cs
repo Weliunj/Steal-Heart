@@ -37,7 +37,7 @@ public partial class Player : MonoBehaviour
             if (speed_cd >= 0) { speed_cd -= Time.deltaTime; }
             else
             {
-                if (Input.GetKeyDown(KeyCode.B) && dataManager.Speed_bottle > 0)    //Speed
+                if (Input.GetKeyDown(KeyCode.N) && dataManager.Speed_bottle > 0)    //Speed
                 {
                     dataManager.Speed_bottle--;
                     speed_cd = 10f;
@@ -49,7 +49,7 @@ public partial class Player : MonoBehaviour
             if (Jump_cd >= 0) { Jump_cd -= Time.deltaTime; }
             else
             {
-                if (Input.GetKeyDown(KeyCode.N) && dataManager.Jump_bottle > 0)    //Jump
+                if (Input.GetKeyDown(KeyCode.M) && dataManager.Jump_bottle > 0)    //Jump
                 {
                     dataManager.Jump_bottle--;
                     Jump_cd = 10f;
