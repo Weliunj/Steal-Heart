@@ -112,7 +112,7 @@ public class Player : MonoBehaviour
             atk2cd -= Time.deltaTime;
             if((dashcd > 0.95f && dashcd < 1.35f))
             {
-                rb.linearVelocity = new Vector2(dashDirec * speed*1.1f, 0);
+                rb.linearVelocity = new Vector2(dashDirec * speed*1.1f, rb.linearVelocity.y);
             }
         }
         else
