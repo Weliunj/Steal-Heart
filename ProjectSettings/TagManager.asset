@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CheckJump
   - CheckClimb
+  - Atk
   layers:
   - Default
   - TransparentFX

@@ -1,0 +1,293 @@
+﻿using System.Collections;
+using UnityEngine;
+
+public class Snake : EnemyBase
+{
+    [SerializeField] protected float volumeR = 2.5f;
+    [SerializeField] protected float playR = 6;
+    [SerializeField] protected int dmg_posion;
+    [SerializeField] protected float speed_posion;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        // Compoment
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        speed = atkspeed;
+        player = FindObjectOfType<Player>();
+        Player = GameObject.FindWithTag("Player").transform;
+
+        if (!PatrolMode) { transform.position = Stay_StartPos.position; }
+        else { transform.position = Stay_StartPos.position; targetPos = Stay_StartPos.position + Vector3.right * patrolDistance; }
+
+        //Hp
+        slider.maxValue = maxHealth;
+        Hp = maxHealth;
+
+        //Audio
+        audioSource[0].loop = false;      //atk
+        audioSource[0].volume = 8f;
+
+        audioSource[1].loop = false;      //Hit
+
+        audioSource[2].volume = 0.6f;       //Run
+        audioSource[2].loop = false;
+
+        audioSource[3].volume = 1.4f;     //Free
+        audioSource[3].loop = false;
+
+        audioSource[4].volume = 2f;     //Dead
+        audioSource[4].loop = false;
+
+        playR = Random.Range(playR - 1f, playR + 2f);
+        StartCoroutine(Free_Sound());
+
+        chaseSpeed += Random.Range(0f, 1.5f);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        HP();
+        if (!Dead && Hp <= 0) //Dead
+        {
+            Dead = true;
+
+            //player.effects[2].SetActive(false);
+            anim.SetTrigger("Dead");
+            if (!audioSource[4].isPlaying)
+            {
+                audioSource[4].Play();
+            }
+            Destroy(this.Prefab, 1.5f);
+        }
+        if (Dead) { return; }
+
+        if (stuned > 0)
+        {
+            stuned -= Time.deltaTime;
+        }
+        else if (Hp > 0 && stuned <= 0 && player.Hp > 0)        //Player song
+        {
+            // Tinh khoang cach den player
+            float distanceToPlayer = Vector2.Distance(transform.position, Player.position);
+
+            //Neu player trong pham vi
+            if (distanceToPlayer < detectionRange)
+            {
+                isChasing = true;
+            }
+            //Neu player roi khoi      
+            else if (distanceToPlayer >= detectionRange * 1.1f)
+            {
+                isChasing = false;
+            }
+
+
+            if (isChasing)
+            {
+                ChasePlayer(distanceToPlayer);
+            }
+            else
+            {
+                Move();
+            }
+        }
+    }
+    public void ChasePlayer(float distanceToPlayer)
+    {
+        FlipSprite(Player.transform.position);       //truyen vao kieu pos
+        if (distanceToPlayer < attakRange)
+        {
+            audioSource[2].Stop();
+            anim.SetBool("Walk", false);
+            Atk();
+        }
+        else if (distanceToPlayer > attakRange)
+        {
+            if (!audioSource[2].isPlaying)
+            {
+                audioSource[2].Play();
+            }
+            anim.SetBool("Walk", true);
+            // Di chuyen ve phia player
+            transform.position = Vector3.MoveTowards(transform.position, Player.position, chaseSpeed * Time.deltaTime);
+        }
+    }
+    void Move()
+    {
+        if (!PatrolMode)    //dung im
+        {
+            Vector3 Pos = Stay_StartPos.position - transform.position;
+
+            //Flip
+            FlipSprite(Stay_StartPos.position);
+            if (Vector2.Distance(Stay_StartPos.position, transform.position) < phamvistay)
+            {
+                audioSource[2].Stop();
+                anim.SetBool("Walk", false);
+                rb.linearVelocity = Vector2.zero;
+            }
+            else
+            {
+                anim.SetBool("Walk", true); // Bắt đầu đi bộ quay lại StayPos
+                transform.position = Vector3.MoveTowards(transform.position, Stay_StartPos.position, movespeed * Time.deltaTime); ;
+            }
+        }
+        else
+        {
+            audioSource[2].Stop();
+            anim.SetBool("Walk", true);
+            // Move qua lai giua stast va end
+            Vector3 destination = movingToEnd == true ? targetPos : Stay_StartPos.position;
+            transform.position = Vector3.MoveTowards(transform.position, destination, movespeed * Time.deltaTime);
+            // Doi huong khi den dich
+            if (Vector2.Distance(new Vector2(transform.position.x, transform.position.y), new Vector2(destination.x, destination.y)) < 0.1f)
+            {
+                movingToEnd = !movingToEnd;
+            }
+
+            //Flip
+            FlipSprite(destination);
+        }
+    }
+    void Atk()
+    {
+
+        if (speed > 0)
+        {
+            speed -= Time.deltaTime;
+        }
+        else
+        {
+            //Atk
+            anim.SetTrigger("Atk");
+            audioSource[0].Play();
+            //Player Hit
+            speed = atkspeed;
+        }
+    }
+    public void HP()
+    {
+        Vector3 bar = new Vector3(transform.position.x, transform.position.y + 1.7f, transform.position.z);
+        Hpbar.transform.position = bar;
+        slider.value = Hp;
+        // ==== Color Hp bar =====================
+        if (slider.value >= (maxHealth * 0.6))
+        {
+            hpbar.color = Color.green;
+
+        }
+        else if (slider.value < (maxHealth * 0.6) && slider.value > (maxHealth * 0.4))
+        {
+            hpbar.color = Color.yellow;
+        }
+        else
+        {
+            hpbar.color = Color.red;
+        }
+    }
+    void FlipSprite(Vector3 Flip)
+    {
+        if (Flip.x != transform.position.x)
+        {
+            if (Flip.x < transform.position.x)
+            {
+                transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            }
+            else
+            {
+                transform.rotation = Quaternion.Euler(0f, 180f, 0f);
+            }
+        }
+    }
+    public IEnumerator Free_Sound()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(playR);
+            audioSource[3].volume = Random.Range(volumeR, volumeR + 3);
+            if (!audioSource[3].isPlaying)
+            {
+                audioSource[3].Play();
+            }
+            playR = Random.Range(volumeR, volumeR + 5);
+        }
+    }
+    IEnumerator Poison(int _Posion)
+    {
+        //player.effects[2].SetActive(true);
+        for (int i = 0; i < _Posion; i++)
+        {
+            player.audioSources[5].Play();
+            player.Hp -= Random.Range(dmg_posion, dmg_posion + 10);
+            yield return new WaitForSeconds(Random.Range(speed_posion, speed_posion + 2));
+        }
+        //player.effects[2].SetActive(false);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        //Hit
+        if (collision.gameObject.CompareTag("Atk") && !Dead)
+        {
+            audioSource[1].Play();
+            anim.SetTrigger("Hit");
+            if (player.atktype == "Atk1")           //Trung Atk1
+            {
+                this.Hp -= onHit[0];
+                stuned = onStun[0];
+            }
+            else if (player.atktype == "Atk2")      //Trung Atk2
+            {
+                this.Hp -= onHit[1];
+                stuned = onStun[1];
+            }
+            else if (player.atktype == "Atk3")      //Trung Atk3
+            {
+                this.Hp -= onHit[2];
+                stuned = onStun[2];
+                Debug.Log("-Crital-");
+            }
+        }
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            player.anim.SetTrigger("Hit");
+            player.audioSources[5].Play();
+            player.Hp -= atkDMG;
+            player.StartCoroutine(player.dashThrougt(0.9f)); // Bat tu tam thoi
+            StopCoroutine(Poison(Random.Range(3, 5)));
+            StartCoroutine(Poison(Random.Range(3, 5)));
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        //if (collision.gameObject.CompareTag("Spike"))
+        //{
+        //    Hp = 0;
+        //}
+    }
+    public void OnDrawGizmos()
+    {
+        //Pham vi stay
+        if (!PatrolMode)
+        {
+            Gizmos.DrawWireSphere(Stay_StartPos.position, phamvistay);
+        }
+
+        //Duong tuan tra
+        else
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(Stay_StartPos.position, new Vector2(patrolDistance + Stay_StartPos.position.x, Stay_StartPos.position.y));
+        }
+
+        //Pham vi phat hien
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
+
+        //Pham vi atk
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attakRange);
+    }
+}

@@ -24,7 +24,7 @@ public partial class Player : MonoBehaviour
     float atk1cd = 0f;
     float atk2cd = 0f;
 
-    public AudioSource[] audioSources;      //0: Run, 1: Atk1, 2: Atk2, 3: Atk3, 4: Jump, 5: Jump
+    public AudioSource[] audioSources;      //0: Run, 1: Atk1, 2: Atk2, 3: Atk3, 4: Jump, 5: Hit
     public AudioSource usingItems;
 
     void Start()
@@ -59,7 +59,7 @@ public partial class Player : MonoBehaviour
                 rb.linearVelocity = new Vector2(dashDirec * speed * 2f * (1.15f * speed_Buff), 0);
                 anim.SetTrigger("Dash");
             }
-            else if (atk1cd <= 0f && atk2cd <= 0f && dashcd < 1.23f)
+            else if (atk1cd <= 0f && atk2cd <= 0.2f && dashcd < 1.23f)
             {
                 move = Input.GetAxisRaw("Horizontal");
                 if (move != 0) { anim.SetBool("Run", true); audioSources[0].Play(); }
@@ -102,7 +102,7 @@ public partial class Player : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.L) && move != 0)
+            if (Input.GetKeyDown(KeyCode.L) && move != 0 && atk2cd <= 0.2f)
             {
                 dashcd = 1.5f;
                 if (move < 0)
@@ -117,7 +117,7 @@ public partial class Player : MonoBehaviour
             }
         }
     }
-    IEnumerator dashThrougt(float dura)
+    public IEnumerator dashThrougt(float dura)
     {   
         // Tạm tắt va chạm giữa Player và Enemy
         Physics2D.IgnoreLayerCollision(
@@ -168,7 +168,6 @@ public partial class Player : MonoBehaviour
                 atktype = "Atk3";
                 anim.SetTrigger("Atk2");
                 atk2cd = 0.7f;
-                Debug.Log("Crital");
             }
             else if (Input.GetKeyDown(KeyCode.K))
             {
