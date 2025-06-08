@@ -11,7 +11,8 @@ public class EnemyBase : MonoBehaviour
     protected Rigidbody2D rb;
     protected Animator anim;
     protected Transform Player;
-    [SerializeField ]protected bool PatrolMode;
+    [SerializeField ]protected bool PatrolMode = false;
+    [SerializeField] protected bool JumpMode = false;
 
     // ========== PATROL SETTINGS ==========
     [Header("-------------Patrol Settings-----------")]
@@ -29,6 +30,13 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] protected float chaseSpeed = 3f;                // T?c ?? ?u?i
     [SerializeField] protected float attakRange = 1f;                 //Pham vi t?n công
     protected bool isChasing;                                         // Doi trang thai
+
+    // ========== JUMP SETTINGS ==========
+    [Header("--------------Jump setting-------------")]
+    [SerializeField] protected float SetupY = 0.5f;
+    [SerializeField] protected float StartRay;
+    [SerializeField] protected float LengthRay;
+    [SerializeField] protected float HightJump = 1f;
 
     // ========== HP ==========
     [Header("--------------------HP------------------")]

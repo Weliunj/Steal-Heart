@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Hyena : EnemyBase
+public class Mummy : EnemyBase
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -109,7 +109,6 @@ public class Hyena : EnemyBase
             transform.position = Vector3.MoveTowards(transform.position, Player.position, chaseSpeed * Time.deltaTime);
         }
     }
-
     public void JUMP()
     {
         // Vị trí bắt đầu của ray
@@ -124,6 +123,7 @@ public class Hyena : EnemyBase
             rb.AddForce(new Vector2(0, HightJump), ForceMode2D.Impulse); // Lực nhảy có thể tùy chỉnh
         }
     }
+
     void Move()
     {
         if (!PatrolMode)    //dung im
@@ -178,7 +178,7 @@ public class Hyena : EnemyBase
     }
     public void HP()
     {
-        Vector3 bar = new Vector3(transform.position.x, transform.position.y + 1.7f, transform.position.z);
+        Vector3 bar = new Vector3(transform.position.x, transform.position.y + 2.2f, transform.position.z);
         Hpbar.transform.position = bar;
         slider.value = Hp;
         // ==== Color Hp bar =====================
@@ -240,7 +240,7 @@ public class Hyena : EnemyBase
             player.audioSources[5].Play();
             player.Hp -= atkDMG;
             player.StartCoroutine(player.dashThrougt(0.9f)); // Bat tu tam thoi
-            
+
         }
     }
     public void OnDrawGizmos()

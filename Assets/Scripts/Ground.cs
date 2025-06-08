@@ -4,7 +4,6 @@ public class Ground : MonoBehaviour
 {
     Player player;
     bool Onground = false;
-    bool OnWall = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

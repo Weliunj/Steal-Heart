@@ -117,7 +117,6 @@ public class Vulture : EnemyBase
     {
         if (!PatrolMode)    //dung im
         {
-            Vector3 Pos = Stay_StartPos.position - transform.position;
 
             //Flip
             FlipSprite(Stay_StartPos.position);
@@ -241,13 +240,6 @@ public class Vulture : EnemyBase
                 Debug.Log("-Crital-");
             }
         }
-    }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        //if (collision.gameObject.CompareTag("Spike") && !antiSpike)
-        //{
-        //    Hp = 0;
-        //}
     }
     public void OnDrawGizmos()
     {

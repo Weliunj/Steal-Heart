@@ -313,7 +313,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: bfe7998df98a25d408382644b7973441, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -337,8 +337,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.010393156, y: 0.5963592}
-  m_Size: {x: 1.3025888, y: 1.1927279}
+  m_Offset: {x: 0.002176699, y: 0.473223}
+  m_Size: {x: 1.2811351, y: 0.946456}
   m_Direction: 1
 --- !u!50 &4085783254728756412
 Rigidbody2D:
@@ -380,6 +380,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PatrolMode: 0
+  JumpMode: 1
   movespeed: 2
   Stay_StartPos: {fileID: 1159628377836044541}
   phamvistay: 0.72
@@ -387,6 +388,10 @@ MonoBehaviour:
   detectionRange: 15.74
   chaseSpeed: 5.52
   attakRange: 1.77
+  SetupY: 0.5
+  StartRay: -0.84
+  LengthRay: 1.64
+  HightJump: 1
   maxHealth: 230
   Hp: 0
   Prefab: {fileID: 1095550659118985849}
@@ -1002,7 +1007,7 @@ Transform:
   m_GameObject: {fileID: 4647764125846845970}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.97, y: 0.36, z: 0}
+  m_LocalPosition: {x: -1.273, y: 0.36, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
