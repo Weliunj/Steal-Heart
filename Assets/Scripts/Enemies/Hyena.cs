@@ -1,12 +1,7 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Snake : EnemyBase
+public class Hyena : EnemyBase
 {
-    [SerializeField] protected float volumeR = 2.5f;
-    [SerializeField] protected float playR = 6;
-    [SerializeField] protected int dmg_posion;
-    [SerializeField] protected float speed_posion;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -24,6 +19,7 @@ public class Snake : EnemyBase
         slider.maxValue = maxHealth;
         Hp = maxHealth;
 
+        /*
         //Audio
         audioSource[0].loop = false;      //atk
         audioSource[0].volume = 8f;
@@ -43,6 +39,7 @@ public class Snake : EnemyBase
         StartCoroutine(Free_Sound());
 
         chaseSpeed += Random.Range(0f, 1.5f);
+        */
     }
 
     // Update is called once per frame
@@ -55,10 +52,10 @@ public class Snake : EnemyBase
 
             //player.effects[2].SetActive(false);
             anim.SetTrigger("Dead");
-            if (!audioSource[4].isPlaying)
-            {
-                audioSource[4].Play();
-            }
+            //if (!audioSource[4].isPlaying)
+            //{
+            //    audioSource[4].Play();
+            //}
             Destroy(this.Prefab, 1.5f);
         }
         if (Dead) { return; }
@@ -99,19 +96,32 @@ public class Snake : EnemyBase
         FlipSprite(Player.transform.position);       //truyen vao kieu pos
         if (distanceToPlayer < attakRange)
         {
-            audioSource[2].Stop();
+            //audioSource[2].Stop();
             anim.SetBool("Walk", false);
             Atk();
         }
         else if (distanceToPlayer > attakRange)
         {
-            if (!audioSource[2].isPlaying)
-            {
-                audioSource[2].Play();
-            }
+            //if (!audioSource[2].isPlaying)
+            //{
+            //    audioSource[2].Play();
+            //}
             anim.SetBool("Walk", true);
             // Di chuyen ve phia player
             transform.position = Vector3.MoveTowards(transform.position, Player.position, chaseSpeed * Time.deltaTime);
+            JUMP();
+        }
+    }
+    public void JUMP()
+    {
+        Vector3 direc = transform.rotation.y == -180 ? Vector3.left : Vector3.right;
+        Vector3 rayStart = transform.position + new Vector3(0, 0.5f, 0);
+        RaycastHit2D cast = Physics2D.Raycast(rayStart, direc, 1f);
+
+        if (cast.collider != null && cast.collider.CompareTag("Ground"))
+        {
+            Debug.Log(cast.collider.name);
+            rb.AddForce(new Vector2(direc.x * 100f, 300f)); // chỉnh lực theo ý bạn
         }
     }
     void Move()
@@ -124,7 +134,7 @@ public class Snake : EnemyBase
             FlipSprite(Stay_StartPos.position);
             if (Vector2.Distance(Stay_StartPos.position, transform.position) < phamvistay)
             {
-                audioSource[2].Stop();
+                //audioSource[2].Stop();
                 anim.SetBool("Walk", false);
                 rb.linearVelocity = Vector2.zero;
             }
@@ -136,7 +146,7 @@ public class Snake : EnemyBase
         }
         else
         {
-            audioSource[2].Stop();
+            //audioSource[2].Stop();
             anim.SetBool("Walk", true);
             // Move qua lai giua stast va end
             Vector3 destination = movingToEnd == true ? targetPos : Stay_StartPos.position;
@@ -162,7 +172,7 @@ public class Snake : EnemyBase
         {
             //Atk
             anim.SetTrigger("Atk");
-            audioSource[0].Play();
+            //audioSource[0].Play();
             //Player Hit
             speed = atkspeed;
         }
@@ -201,37 +211,12 @@ public class Snake : EnemyBase
             }
         }
     }
-    public IEnumerator Free_Sound()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(playR);
-            audioSource[3].volume = Random.Range(volumeR, volumeR + 3);
-            if (!audioSource[3].isPlaying)
-            {
-                audioSource[3].Play();
-            }
-            playR = Random.Range(volumeR, volumeR + 5);
-        }
-    }
-    IEnumerator Poison(int _Posion)
-    {
-        //player.effects[2].SetActive(true);
-        for (int i = 0; i < _Posion; i++)
-        {
-            player.audioSources[5].Play();
-            player.Hp -= Random.Range(dmg_posion, dmg_posion + 10);
-            yield return new WaitForSeconds(Random.Range(speed_posion, speed_posion + 2));
-        }
-        //player.effects[2].SetActive(false);
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //Hit
         if (collision.gameObject.CompareTag("Atk") && !Dead)
         {
-            audioSource[1].Play();
+            //audioSource[1].Play();
             anim.SetTrigger("Hit");
             if (player.atktype == "Atk1")           //Trung Atk1
             {
@@ -256,8 +241,7 @@ public class Snake : EnemyBase
             player.audioSources[5].Play();
             player.Hp -= atkDMG;
             player.StartCoroutine(player.dashThrougt(0.9f)); // Bat tu tam thoi
-            StopCoroutine(Poison(Random.Range(3, 5)));
-            StartCoroutine(Poison(Random.Range(3, 5)));
+            
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -289,5 +273,14 @@ public class Snake : EnemyBase
         //Pham vi atk
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attakRange);
+
+        // Vẽ Raycast trong hàm JUMP
+        Gizmos.color = Color.cyan;
+        Vector3 start = transform.position + new Vector3(0, 0.5f, 0);
+
+        // Hướng Raycast dựa theo Flip
+        Vector3 direction = transform.rotation.y == -180 ? Vector3.left : Vector3.right;
+
+        Gizmos.DrawLine(start, start + direction * 1f); // 1f là độ dài raycast
     }
 }

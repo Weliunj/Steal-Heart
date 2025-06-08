@@ -33,7 +33,10 @@ public partial class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
 
-        foreach(AudioSource source in audioSources) { source.playOnAwake = false; }
+        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+
+        foreach (AudioSource source in audioSources) { source.playOnAwake = false; }
         audioSources[0].loop = true;
     }
 
