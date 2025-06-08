@@ -6,8 +6,8 @@ using TMPro;
 public partial class Player : MonoBehaviour
 {
     private float speed_Buff = 1;
-    private float speed_Timer = 5f;
-    private float speed_cd = 0f;
+    private float speed_Timer = 8f;
+    public float speed_cd = 0f;
     public TMP_Text speed_T;
     IEnumerator speed_eff()
     {
@@ -17,8 +17,8 @@ public partial class Player : MonoBehaviour
     }
     //-----------------------------------------------------------------
     private int Jump_Buff = 1;
-    private float Jump_Timer = 5f;
-    private float Jump_cd = 0f;
+    private float Jump_Timer = 8f;
+    public float Jump_cd = 0f;
     public TMP_Text Jump_T;
     IEnumerator Jump_eff()
     {
@@ -39,6 +39,7 @@ public partial class Player : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.N) && dataManager.Speed_bottle > 0)    //Speed
                 {
+                    usingItems.Play();
                     dataManager.Speed_bottle--;
                     speed_cd = 10f;
                     StopCoroutine(speed_eff());
@@ -51,6 +52,7 @@ public partial class Player : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.M) && dataManager.Jump_bottle > 0)    //Jump
                 {
+                    usingItems.Play();
                     dataManager.Jump_bottle--;
                     Jump_cd = 10f;
                     StopCoroutine(Jump_eff());

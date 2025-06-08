@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections;
+using System.Runtime.InteropServices;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -24,6 +25,7 @@ public partial class Player : MonoBehaviour
     float atk2cd = 0f;
 
     public AudioSource[] audioSources;      //0: Run, 1: Atk1, 2: Atk2, 3: Atk3, 4: Jump, 5: Jump
+    public AudioSource usingItems;
 
     void Start()
     {
@@ -31,7 +33,6 @@ public partial class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
 
-        audioSources = GetComponentsInChildren<AudioSource>();
         foreach(AudioSource source in audioSources) { source.playOnAwake = false; }
         audioSources[0].loop = true;
     }
@@ -112,8 +113,27 @@ public partial class Player : MonoBehaviour
                 {
                     dashDirec = 1f;
                 }
+                StartCoroutine(dashThrougt(0.2f));
             }
         }
+    }
+    IEnumerator dashThrougt(float dura)
+    {   
+        // Tạm tắt va chạm giữa Player và Enemy
+        Physics2D.IgnoreLayerCollision(
+            LayerMask.NameToLayer("Player"),
+            LayerMask.NameToLayer("Enemy"),
+            true
+        );
+        // Chờ dash kết thúc
+        yield return new WaitForSeconds(dura);
+
+        // Bật lại va chạm
+        Physics2D.IgnoreLayerCollision(
+            LayerMask.NameToLayer("Player"),
+            LayerMask.NameToLayer("Enemy"),
+            false
+        );
     }
 
     public void ATK()

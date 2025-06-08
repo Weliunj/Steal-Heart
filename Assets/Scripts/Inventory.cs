@@ -4,6 +4,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public DataManager dataManager;
+    public Player player;
 
     public GameObject backpack;
     bool toggle = false;
@@ -25,15 +26,15 @@ public class Inventory : MonoBehaviour
             backpack.SetActive(toggle);
         }
 
-        if (Input.GetKeyDown(KeyCode.H) && dataManager.Hp_bottle > 0)
+        if (Input.GetKeyUp(KeyCode.H) && player.Hp_cd <= 0 && (dataManager.Hp_bottle > 0 && player.Hp > 0 && player.Hp_cd <= 0))
         {
             audioSource.Play();
         }
-        if (Input.GetKeyDown(KeyCode.H) && dataManager.Jump_bottle > 0)
+        if (Input.GetKeyDown(KeyCode.M) && dataManager.Jump_bottle > 0 && player.Jump_cd <= 0)
         {
             audioSource.Play();
         }
-        if (Input.GetKeyDown(KeyCode.H) && dataManager.Speed_bottle > 0)
+        if (Input.GetKeyDown(KeyCode.N) && dataManager.Speed_bottle > 0 && player.speed_cd <= 0)
         {
             audioSource.Play();
         }

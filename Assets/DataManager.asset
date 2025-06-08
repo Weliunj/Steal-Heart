@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 370c49d0be36dce4582714b7b2c07976, type: 3}
   m_Name: DataManager
   m_EditorClassIdentifier: 
-  Hp_bottle: 48
-  Jump_bottle: 4
-  Speed_bottle: 4
+  Hp_bottle: 40
+  Jump_bottle: 42
+  Speed_bottle: 42
