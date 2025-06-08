@@ -63,6 +63,8 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Player\Hp_Bar.cs" />
     <Compile Include="Assets\Scripts\Enemies\Hyena.cs" />
+    <Compile Include="Assets\Scripts\Enemies\Snake_Scorpio.cs" />
+    <Compile Include="Assets\Scripts\Enemies\Vulture.cs" />
     <Compile Include="Assets\Scripts\Camera.cs" />
     <Compile Include="Assets\Scripts\DataManager.cs" />
     <Compile Include="Assets\Scripts\Player\Buffs.cs" />
@@ -70,7 +72,6 @@
     <Compile Include="Assets\Scripts\Player\Player.cs" />
     <Compile Include="Assets\Scripts\Inventory.cs" />
     <Compile Include="Assets\Scripts\Enemies\EnemyBase.cs" />
-    <Compile Include="Assets\Scripts\Enemies\Snake.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

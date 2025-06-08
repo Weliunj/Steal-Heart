@@ -62,7 +62,7 @@ public partial class Player : MonoBehaviour
                 rb.linearVelocity = new Vector2(dashDirec * speed * 2f * (1.15f * speed_Buff), 0);
                 anim.SetTrigger("Dash");
             }
-            else if (atk1cd <= 0f && atk2cd <= 0.2f && dashcd < 1.23f)
+            else if (atk1cd <= 0f && atk2cd <= 0.2f && dashcd < 1.26f)
             {
                 move = Input.GetAxisRaw("Horizontal");
                 if (move != 0) { anim.SetBool("Run", true); audioSources[0].Play(); }
@@ -138,7 +138,7 @@ public partial class Player : MonoBehaviour
             false
         );
     }
-
+    float direcatk3;
     public void ATK()
     {
         //Atk1
@@ -159,13 +159,14 @@ public partial class Player : MonoBehaviour
             atk2cd -= Time.deltaTime;
             if((dashcd > 0.95f && dashcd < 1.35f))
             {
-                rb.linearVelocity = new Vector2(dashDirec * speed*1.1f, rb.linearVelocity.y*0.5f);
+                rb.linearVelocity = new Vector2(direcatk3 * speed*1.1f, rb.linearVelocity.y*0.5f);
             }
         }
         else
         {
             if (Input.GetKeyDown(KeyCode.K) && (dashcd > 0.8f && dashcd < 1.35f))
             {
+                direcatk3 = dashDirec;
                 audioSources[3].Stop(); audioSources[3].Play();
                 atk2cd = 0.70f;
                 atktype = "Atk3";

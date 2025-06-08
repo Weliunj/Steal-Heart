@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
-public class Hyena : EnemyBase
+public class Vulture : EnemyBase
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] protected Transform EndPos;
+    [SerializeField] protected float volumeR = 4f;
+    [SerializeField] protected float playR = 4f;
     void Start()
     {
+        transform.position = Stay_StartPos.position;
         // Compoment
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -12,14 +16,8 @@ public class Hyena : EnemyBase
         player = FindObjectOfType<Player>();
         Player = GameObject.FindWithTag("Player").transform;
 
-        if (!PatrolMode) { transform.position = Stay_StartPos.position; }
-        else { transform.position = Stay_StartPos.position; targetPos = Stay_StartPos.position + Vector3.right * patrolDistance; }
+        chaseSpeed += Random.Range(0f, 1.5f);
 
-        //Hp
-        slider.maxValue = maxHealth;
-        Hp = maxHealth;
-
-        /*
         //Audio
         audioSource[0].loop = false;      //atk
         audioSource[0].volume = 8f;
@@ -32,43 +30,45 @@ public class Hyena : EnemyBase
         audioSource[3].volume = 1.4f;     //Free
         audioSource[3].loop = false;
 
-        audioSource[4].volume = 2f;     //Dead
+        audioSource[4].volume = 0.34f;     //Dead
         audioSource[4].loop = false;
 
         playR = Random.Range(playR - 1f, playR + 2f);
         StartCoroutine(Free_Sound());
-
-        chaseSpeed += Random.Range(0f, 1.5f);
-        */
+        //Hp
+        slider.maxValue = maxHealth;
+        Hp = maxHealth;
     }
 
-    // Update is called once per frame
     void Update()
     {
         HP();
-        if (!Dead && Hp <= 0) //Dead
+        if (Hp <= 0)
         {
-            Dead = true;
+            rb.linearVelocity = new Vector2(0, -2.9f);
+            if (!Dead) //Dead
+            {
 
-            //player.effects[2].SetActive(false);
-            anim.ResetTrigger("Hit");
-            anim.SetTrigger("Dead");
-            //if (!audioSource[4].isPlaying)
-            //{
-            //    audioSource[4].Play();
-            //}
-            Destroy(this.Prefab, 1.5f);
+                Dead = true;
+                audioSource[4].Play();
+                anim.ResetTrigger("Hit");
+                anim.SetTrigger("Dead");
+                Destroy(this.Prefab, 1.5f);
+            }
         }
-        if (Dead) { return; }
-
-        if (stuned > 0)
+        if (Dead)
+        {
+            return;
+        }
+        else if (stuned > 0)
         {
             stuned -= Time.deltaTime;
+            rb.linearVelocity = Vector2.zero;
         }
         else if (Hp > 0 && stuned <= 0 && player.Hp > 0)        //Player song
         {
             // Tinh khoang cach den player
-            float distanceToPlayer = Vector2.Distance(transform.position, Player.position);
+            float distanceToPlayer = Vector2.Distance(transform.position, Player.position + new Vector3(0, 0.1f, 0));
 
             //Neu player trong pham vi
             if (distanceToPlayer < detectionRange)
@@ -97,32 +97,20 @@ public class Hyena : EnemyBase
         FlipSprite(Player.transform.position);       //truyen vao kieu pos
         if (distanceToPlayer < attakRange)
         {
-            //audioSource[2].Stop();
-            anim.SetBool("Walk", false);
+            rb.linearVelocity = Vector2.zero;
+            audioSource[2].Stop();
             Atk();
         }
         else if (distanceToPlayer > attakRange)
         {
-            //if (!audioSource[2].isPlaying)
-            //{
-            //    audioSource[2].Play();
-            //}
+            if (!audioSource[2].isPlaying)
+            {
+                audioSource[2].Play();
+            }
             anim.SetBool("Walk", true);
             // Di chuyen ve phia player
+            rb.linearVelocity = Vector2.zero;
             transform.position = Vector3.MoveTowards(transform.position, Player.position, chaseSpeed * Time.deltaTime);
-            JUMP();
-        }
-    }
-    public void JUMP()
-    {
-        Vector3 direc = transform.rotation.y == -180 ? Vector3.left : Vector3.right;
-        Vector3 rayStart = transform.position + new Vector3(0, 0.5f, 0);
-        RaycastHit2D cast = Physics2D.Raycast(rayStart, direc, 1f);
-
-        if (cast.collider != null && cast.collider.CompareTag("Ground"))
-        {
-            Debug.Log(cast.collider.name);
-            rb.AddForce(new Vector2(0, 300f)); // chỉnh lực theo ý bạn
         }
     }
     void Move()
@@ -135,22 +123,23 @@ public class Hyena : EnemyBase
             FlipSprite(Stay_StartPos.position);
             if (Vector2.Distance(Stay_StartPos.position, transform.position) < phamvistay)
             {
-                //audioSource[2].Stop();
+                audioSource[2].Stop();
                 anim.SetBool("Walk", false);
                 rb.linearVelocity = new Vector2(0, -1f);
             }
             else
             {
                 anim.SetBool("Walk", true); // Bắt đầu đi bộ quay lại StayPos
-                transform.position = Vector3.MoveTowards(transform.position, Stay_StartPos.position, movespeed * Time.deltaTime); ;
+                rb.linearVelocity = Vector3.MoveTowards(transform.position, Stay_StartPos.position, movespeed * Time.deltaTime); ;
             }
         }
         else
         {
-            //audioSource[2].Stop();
+            audioSource[2].Stop();
             anim.SetBool("Walk", true);
+
             // Move qua lai giua stast va end
-            Vector3 destination = movingToEnd == true ? targetPos : Stay_StartPos.position;
+            Vector3 destination = movingToEnd == true ? EndPos.position : Stay_StartPos.position;
             transform.position = Vector3.MoveTowards(transform.position, destination, movespeed * Time.deltaTime);
             // Doi huong khi den dich
             if (Vector2.Distance(new Vector2(transform.position.x, transform.position.y), new Vector2(destination.x, destination.y)) < 0.1f)
@@ -173,14 +162,17 @@ public class Hyena : EnemyBase
         {
             //Atk
             anim.SetTrigger("Atk");
-            //audioSource[0].Play();
+            audioSource[0].Play();
             //Player Hit
+            player.anim.SetTrigger("Hit");
+            player.audioSources[5].Play();
+            player.Hp -= atkDMG;
             speed = atkspeed;
         }
     }
-    public void HP()
+    void HP()
     {
-        Vector3 bar = new Vector3(transform.position.x, transform.position.y + 1.7f, transform.position.z);
+        Vector3 bar = new Vector3(transform.position.x, transform.position.y + 1.9f, transform.position.z);
         Hpbar.transform.position = bar;
         slider.value = Hp;
         // ==== Color Hp bar =====================
@@ -191,7 +183,7 @@ public class Hyena : EnemyBase
         }
         else if (slider.value < (maxHealth * 0.6) && slider.value > (maxHealth * 0.4))
         {
-            hpbar.color = new Color(1f, 0.65f, 0f); // Orange
+            hpbar.color = Color.yellow;
         }
         else
         {
@@ -212,12 +204,25 @@ public class Hyena : EnemyBase
             }
         }
     }
+    public IEnumerator Free_Sound()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(playR);
+            audioSource[3].volume = Random.Range(volumeR, volumeR + 3);
+            if (!audioSource[3].isPlaying)
+            {
+                audioSource[3].Play();
+            }
+            playR = Random.Range(volumeR, volumeR + 5);
+        }
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //Hit
         if (collision.gameObject.CompareTag("Atk") && !Dead)
         {
-            //audioSource[1].Play();
+            audioSource[1].Play();
             anim.SetTrigger("Hit");
             if (player.atktype == "Atk1")           //Trung Atk1
             {
@@ -236,18 +241,10 @@ public class Hyena : EnemyBase
                 Debug.Log("-Crital-");
             }
         }
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            player.anim.SetTrigger("Hit");
-            player.audioSources[5].Play();
-            player.Hp -= atkDMG;
-            player.StartCoroutine(player.dashThrougt(0.9f)); // Bat tu tam thoi
-            
-        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //if (collision.gameObject.CompareTag("Spike"))
+        //if (collision.gameObject.CompareTag("Spike") && !antiSpike)
         //{
         //    Hp = 0;
         //}
@@ -264,7 +261,7 @@ public class Hyena : EnemyBase
         else
         {
             Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(Stay_StartPos.position, new Vector2(patrolDistance + Stay_StartPos.position.x, Stay_StartPos.position.y));
+            Gizmos.DrawLine(Stay_StartPos.position, EndPos.position);
         }
 
         //Pham vi phat hien
@@ -274,14 +271,5 @@ public class Hyena : EnemyBase
         //Pham vi atk
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attakRange);
-
-        // Vẽ Raycast trong hàm JUMP
-        Gizmos.color = Color.green;
-        Vector3 start = transform.position + new Vector3(0, 0.5f, 0);
-
-        // Hướng Raycast dựa theo Flip
-        Vector3 direction = transform.rotation.y == -180 ? Vector3.left : Vector3.right;
-
-        Gizmos.DrawLine(start, start + direction * 15f); // 1f là độ dài raycast
     }
 }

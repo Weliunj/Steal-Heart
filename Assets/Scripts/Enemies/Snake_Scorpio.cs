@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Snake : EnemyBase
+public class Snake_Scorpio : EnemyBase
 {
     [SerializeField] protected float volumeR = 2.5f;
     [SerializeField] protected float playR = 6;
@@ -54,6 +54,7 @@ public class Snake : EnemyBase
             Dead = true;
 
             //player.effects[2].SetActive(false);
+            anim.ResetTrigger("Hit");
             anim.SetTrigger("Dead");
             if (!audioSource[4].isPlaying)
             {
@@ -126,7 +127,7 @@ public class Snake : EnemyBase
             {
                 audioSource[2].Stop();
                 anim.SetBool("Walk", false);
-                rb.linearVelocity = Vector2.zero;
+                rb.linearVelocity = new Vector2(0, -1f);
             }
             else
             {
