@@ -29,14 +29,12 @@ public class Deceased : EnemyBase
         slider.maxValue = maxHealth;
         Hp = maxHealth;
 
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Bullet"), LayerMask.NameToLayer("Enemy"), true);
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Bullet"), LayerMask.NameToLayer("Bullet"), true);
-        /*
         //Audio
         audioSource[0].loop = false;      //atk
-        audioSource[0].volume = 8f;
+        audioSource[0].volume = 6f;
 
         audioSource[1].loop = false;      //Hit
+        audioSource[1].volume = 0.8f;
 
         audioSource[2].volume = 0.6f;       //Run
         audioSource[2].loop = false;
@@ -44,12 +42,8 @@ public class Deceased : EnemyBase
         audioSource[3].volume = 1.4f;     //Free
         audioSource[3].loop = false;
 
-        audioSource[4].volume = 2f;     //Dead
+        audioSource[4].volume = 1f;     //Dead
         audioSource[4].loop = false;
-
-        playR = Random.Range(playR - 1f, playR + 2f);
-        StartCoroutine(Free_Sound());
-        */
     }
 
     // Update is called once per frame
@@ -61,13 +55,13 @@ public class Deceased : EnemyBase
             rb.linearVelocity = new Vector2(0, 0);
             Dead = true;
 
-            ui.Burn.SetActive(true);
+            ui.Burn.SetActive(false);
             anim.ResetTrigger("Hit");
             anim.SetTrigger("Dead");
-            //if (!audioSource[4].isPlaying)
-            //{
-            //    audioSource[4].Play();
-            //}
+            if (!audioSource[4].isPlaying)
+            {
+                audioSource[4].Play();
+            }
             Destroy(this.Prefab, 1.5f);
         }
         if (Dead) { return; }
@@ -102,6 +96,7 @@ public class Deceased : EnemyBase
             {
                 Move();
             }
+            if (JumpMode) { JUMP(); }
         }
     }
 
@@ -116,14 +111,13 @@ public class Deceased : EnemyBase
         FlipSprite(player.transform.position);       //truyen vao kieu pos
         if (distanceToPlayer < attakRange)
         {
-            //audioSource[2].Stop();
+            audioSource[2].Stop();
             anim.SetBool("Walk", false);
             Atk();
         }
         else
         {
             anim.SetBool("Walk", true);
-            if (JumpMode) { JUMP(); }
 
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, chaseSpeed * Time.deltaTime);
         }
@@ -145,6 +139,7 @@ public class Deceased : EnemyBase
 
     void Move()
     {
+
         if (!PatrolMode)    //dung im
         {
 
@@ -152,7 +147,7 @@ public class Deceased : EnemyBase
             FlipSprite(Stay_StartPos.position);
             if (Vector2.Distance(Stay_StartPos.position, transform.position) < phamvistay)
             {
-                //audioSource[2].Stop();
+                audioSource[2].Stop();
                 anim.SetBool("Walk", false);
                 rb.linearVelocity = new Vector2(0, -1f);
             }
@@ -164,7 +159,7 @@ public class Deceased : EnemyBase
         }
         else
         {
-            //audioSource[2].Stop();
+            audioSource[2].Stop();
             anim.SetBool("Walk", true);
             // Move qua lai giua stast va end
             Vector2 destination = movingToEnd == true ? targetPos : Stay_StartPos.position;
@@ -190,7 +185,7 @@ public class Deceased : EnemyBase
         {
             //Atk
             anim.SetTrigger("Atk");
-            //audioSource[0].Play();
+            audioSource[0].Play();
 
             Instantiate(Ammo_P, CenterFire.position, CenterFire.rotation);
             speed = atkspeed;
@@ -232,9 +227,9 @@ public class Deceased : EnemyBase
     }
     public IEnumerator Burn(int dura)
     {
-        ui.Burn.SetActive(true);
         for (int i = 0; i < dura && player.Hp > 0; i++)
         {
+            ui.Poison.SetActive(true);
             int audio = Random.Range(0, 1);
             if (audio <= 0.5f) { player.audioSources[5].Play(); }
             
@@ -250,7 +245,7 @@ public class Deceased : EnemyBase
         //Hit
         if (collision.gameObject.CompareTag("Atk") && !Dead)
         {
-            //audioSource[1].Play();
+            audioSource[1].Play();
             anim.SetTrigger("Hit");
             if (player.atktype == "Atk1")           //Trung Atk1
             {

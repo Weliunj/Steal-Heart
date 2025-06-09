@@ -7,6 +7,7 @@ public class Snake_Scorpio : EnemyBase
     [SerializeField] protected float playR = 6;
 
     [Header("-------------Unique-----------")]
+    private Coroutine poisonRoutine;
     [SerializeField] protected int dmg_posion;
     [SerializeField] protected float speed_posion;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -55,6 +56,11 @@ public class Snake_Scorpio : EnemyBase
             rb.linearVelocity = new Vector2(0,0);
             Dead = true;
 
+            if (poisonRoutine != null)
+            {
+                StopCoroutine(poisonRoutine);
+                poisonRoutine = null;
+            }
             ui.Poison.SetActive(false);
             anim.ResetTrigger("Hit");
             anim.SetTrigger("Dead");
@@ -95,6 +101,7 @@ public class Snake_Scorpio : EnemyBase
             {
                 Move();
             }
+            if (JumpMode) { JUMP(); }
         }
     }
     public void ChasePlayer(float distanceToPlayer)
@@ -151,6 +158,20 @@ public class Snake_Scorpio : EnemyBase
 
             //Flip
             FlipSprite(destination);
+        }
+    }
+    public void JUMP()
+    {
+        // Vị trí bắt đầu của ray
+        Vector3 rayStart = transform.position + new Vector3(StartRay, SetupY, 0);
+
+        // Kiểm tra có Ground phía trước
+        RaycastHit2D frontGroundHit = Physics2D.Raycast(rayStart, Vector2.right, LengthRay, LayerMask.GetMask("Ground"));
+
+        // Nếu có Ground trước mặt và không bị cản phía trên đầu thì nhảy
+        if (frontGroundHit.collider != null)
+        {
+            rb.AddForce(new Vector2(0, HightJump), ForceMode2D.Impulse); // Lực nhảy có thể tùy chỉnh
         }
     }
     void Atk()
@@ -218,9 +239,10 @@ public class Snake_Scorpio : EnemyBase
     }
     IEnumerator Poison(int _Posion)
     {
-        ui.Poison.SetActive(true);
+        
         for (int i = 0; i < _Posion; i++)
         {
+            ui.Poison.SetActive(true);
             player.audioSources[5].Play();
             player.Hp -= Random.Range(dmg_posion, dmg_posion + 10);
             yield return new WaitForSeconds(Random.Range(speed_posion, speed_posion + 2));
@@ -233,7 +255,7 @@ public class Snake_Scorpio : EnemyBase
         //Hit
         if (collision.gameObject.CompareTag("Atk") && !Dead)
         {
-            //audioSource[1].Play();
+            audioSource[1].Play();
             anim.SetTrigger("Hit");
             if (player.atktype == "Atk1")           //Trung Atk1
             {
@@ -258,8 +280,8 @@ public class Snake_Scorpio : EnemyBase
             player.audioSources[5].Play();
             player.Hp -= atkDMG;
             player.StartCoroutine(player.dashThrougt(0.9f)); // Bat tu tam thoi
-            StopCoroutine(Poison(Random.Range(3, 5)));
-            StartCoroutine(Poison(Random.Range(3, 5)));
+            if (poisonRoutine != null) StopCoroutine(poisonRoutine);
+            poisonRoutine = StartCoroutine(Poison(Random.Range(3, 5)));
         }
     }
     public void OnDrawGizmos()

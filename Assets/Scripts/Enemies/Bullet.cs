@@ -26,6 +26,11 @@ public class Bullet : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            if (player.isDashingThroughBullet)
+            {
+                // Đang dash xuyên thì bỏ qua, không phá đạn
+                return;
+            }
             audiosource.Play();
             player.audioSources[5].Play();
             player.IsStun = dec.StunedPlayer;

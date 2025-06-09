@@ -22,6 +22,7 @@ public partial class Player : MonoBehaviour
 
     public float IsStun = 0f;
 
+    [HideInInspector] public bool isDashingThroughBullet = false;
     [Header("-------------Settings")]
     public float speed;
     public float forcejump;
@@ -42,6 +43,7 @@ public partial class Player : MonoBehaviour
 
         foreach (AudioSource source in audioSources) { source.playOnAwake = false; }
         audioSources[0].loop = true;
+        audioSources[0].volume= 2.5f;
     }
 
     // Update is called once per frame
@@ -123,7 +125,8 @@ public partial class Player : MonoBehaviour
         }
     }
     public IEnumerator dashThrougt(float dura)
-    {   
+    {
+        isDashingThroughBullet = true;
         // Tạm tắt va chạm giữa Player và Enemy
         Physics2D.IgnoreLayerCollision(
             LayerMask.NameToLayer("Player"),
@@ -149,5 +152,6 @@ public partial class Player : MonoBehaviour
             LayerMask.NameToLayer("Bullet"),
             false
         );
+        isDashingThroughBullet = false;
     }
 }

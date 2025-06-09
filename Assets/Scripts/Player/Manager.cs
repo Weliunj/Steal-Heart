@@ -4,9 +4,11 @@ public partial class Player : MonoBehaviour
 {
     public void IgnoreObj()
     {
-        //Coin
-        Ignore("Coin", "Enemy");
-        Ignore("Coin", "Bullet");
+        Ignore("Item", "Enemy");
+
+        //Bullet
+        Ignore("Bullet", "Item");
+        Ignore("Bullet", "Enemy");
     }
     public void Ignore(string layer1, string layer2)
     {

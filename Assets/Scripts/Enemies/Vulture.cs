@@ -19,7 +19,7 @@ public class Vulture : EnemyBase
 
         //Audio
         audioSource[0].loop = false;      //atk
-        audioSource[0].volume = 8f;
+        audioSource[0].volume = 15f;
 
         audioSource[1].loop = false;      //Hit
 
@@ -89,6 +89,7 @@ public class Vulture : EnemyBase
             {
                 Move();
             }
+
         }
     }
     public void ChasePlayer(float distanceToPlayer)
@@ -220,7 +221,7 @@ public class Vulture : EnemyBase
         //Hit
         if (collision.gameObject.CompareTag("Atk") && !Dead)
         {
-            //audioSource[1].Play();
+            audioSource[1].Play();
             anim.SetTrigger("Hit");
             if (player.atktype == "Atk1")           //Trung Atk1
             {

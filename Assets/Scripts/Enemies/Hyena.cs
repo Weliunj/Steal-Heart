@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Hyena : EnemyBase
 {
+    [SerializeField] protected float volumeR = 2.5f;
+    [SerializeField] protected float playR = 6;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void Start()
     {
@@ -19,25 +22,23 @@ public class Hyena : EnemyBase
         slider.maxValue = maxHealth;
         Hp = maxHealth;
 
-        /*
         //Audio
         audioSource[0].loop = false;      //atk
-        audioSource[0].volume = 8f;
+        audioSource[0].volume = 1.2f;
 
         audioSource[1].loop = false;      //Hit
 
-        audioSource[2].volume = 0.6f;       //Run
+        audioSource[2].volume = 1.5f;       //Run
         audioSource[2].loop = false;
 
-        audioSource[3].volume = 1.4f;     //Free
+        audioSource[3].volume = 0.5f;     //Free
         audioSource[3].loop = false;
 
-        audioSource[4].volume = 2f;     //Dead
+        audioSource[4].volume = 1.3f;     //Dead
         audioSource[4].loop = false;
 
         playR = Random.Range(playR - 1f, playR + 2f);
         StartCoroutine(Free_Sound());
-        */
     }
 
     // Update is called once per frame
@@ -49,14 +50,11 @@ public class Hyena : EnemyBase
             rb.linearVelocity = new Vector2(0, 0);
             Dead = true;
 
-            //player.effects[2].SetActive(false);
             anim.ResetTrigger("Hit");
             anim.SetTrigger("Dead");
-            //if (!audioSource[4].isPlaying)
-            //{
-            //    audioSource[4].Play();
-            //}
-            Destroy(this.Prefab, 1.5f);
+            audioSource[1].Stop();
+            audioSource[3].Stop();
+            Destroy(this.Prefab, 1.4f);
         }
         if (Dead) { return; }
 
@@ -89,6 +87,7 @@ public class Hyena : EnemyBase
             {
                 Move();
             }
+            if (JumpMode) { JUMP(); }
         }
     }
     public void ChasePlayer(float distanceToPlayer)
@@ -96,14 +95,13 @@ public class Hyena : EnemyBase
         FlipSprite(player.transform.position);       //truyen vao kieu pos
         if (distanceToPlayer < attakRange)
         {
-            //audioSource[2].Stop();
+            audioSource[2].Stop();
             anim.SetBool("Walk", false);
             Atk();
         }
         else
         {
             anim.SetBool("Walk", true);
-            if (JumpMode) { JUMP(); }
 
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, chaseSpeed * Time.deltaTime);
         }
@@ -132,7 +130,7 @@ public class Hyena : EnemyBase
             FlipSprite(Stay_StartPos.position);
             if (Vector2.Distance(Stay_StartPos.position, transform.position) < phamvistay)
             {
-                //audioSource[2].Stop();
+                audioSource[2].Stop();
                 anim.SetBool("Walk", false);
                 rb.linearVelocity = new Vector2(0, -1f);
             }
@@ -144,7 +142,7 @@ public class Hyena : EnemyBase
         }
         else
         {
-            //audioSource[2].Stop();
+            audioSource[2].Stop();
             anim.SetBool("Walk", true);
             // Move qua lai giua stast va end
             Vector2 destination = movingToEnd == true ? targetPos : Stay_StartPos.position;
@@ -170,7 +168,7 @@ public class Hyena : EnemyBase
         {
             //Atk
             anim.SetTrigger("Atk");
-            //audioSource[0].Play();
+            audioSource[0].Play();
             //Player Hit
             speed = atkspeed;
         }
@@ -209,12 +207,25 @@ public class Hyena : EnemyBase
             }
         }
     }
+    public IEnumerator Free_Sound()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(playR);
+            audioSource[3].volume = Random.Range(volumeR, volumeR + 3);
+            if (!audioSource[3].isPlaying)
+            {
+                audioSource[3].Play();
+            }
+            playR = Random.Range(volumeR, volumeR + 5);
+        }
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //Hit
         if (collision.gameObject.CompareTag("Atk") && !Dead)
         {
-            //audioSource[1].Play();
+            audioSource[1].Play();
             anim.SetTrigger("Hit");
             if (player.atktype == "Atk1")           //Trung Atk1
             {

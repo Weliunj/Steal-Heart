@@ -46,7 +46,7 @@ public partial class Player : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.K) && (dashcd > 0.8f && dashcd < 1.4f))
+            if (Input.GetKeyDown(KeyCode.K) && (dashcd > 0.55f && dashcd < 0.85f))
             {
                 direcatk3 = dashDirec;
                 audioSources[3].Stop(); audioSources[3].Play();

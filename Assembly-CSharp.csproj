@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\Map\Camera.cs" />
     <Compile Include="Assets\Scripts\DataManager.cs" />
     <Compile Include="Assets\Scripts\Map\Ground.cs" />
+    <Compile Include="Assets\Scripts\Map\Potion.cs" />
     <Compile Include="Assets\Scripts\Player\Player.cs" />
     <Compile Include="Assets\Scripts\Player\Manager.cs" />
     <Compile Include="Assets\Scripts\Enemies\EnemyBase.cs" />
