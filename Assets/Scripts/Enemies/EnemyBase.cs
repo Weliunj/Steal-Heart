@@ -65,4 +65,12 @@ public class EnemyBase : MonoBehaviour
     // ========== AUDIO & ANIMATION ==========
     [Header("--------------------Audio---------------")]
     [SerializeField] protected AudioSource[] audioSource;
+
+    [SerializeField] public UI ui;
+
+    public virtual void Start()
+    {
+        ui = FindAnyObjectByType<UI>();
+        player = FindAnyObjectByType<Player>();
+    }
 }

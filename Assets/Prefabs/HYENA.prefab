@@ -250,8 +250,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.010719996, y: 0.08376721}
-  m_Size: {x: 0.60798645, y: 0.114586845}
+  m_Offset: {x: 0.010720006, y: 0.16844644}
+  m_Size: {x: 0.6079865, y: 0.28394535}
   m_Direction: 1
 --- !u!1 &1665645257153351593
 GameObject:
@@ -476,6 +476,7 @@ MonoBehaviour:
   - 0.2
   - 0.3
   audioSource: []
+  ui: {fileID: 0}
 --- !u!82 &4099531414739378325
 AudioSource:
   m_ObjectHideFlags: 0

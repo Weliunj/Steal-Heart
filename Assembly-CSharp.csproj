@@ -62,20 +62,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Enemies\Bullet.cs" />
-    <Compile Include="Assets\Scripts\Player\Hp_Bar.cs" />
+    <Compile Include="Assets\Scripts\Player\UI\Hp_Bar.cs" />
     <Compile Include="Assets\Scripts\Enemies\Hyena.cs" />
     <Compile Include="Assets\Scripts\Enemies\Snake_Scorpio.cs" />
     <Compile Include="Assets\Scripts\Enemies\Vulture.cs" />
     <Compile Include="Assets\Scripts\Player\Atk.cs" />
-    <Compile Include="Assets\Scripts\Camera.cs" />
+    <Compile Include="Assets\Scripts\Player\UI\UI.cs" />
+    <Compile Include="Assets\Scripts\Map\Camera.cs" />
     <Compile Include="Assets\Scripts\DataManager.cs" />
-    <Compile Include="Assets\Scripts\Player\Buffs.cs" />
-    <Compile Include="Assets\Scripts\Ground.cs" />
+    <Compile Include="Assets\Scripts\Map\Ground.cs" />
     <Compile Include="Assets\Scripts\Player\Player.cs" />
-    <Compile Include="Assets\Scripts\Inventory.cs" />
+    <Compile Include="Assets\Scripts\Player\Manager.cs" />
     <Compile Include="Assets\Scripts\Enemies\EnemyBase.cs" />
     <Compile Include="Assets\Scripts\Enemies\Deceased.cs" />
     <Compile Include="Assets\Scripts\Enemies\Mummy.cs" />
+    <Compile Include="Assets\Scripts\Player\UI\Items.cs" />
+    <Compile Include="Assets\Scripts\Map\Coin.cs" />
+    <Compile Include="Assets\Scripts\Player\UI\Effect.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

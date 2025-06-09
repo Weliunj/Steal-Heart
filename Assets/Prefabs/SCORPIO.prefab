@@ -414,6 +414,7 @@ MonoBehaviour:
   - {fileID: 749145078718572258}
   - {fileID: 8081347487738930753}
   - {fileID: 617998866330899191}
+  ui: {fileID: 0}
   volumeR: 2.5
   playR: 6
   dmg_posion: 15
@@ -1116,8 +1117,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.01247418, y: 0.059628204}
-  m_Size: {x: 0.5113297, y: 0.12277073}
+  m_Offset: {x: 0.01247419, y: 0.08205301}
+  m_Size: {x: 0.51132977, y: 0.16762038}
   m_Direction: 1
 --- !u!1 &6686228775096126937
 GameObject:

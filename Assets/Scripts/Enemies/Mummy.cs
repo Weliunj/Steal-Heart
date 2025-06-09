@@ -3,13 +3,13 @@
 public class Mummy : EnemyBase
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public override void Start()
     {
         // Compoment
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        base.Start();
         speed = atkspeed;
-        player = FindObjectOfType<Player>();
 
         if (!PatrolMode) { transform.position = Stay_StartPos.position; }
         else { transform.position = Stay_StartPos.position; targetPos = Stay_StartPos.position + Vector3.right * patrolDistance; }
@@ -47,6 +47,7 @@ public class Mummy : EnemyBase
         HP();
         if (!Dead && Hp <= 0) //Dead
         {
+            rb.linearVelocity = new Vector2(0, 0);
             Dead = true;
 
             //player.effects[2].SetActive(false);
@@ -147,7 +148,7 @@ public class Mummy : EnemyBase
             //audioSource[2].Stop();
             anim.SetBool("Walk", true);
             // Move qua lai giua stast va end
-            Vector3 destination = movingToEnd == true ? targetPos : Stay_StartPos.position;
+            Vector2 destination = movingToEnd == true ? targetPos : Stay_StartPos.position;
             transform.position = Vector3.MoveTowards(transform.position, destination, movespeed * Time.deltaTime);
             // Doi huong khi den dich
             if (Vector2.Distance(new Vector2(transform.position.x, transform.position.y), new Vector2(destination.x, destination.y)) < 0.1f)

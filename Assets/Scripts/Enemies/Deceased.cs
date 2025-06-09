@@ -13,13 +13,13 @@ public class Deceased : EnemyBase
     public int burnEffectPlayer;
     public Coroutine burnCoroutine;       // Theo dõi coroutine hiện tại
 
-    void Start()
+    public override void Start()
     {
         // Compoment
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         speed = atkspeed;
-        player = FindObjectOfType<Player>();
+        base.Start();
 
         if (!PatrolMode) { transform.position = Stay_StartPos.position; }
         else { transform.position = Stay_StartPos.position; targetPos = Stay_StartPos.position + Vector3.right * patrolDistance; }
@@ -58,9 +58,10 @@ public class Deceased : EnemyBase
         HP();
         if (!Dead && Hp <= 0) //Dead
         {
+            rb.linearVelocity = new Vector2(0, 0);
             Dead = true;
 
-            //player.effects[2].SetActive(false);
+            ui.Burn.SetActive(true);
             anim.ResetTrigger("Hit");
             anim.SetTrigger("Dead");
             //if (!audioSource[4].isPlaying)
@@ -166,7 +167,7 @@ public class Deceased : EnemyBase
             //audioSource[2].Stop();
             anim.SetBool("Walk", true);
             // Move qua lai giua stast va end
-            Vector3 destination = movingToEnd == true ? targetPos : Stay_StartPos.position;
+            Vector2 destination = movingToEnd == true ? targetPos : Stay_StartPos.position;
             transform.position = Vector3.MoveTowards(transform.position, destination, movespeed * Time.deltaTime);
             // Doi huong khi den dich
             if (Vector2.Distance(new Vector2(transform.position.x, transform.position.y), new Vector2(destination.x, destination.y)) < 0.1f)
@@ -231,14 +232,16 @@ public class Deceased : EnemyBase
     }
     public IEnumerator Burn(int dura)
     {
+        ui.Burn.SetActive(true);
         for (int i = 0; i < dura && player.Hp > 0; i++)
         {
             int audio = Random.Range(0, 1);
             if (audio <= 0.5f) { player.audioSources[5].Play(); }
-
+            
             player.Hp -= Random.Range(burnEffectPlayer, burnEffectPlayer + 5);
             yield return new WaitForSeconds(Random.Range(0.7f, 1.2f));
         }
+        ui.Burn.SetActive(false);
         burnCoroutine = null;
     }
     private void OnTriggerEnter2D(Collider2D collision)

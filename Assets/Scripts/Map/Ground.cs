@@ -55,6 +55,7 @@ public class Ground : MonoBehaviour
         {
             player.anim.SetBool("Wall", false);
             player.anim.SetBool("Jump_E", true);
+            player.dashcd = 0f;
             player.doubleJump = 0;
             player.rb.gravityScale = 2.3f;
         }

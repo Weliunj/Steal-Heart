@@ -5,6 +5,7 @@ using UnityEngine;
 public class DataManager : ScriptableObject
 {
     //Item
+    [Range(0, 999)]public int Coin_Quan = 0;
     public int Hp_bottle = 0;
     public int Jump_bottle = 0;
     public int Speed_bottle = 0;

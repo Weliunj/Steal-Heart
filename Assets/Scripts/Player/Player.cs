@@ -10,6 +10,7 @@ public partial class Player : MonoBehaviour
 
     [Header("-------------Display")]
     public DataManager dataManager;
+    public UI inventory;
     public Rigidbody2D rb;
     public Animator anim;
 
@@ -27,11 +28,12 @@ public partial class Player : MonoBehaviour
 
     [Header("-------------Audio")]
     public AudioSource[] audioSources;      //0: Run, 1: Atk1, 2: Atk2, 3: Atk3, 4: Jump, 5: Hit
-    public AudioSource usingItems;
 
     void Start()
     {
-        HPSetup();
+        Setup();
+        IgnoreObj();
+
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
 
@@ -49,7 +51,6 @@ public partial class Player : MonoBehaviour
         if (dead) return; // Nếu đã chết rồi, không xử lý gì tiếp
 
         HPCheck();
-        BUFFS();
 
         MOVE();
         DASH();
@@ -59,18 +60,18 @@ public partial class Player : MonoBehaviour
     {
         if(holdTime <= 0f)
         {
-            if (dashDirec != 0 && dashcd > 1.26f) // không cho di chuyển khi đang dash
+            if (dashDirec != 0 && dashcd > 0.75f) // không cho di chuyển khi đang dash
             {
-                rb.linearVelocity = new Vector2(dashDirec * speed * 2f * (1.15f * speed_Buff), 0);
+                rb.linearVelocity = new Vector2(dashDirec * speed * 2f * (1.15f * inventory.speed_Buff), 0);
                 anim.SetTrigger("Dash");
             }
-            else if (atk1cd <= 0f && atk2cd <= 0.2f && dashcd < 1.26f)
+            else if (atk1cd <= 0f && atk2cd <= 0.2f && dashcd < 0.75f)
             {
                 move = Input.GetAxisRaw("Horizontal");
                 if (move != 0) { anim.SetBool("Run", true); audioSources[0].Play(); }
                 else { anim.SetBool("Run", false); audioSources[0].Pause(); }
 
-                rb.linearVelocity = new Vector2(move * speed * speed_Buff, rb.linearVelocity.y);
+                rb.linearVelocity = new Vector2(move * speed * inventory.speed_Buff, rb.linearVelocity.y);
 
                 FLIP(move);
             }
@@ -89,10 +90,9 @@ public partial class Player : MonoBehaviour
     }
     public void JUMP()
     {
-        int countjump = Jump_Buff + 2;
+        int countjump = inventory.Jump_Buff + 2;
         if (Input.GetKeyDown(KeyCode.Space) && doubleJump < countjump)
         {
-            dashcd = 0.1f;
             audioSources[4].Play();
             doubleJump++;
             anim.SetTrigger("Jump");
@@ -109,7 +109,7 @@ public partial class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.L) && move != 0 && atk2cd <= 0.2f)
             {
-                dashcd = 1.5f;
+                dashcd = 1f;
                 if (move < 0)
                 {
                     dashDirec = -1f;

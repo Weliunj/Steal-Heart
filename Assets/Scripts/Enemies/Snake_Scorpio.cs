@@ -10,13 +10,13 @@ public class Snake_Scorpio : EnemyBase
     [SerializeField] protected int dmg_posion;
     [SerializeField] protected float speed_posion;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public override void Start()
     {
         // Compoment
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        base.Start();
         speed = atkspeed;
-        player = FindObjectOfType<Player>();
 
         if (!PatrolMode) { transform.position = Stay_StartPos.position; }
         else { transform.position = Stay_StartPos.position; targetPos = Stay_StartPos.position + Vector3.right * patrolDistance; }
@@ -52,9 +52,10 @@ public class Snake_Scorpio : EnemyBase
         HP();
         if (!Dead && Hp <= 0) //Dead
         {
+            rb.linearVelocity = new Vector2(0,0);
             Dead = true;
 
-            //player.effects[2].SetActive(false);
+            ui.Poison.SetActive(false);
             anim.ResetTrigger("Hit");
             anim.SetTrigger("Dead");
             if (!audioSource[4].isPlaying)
@@ -120,7 +121,6 @@ public class Snake_Scorpio : EnemyBase
     {
         if (!PatrolMode)    //dung im
         {
-            Vector3 Pos = Stay_StartPos.position - transform.position;
 
             //Flip
             FlipSprite(Stay_StartPos.position);
@@ -141,7 +141,7 @@ public class Snake_Scorpio : EnemyBase
             audioSource[2].Stop();
             anim.SetBool("Walk", true);
             // Move qua lai giua stast va end
-            Vector3 destination = movingToEnd == true ? targetPos : Stay_StartPos.position;
+            Vector2 destination = movingToEnd == true ? targetPos : Stay_StartPos.position;
             transform.position = Vector3.MoveTowards(transform.position, destination, movespeed * Time.deltaTime);
             // Doi huong khi den dich
             if (Vector2.Distance(new Vector2(transform.position.x, transform.position.y), new Vector2(destination.x, destination.y)) < 0.1f)
@@ -218,14 +218,14 @@ public class Snake_Scorpio : EnemyBase
     }
     IEnumerator Poison(int _Posion)
     {
-        //player.effects[2].SetActive(true);
+        ui.Poison.SetActive(true);
         for (int i = 0; i < _Posion; i++)
         {
             player.audioSources[5].Play();
             player.Hp -= Random.Range(dmg_posion, dmg_posion + 10);
             yield return new WaitForSeconds(Random.Range(speed_posion, speed_posion + 2));
         }
-        //player.effects[2].SetActive(false);
+        ui.Poison.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -261,13 +261,6 @@ public class Snake_Scorpio : EnemyBase
             StopCoroutine(Poison(Random.Range(3, 5)));
             StartCoroutine(Poison(Random.Range(3, 5)));
         }
-    }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        //if (collision.gameObject.CompareTag("Spike"))
-        //{
-        //    Hp = 0;
-        //}
     }
     public void OnDrawGizmos()
     {

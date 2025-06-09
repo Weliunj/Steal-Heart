@@ -6,13 +6,13 @@ public class Vulture : EnemyBase
     [SerializeField] protected Transform EndPos;
     [SerializeField] protected float volumeR = 4f;
     [SerializeField] protected float playR = 4f;
-    void Start()
+    public override void Start()
     {
         // Compoment
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        base.Start();
         speed = atkspeed;
-        player = FindObjectOfType<Player>();
 
         transform.position = Stay_StartPos.position;
         chaseSpeed += Random.Range(0f, 1.5f);
@@ -44,7 +44,7 @@ public class Vulture : EnemyBase
         HP();
         if (Hp <= 0)
         {
-            rb.linearVelocity = new Vector2(0, -2.9f);
+            rb.linearVelocity = new Vector2(0, -2f);
             if (!Dead) //Dead
             {
 
@@ -137,7 +137,7 @@ public class Vulture : EnemyBase
             anim.SetBool("Walk", true);
 
             // Move qua lai giua stast va end
-            Vector3 destination = movingToEnd == true ? EndPos.position : Stay_StartPos.position;
+            Vector2 destination = movingToEnd == true ? EndPos.position : Stay_StartPos.position;
             transform.position = Vector3.MoveTowards(transform.position, destination, movespeed * Time.deltaTime);
             // Doi huong khi den dich
             if (Vector2.Distance(new Vector2(transform.position.x, transform.position.y), new Vector2(destination.x, destination.y)) < 0.1f)

@@ -7,31 +7,44 @@ public partial class Player : MonoBehaviour
 {
     [Header("           -------------- HP ---------------")]
     [Header("-------------Display")]
+    [Range(0, 300)] protected int maxHealth = 300;
     [Range(0, 300)] public int Hp;
     public Slider Hpbar;
     public Image HpImage;
-    public Transform HpCanvas;
     public TMP_Text Hp_T;
     public float Hp_cd = 0f;
-    [Range(0, 300)] private int maxHealth = 300;
+    public GameObject Hp_Eff;
+    [Header("-------------Stam")]
+    public Slider DashBar;
+
 
     float holdTime = 0f;
     bool isHoldingH = false;
 
-    public void HPSetup()
+    public void Setup()
     {
+        Hp_Eff.SetActive(true);
         Hpbar.maxValue = maxHealth;
         Hp = maxHealth;
+        DashBar.maxValue = 1f;
     }
 
     public void HPCheck()
     {
         Hpbar.value = Hp;
-        HpCanvas.position = new Vector3(this.transform.position.x, this.transform.position.y + 2.5f, this.transform.position.z);
+        DashBar.value = dashcd;
 
         Hp_T.text = $"{dataManager.Hp_bottle}";
-        if(Hp_cd > 0) { Hp_cd -= Time.deltaTime; }
-        else { UsingHp(); }
+        if(Hp_cd > 0) 
+        { 
+            Hp_Eff.SetActive (false);
+            Hp_cd -= Time.deltaTime; 
+        }
+        else 
+        { 
+            Hp_Eff.SetActive(true) ;
+            UsingHp(); 
+        }
 
         float healthPercent = (float)Hp / maxHealth;
         if (healthPercent > 0.7f)
@@ -68,15 +81,16 @@ public partial class Player : MonoBehaviour
             if (holdTime < 1.5f)
             {
                 Hp += 130;
-                Debug.Log("Nho");
+                Debug.Log("HP + 130");
             }
             else
             {
                 Hp += 230;
-                Debug.Log("To");
+                Debug.Log("HP + 230");
             }
-            usingItems.Play();
+
             dataManager.Hp_bottle--;
+            inventory.usingItems.Play();
             if (Hp > 300) { Hp = maxHealth; }
             isHoldingH = false;
             holdTime = 0f;
