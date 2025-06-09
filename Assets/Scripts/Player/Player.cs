@@ -19,6 +19,8 @@ public partial class Player : MonoBehaviour
     public float dashcd = 0f;
     float dashDirec;
 
+    public float IsStun = 0f;
+
     [Header("-------------Settings")]
     public float speed;
     public float forcejump;
@@ -128,6 +130,11 @@ public partial class Player : MonoBehaviour
             LayerMask.NameToLayer("Enemy"),
             true
         );
+        Physics2D.IgnoreLayerCollision(
+            LayerMask.NameToLayer("Player"),
+            LayerMask.NameToLayer("Bullet"),
+            true
+        );
         // Chờ dash kết thúc
         yield return new WaitForSeconds(dura);
 
@@ -135,6 +142,11 @@ public partial class Player : MonoBehaviour
         Physics2D.IgnoreLayerCollision(
             LayerMask.NameToLayer("Player"),
             LayerMask.NameToLayer("Enemy"),
+            false
+        );
+        Physics2D.IgnoreLayerCollision(
+            LayerMask.NameToLayer("Player"),
+            LayerMask.NameToLayer("Bullet"),
             false
         );
     }

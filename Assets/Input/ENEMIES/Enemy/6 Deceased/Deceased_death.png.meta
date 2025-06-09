@@ -76,7 +76,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -90,7 +90,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 20
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -155,12 +155,12 @@ TextureImporter:
       name: Deceased_death_0
       rect:
         serializedVersion: 2
-        x: 14
+        x: 0
         y: 0
-        width: 32
-        height: 34
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 48
+      alignment: 9
+      pivot: {x: 0.7, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -177,12 +177,12 @@ TextureImporter:
       name: Deceased_death_1
       rect:
         serializedVersion: 2
-        x: 71
+        x: 48
         y: 0
-        width: 25
-        height: 29
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 48
+      alignment: 9
+      pivot: {x: 0.7, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -199,12 +199,12 @@ TextureImporter:
       name: Deceased_death_2
       rect:
         serializedVersion: 2
-        x: 118
-        y: 18
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 96
+        y: 0
+        width: 48
+        height: 48
+      alignment: 9
+      pivot: {x: 0.7, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -221,12 +221,12 @@ TextureImporter:
       name: Deceased_death_3
       rect:
         serializedVersion: 2
-        x: 122
+        x: 144
         y: 0
-        width: 22
-        height: 25
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 48
+      alignment: 9
+      pivot: {x: 0.7, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -243,12 +243,12 @@ TextureImporter:
       name: Deceased_death_4
       rect:
         serializedVersion: 2
-        x: 163
+        x: 192
         y: 0
-        width: 27
-        height: 19
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        width: 48
+        height: 48
+      alignment: 9
+      pivot: {x: 0.7, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -265,12 +265,12 @@ TextureImporter:
       name: Deceased_death_5
       rect:
         serializedVersion: 2
-        x: 61
-        y: 3
-        width: 13
-        height: 9
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 240
+        y: 0
+        width: 48
+        height: 48
+      alignment: 9
+      pivot: {x: 0.7, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -283,187 +283,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: Deceased_death_6
-      rect:
-        serializedVersion: 2
-        x: 117
-        y: 7
-        width: 7
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6b64649dbbdc04890800000000000000
-      internalID: -7475749174747183434
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Deceased_death_7
-      rect:
-        serializedVersion: 2
-        x: 187
-        y: 11
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d0f1b5e154bee4b40800000000000000
-      internalID: 5426533283122585357
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Deceased_death_8
-      rect:
-        serializedVersion: 2
-        x: 218
-        y: 0
-        width: 23
-        height: 14
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 828038fbb0a7bf070800000000000000
-      internalID: 8141234942278567976
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Deceased_death_9
-      rect:
-        serializedVersion: 2
-        x: 266
-        y: 0
-        width: 20
-        height: 12
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: f06aa6127ab5686b0800000000000000
-      internalID: -5294443538549135857
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Deceased_death_10
-      rect:
-        serializedVersion: 2
-        x: 108
-        y: 0
-        width: 14
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ac6e859d347141ca0800000000000000
-      internalID: -6047182819475003702
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Deceased_death_11
-      rect:
-        serializedVersion: 2
-        x: 156
-        y: 0
-        width: 14
-        height: 9
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5597c270035f9bff0800000000000000
-      internalID: -19715136718866091
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Deceased_death_12
-      rect:
-        serializedVersion: 2
-        x: 204
-        y: 0
-        width: 14
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 40d5cfe278ae31070800000000000000
-      internalID: 8076056423135206660
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Deceased_death_13
-      rect:
-        serializedVersion: 2
-        x: 252
-        y: 0
-        width: 14
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a6eee1cb745f92c70800000000000000
-      internalID: 8946951823195827818
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 725beb943ccac8d46a51456ad71d8fea
     internalID: 0
     vertices: []
     indices: 
@@ -475,18 +299,10 @@ TextureImporter:
     nameFileIdTable:
       Deceased_death_0: -4346776898643970542
       Deceased_death_1: 3698431290997186405
-      Deceased_death_10: -6047182819475003702
-      Deceased_death_11: -19715136718866091
-      Deceased_death_12: 8076056423135206660
-      Deceased_death_13: 8946951823195827818
       Deceased_death_2: -5588643173651465904
       Deceased_death_3: 8649425513662549851
       Deceased_death_4: -8256075848436699265
       Deceased_death_5: -5852893284841202969
-      Deceased_death_6: -7475749174747183434
-      Deceased_death_7: 5426533283122585357
-      Deceased_death_8: 8141234942278567976
-      Deceased_death_9: -5294443538549135857
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

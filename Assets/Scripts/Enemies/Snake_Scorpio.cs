@@ -5,6 +5,8 @@ public class Snake_Scorpio : EnemyBase
 {
     [SerializeField] protected float volumeR = 2.5f;
     [SerializeField] protected float playR = 6;
+
+    [Header("-------------Unique-----------")]
     [SerializeField] protected int dmg_posion;
     [SerializeField] protected float speed_posion;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -15,10 +17,10 @@ public class Snake_Scorpio : EnemyBase
         anim = GetComponent<Animator>();
         speed = atkspeed;
         player = FindObjectOfType<Player>();
-        Player = GameObject.FindWithTag("Player").transform;
 
         if (!PatrolMode) { transform.position = Stay_StartPos.position; }
         else { transform.position = Stay_StartPos.position; targetPos = Stay_StartPos.position + Vector3.right * patrolDistance; }
+        chaseSpeed += Random.Range(0f, 1.5f);
 
         //Hp
         slider.maxValue = maxHealth;
@@ -42,7 +44,6 @@ public class Snake_Scorpio : EnemyBase
         playR = Random.Range(playR - 1f, playR + 2f);
         StartCoroutine(Free_Sound());
 
-        chaseSpeed += Random.Range(0f, 1.5f);
     }
 
     // Update is called once per frame
@@ -71,7 +72,7 @@ public class Snake_Scorpio : EnemyBase
         else if (Hp > 0 && stuned <= 0 && player.Hp > 0)        //Player song
         {
             // Tinh khoang cach den player
-            float distanceToPlayer = Vector2.Distance(transform.position, Player.position);
+            float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
 
             //Neu player trong pham vi
             if (distanceToPlayer < detectionRange)
@@ -97,7 +98,7 @@ public class Snake_Scorpio : EnemyBase
     }
     public void ChasePlayer(float distanceToPlayer)
     {
-        FlipSprite(Player.transform.position);       //truyen vao kieu pos
+        FlipSprite(player.transform.position);       //truyen vao kieu pos
         if (distanceToPlayer < attakRange)
         {
             audioSource[2].Stop();
@@ -112,7 +113,7 @@ public class Snake_Scorpio : EnemyBase
             }
             anim.SetBool("Walk", true);
             // Di chuyen ve phia player
-            transform.position = Vector3.MoveTowards(transform.position, Player.position, chaseSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, chaseSpeed * Time.deltaTime);
         }
     }
     void Move()

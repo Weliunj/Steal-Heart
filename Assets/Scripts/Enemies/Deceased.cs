@@ -1,11 +1,18 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Vulture : EnemyBase
+public class Deceased : EnemyBase
 {
-    [SerializeField] protected Transform EndPos;
-    [SerializeField] protected float volumeR = 4f;
-    [SerializeField] protected float playR = 4f;
+    [Header("-------------Unique-----------")]
+    [Header("-------------Displays")]
+    public Transform CenterFire;
+    public Transform FirePoint;
+
+    [Header("-------------Settings")]
+    public GameObject Ammo_P;
+    public int burnEffectPlayer;
+    public Coroutine burnCoroutine;       // Theo dõi coroutine hiện tại
+
     void Start()
     {
         // Compoment
@@ -14,9 +21,17 @@ public class Vulture : EnemyBase
         speed = atkspeed;
         player = FindObjectOfType<Player>();
 
-        transform.position = Stay_StartPos.position;
+        if (!PatrolMode) { transform.position = Stay_StartPos.position; }
+        else { transform.position = Stay_StartPos.position; targetPos = Stay_StartPos.position + Vector3.right * patrolDistance; }
         chaseSpeed += Random.Range(0f, 1.5f);
 
+        //Hp
+        slider.maxValue = maxHealth;
+        Hp = maxHealth;
+
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Bullet"), LayerMask.NameToLayer("Enemy"), true);
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("Bullet"), LayerMask.NameToLayer("Bullet"), true);
+        /*
         //Audio
         audioSource[0].loop = false;      //atk
         audioSource[0].volume = 8f;
@@ -29,45 +44,42 @@ public class Vulture : EnemyBase
         audioSource[3].volume = 1.4f;     //Free
         audioSource[3].loop = false;
 
-        audioSource[4].volume = 0.34f;     //Dead
+        audioSource[4].volume = 2f;     //Dead
         audioSource[4].loop = false;
 
         playR = Random.Range(playR - 1f, playR + 2f);
         StartCoroutine(Free_Sound());
-        //Hp
-        slider.maxValue = maxHealth;
-        Hp = maxHealth;
+        */
     }
 
+    // Update is called once per frame
     void Update()
     {
         HP();
-        if (Hp <= 0)
+        if (!Dead && Hp <= 0) //Dead
         {
-            rb.linearVelocity = new Vector2(0, -2.9f);
-            if (!Dead) //Dead
-            {
+            Dead = true;
 
-                Dead = true;
-                audioSource[4].Play();
-                anim.ResetTrigger("Hit");
-                anim.SetTrigger("Dead");
-                Destroy(this.Prefab, 1.5f);
-            }
+            //player.effects[2].SetActive(false);
+            anim.ResetTrigger("Hit");
+            anim.SetTrigger("Dead");
+            //if (!audioSource[4].isPlaying)
+            //{
+            //    audioSource[4].Play();
+            //}
+            Destroy(this.Prefab, 1.5f);
         }
-        if (Dead)
-        {
-            return;
-        }
-        else if (stuned > 0)
+        if (Dead) { return; }
+
+        DIREC();
+        if (stuned > 0)
         {
             stuned -= Time.deltaTime;
-            rb.linearVelocity = Vector2.zero;
         }
         else if (Hp > 0 && stuned <= 0 && player.Hp > 0)        //Player song
         {
             // Tinh khoang cach den player
-            float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position + new Vector3(0, 0.1f, 0));
+            float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
 
             //Neu player trong pham vi
             if (distanceToPlayer < detectionRange)
@@ -91,27 +103,45 @@ public class Vulture : EnemyBase
             }
         }
     }
+
+    public void DIREC()
+    {
+        Vector3 tar = ((player.transform.position + new Vector3(0, 0.7f, 0)) - CenterFire.position).normalized;
+        CenterFire.rotation = Quaternion.LookRotation(Vector3.forward, tar);
+    }
+
     public void ChasePlayer(float distanceToPlayer)
     {
         FlipSprite(player.transform.position);       //truyen vao kieu pos
         if (distanceToPlayer < attakRange)
         {
-            rb.linearVelocity = Vector2.zero;
-            audioSource[2].Stop();
+            //audioSource[2].Stop();
+            anim.SetBool("Walk", false);
             Atk();
         }
-        else if (distanceToPlayer > attakRange)
+        else
         {
-            if (!audioSource[2].isPlaying)
-            {
-                audioSource[2].Play();
-            }
             anim.SetBool("Walk", true);
-            // Di chuyen ve phia player
-            rb.linearVelocity = Vector2.zero;
+            if (JumpMode) { JUMP(); }
+
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, chaseSpeed * Time.deltaTime);
         }
     }
+    public void JUMP()
+    {
+        // Vị trí bắt đầu của ray
+        Vector3 rayStart = transform.position + new Vector3(StartRay, SetupY, 0);
+
+        // Kiểm tra có Ground phía trước
+        RaycastHit2D frontGroundHit = Physics2D.Raycast(rayStart, Vector2.right, LengthRay, LayerMask.GetMask("Ground"));
+
+        // Nếu có Ground trước mặt và không bị cản phía trên đầu thì nhảy
+        if (frontGroundHit.collider != null)
+        {
+            rb.AddForce(new Vector2(0, HightJump), ForceMode2D.Impulse); // Lực nhảy có thể tùy chỉnh
+        }
+    }
+
     void Move()
     {
         if (!PatrolMode)    //dung im
@@ -121,7 +151,7 @@ public class Vulture : EnemyBase
             FlipSprite(Stay_StartPos.position);
             if (Vector2.Distance(Stay_StartPos.position, transform.position) < phamvistay)
             {
-                audioSource[2].Stop();
+                //audioSource[2].Stop();
                 anim.SetBool("Walk", false);
                 rb.linearVelocity = new Vector2(0, -1f);
             }
@@ -133,11 +163,10 @@ public class Vulture : EnemyBase
         }
         else
         {
-            audioSource[2].Stop();
+            //audioSource[2].Stop();
             anim.SetBool("Walk", true);
-
             // Move qua lai giua stast va end
-            Vector3 destination = movingToEnd == true ? EndPos.position : Stay_StartPos.position;
+            Vector3 destination = movingToEnd == true ? targetPos : Stay_StartPos.position;
             transform.position = Vector3.MoveTowards(transform.position, destination, movespeed * Time.deltaTime);
             // Doi huong khi den dich
             if (Vector2.Distance(new Vector2(transform.position.x, transform.position.y), new Vector2(destination.x, destination.y)) < 0.1f)
@@ -160,17 +189,15 @@ public class Vulture : EnemyBase
         {
             //Atk
             anim.SetTrigger("Atk");
-            audioSource[0].Play();
-            //Player Hit
-            player.anim.SetTrigger("Hit");
-            player.audioSources[5].Play();
-            player.Hp -= atkDMG;
+            //audioSource[0].Play();
+
+            Instantiate(Ammo_P, CenterFire.position, CenterFire.rotation);
             speed = atkspeed;
         }
     }
-    void HP()
+    public void HP()
     {
-        Vector3 bar = new Vector3(transform.position.x, transform.position.y + 1.9f, transform.position.z);
+        Vector3 bar = new Vector3(transform.position.x, transform.position.y + 2.2f, transform.position.z);
         Hpbar.transform.position = bar;
         slider.value = Hp;
         // ==== Color Hp bar =====================
@@ -181,7 +208,7 @@ public class Vulture : EnemyBase
         }
         else if (slider.value < (maxHealth * 0.6) && slider.value > (maxHealth * 0.4))
         {
-            hpbar.color = Color.yellow;
+            hpbar.color = new Color(1f, 0.65f, 0f); // Orange
         }
         else
         {
@@ -202,21 +229,21 @@ public class Vulture : EnemyBase
             }
         }
     }
-    public IEnumerator Free_Sound()
+    public IEnumerator Burn(int dura)
     {
-        while (true)
+        for (int i = 0; i < dura && player.Hp > 0; i++)
         {
-            yield return new WaitForSeconds(playR);
-            audioSource[3].volume = Random.Range(volumeR, volumeR + 3);
-            if (!audioSource[3].isPlaying)
-            {
-                audioSource[3].Play();
-            }
-            playR = Random.Range(volumeR, volumeR + 5);
+            int audio = Random.Range(0, 1);
+            if (audio <= 0.5f) { player.audioSources[5].Play(); }
+
+            player.Hp -= Random.Range(burnEffectPlayer, burnEffectPlayer + 5);
+            yield return new WaitForSeconds(Random.Range(0.7f, 1.2f));
         }
+        burnCoroutine = null;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //Hit
         //Hit
         if (collision.gameObject.CompareTag("Atk") && !Dead)
         {
@@ -252,7 +279,7 @@ public class Vulture : EnemyBase
         else
         {
             Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(Stay_StartPos.position, EndPos.position);
+            Gizmos.DrawLine(Stay_StartPos.position, new Vector2(patrolDistance + Stay_StartPos.position.x, Stay_StartPos.position.y));
         }
 
         //Pham vi phat hien
@@ -262,5 +289,14 @@ public class Vulture : EnemyBase
         //Pham vi atk
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attakRange);
+
+        if (JumpMode)
+        {
+            // Ray phía trước để nhảy
+            Gizmos.color = Color.green;
+            Vector3 direc = transform.rotation.y == 180f ? Vector3.left : Vector3.right;
+            Vector3 rayStart = transform.position + new Vector3(StartRay, SetupY, 0);
+            Gizmos.DrawLine(rayStart, rayStart + direc * LengthRay);
+        }
     }
 }

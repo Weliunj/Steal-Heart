@@ -11,6 +11,10 @@ public partial class Player : MonoBehaviour
     public TMP_Text Jump_T;
     public TMP_Text Stre_T;
 
+    private Coroutine jumpCoroutine;
+    private Coroutine streCoroutine;
+    private Coroutine speedCoroutine;
+
     private float speed_Buff = 1;
     private float speed_Timer = 15f;
 
@@ -57,39 +61,42 @@ public partial class Player : MonoBehaviour
             if (speed_cd >= 0) { speed_cd -= Time.deltaTime; }
             else
             {
-                if (Input.GetKeyDown(KeyCode.U) && dataManager.Speed_bottle > 0)    //Speed
+                if (Input.GetKeyDown(KeyCode.U) && dataManager.Speed_bottle > 0)
                 {
                     usingItems.Play();
                     dataManager.Speed_bottle--;
                     speed_cd = 10f;
-                    StopCoroutine(speed_eff());
-                    StartCoroutine(speed_eff());
+
+                    if (speedCoroutine != null) StopCoroutine(speedCoroutine);
+                    speedCoroutine = StartCoroutine(speed_eff());
                 }
             }
 
             if (Jump_cd >= 0) { Jump_cd -= Time.deltaTime; }
             else
             {
-                if (Input.GetKeyDown(KeyCode.I) && dataManager.Jump_bottle > 0)    //Jump
+                if (Input.GetKeyDown(KeyCode.I) && dataManager.Jump_bottle > 0)
                 {
                     usingItems.Play();
                     dataManager.Jump_bottle--;
                     Jump_cd = 15f;
-                    StopCoroutine(Jump_eff());
-                    StartCoroutine(Jump_eff());
+
+                    if (jumpCoroutine != null) StopCoroutine(jumpCoroutine);
+                    jumpCoroutine = StartCoroutine(Jump_eff());
                 }
             }
 
             if (Stre_cd >= 0) { Stre_cd -= Time.deltaTime; }
             else
             {
-                if (Input.GetKeyDown(KeyCode.O) && dataManager.Strength_bottle > 0)    //Strength
+                if (Input.GetKeyDown(KeyCode.O) && dataManager.Strength_bottle > 0)
                 {
                     usingItems.Play();
                     dataManager.Strength_bottle--;
                     Stre_cd = 15f;
-                    StopCoroutine(Stre_eff());
-                    StartCoroutine(Stre_eff());
+
+                    if (streCoroutine != null) StopCoroutine(streCoroutine);
+                    streCoroutine = StartCoroutine(Stre_eff());
                 }
             }
         }

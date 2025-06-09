@@ -10,8 +10,7 @@ public class EnemyBase : MonoBehaviour
     protected Player player;
     protected Rigidbody2D rb;
     protected Animator anim;
-    protected Transform Player;
-    [SerializeField ]protected bool PatrolMode = false;
+    [SerializeField] protected bool PatrolMode = false;
     [SerializeField] protected bool JumpMode = false;
 
     // ========== PATROL SETTINGS ==========
@@ -52,9 +51,9 @@ public class EnemyBase : MonoBehaviour
 
     // ========== COMBAT ==========  
     [Header("---------------Combat Settings----------")]
-    [SerializeField] protected int atkDMG;                      // Sát th??ng t?n công
+    [SerializeField] public int atkDMG;                      // Sát th??ng t?n công
     [SerializeField] protected float atkspeed;                 // T?c ?? ?ánh (th?i gian h?i gi?a 2 ?òn t?n công)
-    [SerializeField] protected float StunedPlayer;             // Th?i gian stun c?a player khi b? trúng ?òn
+    [SerializeField] public float StunedPlayer;             // Th?i gian stun c?a player khi b? trúng ?òn
 
     [SerializeField] protected float[] onStun;
 
