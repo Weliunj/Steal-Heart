@@ -6,24 +6,24 @@ using UnityEngine;
 
 public partial class Player : MonoBehaviour
 {
+    [Header("           -------------- GENERAL ---------------")]
+
+    [Header("-------------Display")]
     public DataManager dataManager;
     public Rigidbody2D rb;
     public Animator anim;
 
-    private bool dead = false   ;
+    private bool dead = false;
     float move;
-    public float speed;
-
     public int doubleJump =0;
-    public float forcejump;
-
     public float dashcd = 0f;
     float dashDirec;
 
-    public string atktype;
-    float atk1cd = 0f;
-    float atk2cd = 0f;
+    [Header("-------------Settings")]
+    public float speed;
+    public float forcejump;
 
+    [Header("-------------Audio")]
     public AudioSource[] audioSources;      //0: Run, 1: Atk1, 2: Atk2, 3: Atk3, 4: Jump, 5: Hit
     public AudioSource usingItems;
 
@@ -116,7 +116,7 @@ public partial class Player : MonoBehaviour
                 {
                     dashDirec = 1f;
                 }
-                StartCoroutine(dashThrougt(0.2f));
+                StartCoroutine(dashThrougt(0.4f));
             }
         }
     }
@@ -137,50 +137,5 @@ public partial class Player : MonoBehaviour
             LayerMask.NameToLayer("Enemy"),
             false
         );
-    }
-    float direcatk3;
-    public void ATK()
-    {
-        //Atk1
-        if(atk1cd > 0) { atk1cd -= Time.deltaTime; }
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.J))
-            {
-                audioSources[1].Stop(); audioSources[1].Play();
-                atktype = "Atk1";
-                anim.SetTrigger(atktype);
-                atk1cd = 0.4f;
-            }
-        }
-        //Atk2
-        if (atk2cd > 0) 
-        { 
-            atk2cd -= Time.deltaTime;
-            if((dashcd > 0.95f && dashcd < 1.35f))
-            {
-                rb.linearVelocity = new Vector2(direcatk3 * speed*1.1f, rb.linearVelocity.y*0.5f);
-            }
-        }
-        else
-        {
-            if (Input.GetKeyDown(KeyCode.K) && (dashcd > 0.8f && dashcd < 1.4f))
-            {
-                direcatk3 = dashDirec;
-                audioSources[3].Stop(); audioSources[3].Play();
-                atk2cd = 0.70f;
-                atktype = "Atk3";
-                anim.SetTrigger("Atk2");
-                atk2cd = 0.7f;
-            }
-            else if (Input.GetKeyDown(KeyCode.K))
-            {
-                audioSources[2].Stop(); audioSources[2].Play();
-                atktype = "Atk2";
-                anim.SetTrigger(atktype);
-                atk2cd = 0.70f;
-            }
-
-        }
     }
 }

@@ -219,17 +219,17 @@ public class Hyena : EnemyBase
             anim.SetTrigger("Hit");
             if (player.atktype == "Atk1")           //Trung Atk1
             {
-                this.Hp -= onHit[0];
+                this.Hp -= player.atk1_dmg;
                 stuned = onStun[0];
             }
             else if (player.atktype == "Atk2")      //Trung Atk2
             {
-                this.Hp -= onHit[1];
+                this.Hp -= player.atk2_dmg;
                 stuned = onStun[1];
             }
             else if (player.atktype == "Atk3")      //Trung Atk3
             {
-                this.Hp -= onHit[2];
+                this.Hp -= player.atk3_dmg;
                 stuned = onStun[2];
                 Debug.Log("-Crital-");
             }

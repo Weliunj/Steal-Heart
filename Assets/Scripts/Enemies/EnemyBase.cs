@@ -56,7 +56,6 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] protected float atkspeed;                 // T?c ?? ?ánh (th?i gian h?i gi?a 2 ?òn t?n công)
     [SerializeField] protected float StunedPlayer;             // Th?i gian stun c?a player khi b? trúng ?òn
 
-    [SerializeField] protected int[] onHit;                    // Sát th??ng nh?n vào t??ng ?ng v?i các lo?i ?òn ?ánh c?a player
     [SerializeField] protected float[] onStun;
 
     // Bi?n n?i b? ?? x? lý tr?ng thái chi?n ??u

@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\Enemies\Hyena.cs" />
     <Compile Include="Assets\Scripts\Enemies\Snake_Scorpio.cs" />
     <Compile Include="Assets\Scripts\Enemies\Vulture.cs" />
+    <Compile Include="Assets\Scripts\Player\Atk.cs" />
     <Compile Include="Assets\Scripts\Camera.cs" />
     <Compile Include="Assets\Scripts\DataManager.cs" />
     <Compile Include="Assets\Scripts\Player\Buffs.cs" />

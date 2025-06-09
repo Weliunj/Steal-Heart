@@ -30,11 +30,11 @@ public class Inventory : MonoBehaviour
         {
             audioSource.Play();
         }
-        if (Input.GetKeyDown(KeyCode.M) && dataManager.Jump_bottle > 0 && player.Jump_cd <= 0)
+        if (Input.GetKeyDown(KeyCode.I) && dataManager.Jump_bottle > 0 && player.Jump_cd <= 0)
         {
             audioSource.Play();
         }
-        if (Input.GetKeyDown(KeyCode.N) && dataManager.Speed_bottle > 0 && player.speed_cd <= 0)
+        if (Input.GetKeyDown(KeyCode.U) && dataManager.Speed_bottle > 0 && player.speed_cd <= 0)
         {
             audioSource.Play();
         }

@@ -129,7 +129,7 @@ public class Vulture : EnemyBase
             else
             {
                 anim.SetBool("Walk", true); // Bắt đầu đi bộ quay lại StayPos
-                rb.linearVelocity = Vector3.MoveTowards(transform.position, Stay_StartPos.position, movespeed * Time.deltaTime); ;
+                transform.position = Vector3.MoveTowards(transform.position, Stay_StartPos.position, movespeed * Time.deltaTime); ;
             }
         }
         else
@@ -221,21 +221,21 @@ public class Vulture : EnemyBase
         //Hit
         if (collision.gameObject.CompareTag("Atk") && !Dead)
         {
-            audioSource[1].Play();
+            //audioSource[1].Play();
             anim.SetTrigger("Hit");
             if (player.atktype == "Atk1")           //Trung Atk1
             {
-                this.Hp -= onHit[0];
+                this.Hp -= player.atk1_dmg;
                 stuned = onStun[0];
             }
             else if (player.atktype == "Atk2")      //Trung Atk2
             {
-                this.Hp -= onHit[1];
+                this.Hp -= player.atk2_dmg;
                 stuned = onStun[1];
             }
             else if (player.atktype == "Atk3")      //Trung Atk3
             {
-                this.Hp -= onHit[2];
+                this.Hp -= player.atk3_dmg;
                 stuned = onStun[2];
                 Debug.Log("-Crital-");
             }

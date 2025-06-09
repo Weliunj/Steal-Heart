@@ -8,6 +8,7 @@ public class DataManager : ScriptableObject
     public int Hp_bottle = 0;
     public int Jump_bottle = 0;
     public int Speed_bottle = 0;
+    public int Strength_bottle = 0;
 
     public void Awake()
     {

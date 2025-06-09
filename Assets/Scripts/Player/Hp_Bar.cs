@@ -5,14 +5,15 @@ using Unity.VisualScripting;
 
 public partial class Player : MonoBehaviour
 {
-    [Range(0, 300)] private int maxHealth = 300;
+    [Header("           -------------- HP ---------------")]
+    [Header("-------------Display")]
     [Range(0, 300)] public int Hp;
     public Slider Hpbar;
     public Image HpImage;
     public Transform HpCanvas;
     public TMP_Text Hp_T;
     public float Hp_cd = 0f;
-
+    [Range(0, 300)] private int maxHealth = 300;
 
     float holdTime = 0f;
     bool isHoldingH = false;
