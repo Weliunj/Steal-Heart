@@ -429,7 +429,7 @@ MonoBehaviour:
   Hpbar: {fileID: 4096942520724125519}
   atkDMG: 40
   atkspeed: 2.3
-  StunedPlayer: 0.5
+  StunedPlayer: 1
   onStun:
   - 0
   - 0.2

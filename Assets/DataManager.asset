@@ -17,3 +17,5 @@ MonoBehaviour:
   Jump_bottle: 0
   Speed_bottle: 0
   Strength_bottle: 0
+  prev: 0
+  next: 2

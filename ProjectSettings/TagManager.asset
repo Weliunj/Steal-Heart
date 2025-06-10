@@ -8,6 +8,8 @@ TagManager:
   - CheckClimb
   - Atk
   - Ground
+  - Next
+  - Prev
   layers:
   - Default
   - TransparentFX

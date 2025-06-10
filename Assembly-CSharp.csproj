@@ -74,9 +74,11 @@
     <Compile Include="Assets\Scripts\DataManager.cs" />
     <Compile Include="Assets\Scripts\Coin.cs" />
     <Compile Include="Assets\Scripts\Map\Ground.cs" />
+    <Compile Include="Assets\Scripts\Player\Load_Scene.cs" />
     <Compile Include="Assets\Scripts\Player\Player.cs" />
     <Compile Include="Assets\Scripts\Player\Manager.cs" />
     <Compile Include="Assets\Scripts\Enemies\EnemyBase.cs" />
+    <Compile Include="Assets\Scenes\Lv1_Manager.cs" />
     <Compile Include="Assets\Scripts\Enemies\Deceased.cs" />
     <Compile Include="Assets\Scripts\Enemies\Mummy.cs" />
     <Compile Include="Assets\Scripts\Player\UI\Items.cs" />
