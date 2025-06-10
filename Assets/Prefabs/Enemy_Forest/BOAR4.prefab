@@ -411,7 +411,7 @@ MonoBehaviour:
   JumpMode: 1
   movespeed: 2.49
   Stay_StartPos: {fileID: 7725824237300517659}
-  phamvistay: 0.43
+  phamvistay: 0.68
   patrolDistance: 5
   detectionRange: 9.44
   chaseSpeed: 3.19

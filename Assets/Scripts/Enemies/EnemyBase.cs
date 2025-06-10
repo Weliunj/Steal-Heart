@@ -69,7 +69,7 @@ public class EnemyBase : MonoBehaviour
     // ========== AUDIO & ANIMATION ==========
     [Header("--------------------Audio---------------")]
     [SerializeField] protected AudioSource[] audioSource;
-
+    [HideInInspector]
     [SerializeField] public UI ui;
 
     public virtual void Start()

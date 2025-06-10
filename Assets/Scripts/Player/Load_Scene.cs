@@ -6,9 +6,6 @@ public partial class Player : MonoBehaviour
     public void SCENE()
     {
         dataManager = FindAnyObjectByType<DataManager>();
-
-        // Load scene đầu tiên nếu cần, ví dụ:
-        // LOADSCENE(dataManager.prev);
     }
     public void LOADSCENE(int index)
     {
@@ -28,36 +25,12 @@ public partial class Player : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Next"))
         {
-            int nextScene = currentScene + 1;
-
-            if (nextScene >= SceneManager.sceneCountInBuildSettings)
-            {
-                Debug.Log("Đã ở scene cuối cùng!");
-            }
-            else
-            {
-                dataManager.prev = currentScene;
-                dataManager.next = nextScene + 1;
-
-                LOADSCENE(nextScene);
-            }
+            LOADSCENE(currentScene + 1);
         }
 
         if (collision.gameObject.CompareTag("Prev"))
         {
-            int prevScene = currentScene - 1;
-
-            if (prevScene < 0)
-            {
-                Debug.Log("Đã ở scene đầu tiên!");
-            }
-            else
-            {
-                dataManager.next = currentScene;
-                dataManager.prev = prevScene - 1;
-
-                LOADSCENE(prevScene);
-            }
+            LOADSCENE(currentScene -1);
         }
     }
 

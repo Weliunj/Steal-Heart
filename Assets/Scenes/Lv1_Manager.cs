@@ -26,10 +26,6 @@ public class Lv1_Manager : MonoBehaviour
         dataManager.Speed_bottle = 0;
         dataManager.Strength_bottle = 0;
 
-        // Reset scene index
-        dataManager.prev = 0;
-        dataManager.next = 1;
-
         Debug.Log("DataManager đã được reset về mặc định.");
     }
 }

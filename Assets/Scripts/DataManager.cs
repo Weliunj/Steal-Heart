@@ -11,12 +11,4 @@ public class DataManager : ScriptableObject
     public int Jump_bottle = 0;
     public int Speed_bottle = 0;
     public int Strength_bottle = 0;
-
-    [Header("           -------------- Load Scene ---------------")]
-    public int prev = 0;
-    public int next = 1;
-    public void Awake()
-    {
-        Console.WriteLine("Awake");
-    }
 }

@@ -7,7 +7,7 @@ public class Boar : EnemyBase
     [SerializeField] protected float playR = 6;
 
     [Header("-------------Unique-----------")]
-    [SerializeField] public float atkheight;
+    public float atkheight;
     public override void Start()
     {
         // Compoment

@@ -36,9 +36,6 @@ public partial class Player : MonoBehaviour
         Setup();
         IgnoreObj();
 
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponentInChildren<Animator>();
-
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
 

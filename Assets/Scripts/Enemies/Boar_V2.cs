@@ -171,7 +171,7 @@ public class Boar_V2 : EnemyBase
         {
             //Atk
             anim.SetTrigger("Atk");
-            StartCoroutine(fixAtkSound());
+            StartCoroutine(FixAtkSound());
             speed = atkspeed;
         }
     }
@@ -255,7 +255,7 @@ public class Boar_V2 : EnemyBase
 
         }
     }
-    public IEnumerator fixAtkSound()
+    public IEnumerator FixAtkSound()
     {
         yield return new WaitForSeconds(0.2f);
         audioSource[0].Play();
