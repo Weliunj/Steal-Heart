@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public partial class Player : MonoBehaviour
 {
@@ -49,14 +50,20 @@ public partial class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        HPCheck();
         if (Hp <= 0 && !dead) { dead = true;  anim.SetTrigger("Dead"); audioSources[4].Stop(); audioSources[4].Play(); }
         if (dead) return; // Nếu đã chết rồi, không xử lý gì tiếp
-
-        HPCheck();
-
-        MOVE();
-        DASH();
-        ATK();
+        if(IsStun > 0) 
+        { 
+            IsStun -= Time.deltaTime;
+            rb.linearVelocity = new Vector2(0, -0.3f);
+        }
+        else
+        {
+            MOVE();
+            DASH();
+            ATK();
+        }
     }
     public void MOVE()
     {

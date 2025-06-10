@@ -68,6 +68,7 @@ public class Snake_Scorpio : EnemyBase
             {
                 audioSource[4].Play();
             }
+            ItemDrop();
             Destroy(this.Prefab, 1.5f);
         }
         if (Dead) { return; }

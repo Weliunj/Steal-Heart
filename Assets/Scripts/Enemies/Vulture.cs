@@ -1,8 +1,11 @@
 ﻿using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Vulture : EnemyBase
 {
+
+
     [SerializeField] protected Transform EndPos;
     [SerializeField] protected float volumeR = 4f;
     [SerializeField] protected float playR = 4f;
@@ -52,6 +55,7 @@ public class Vulture : EnemyBase
                 audioSource[4].Play();
                 anim.ResetTrigger("Hit");
                 anim.SetTrigger("Dead");
+                ItemDrop();
                 Destroy(this.Prefab, 1.5f);
             }
         }

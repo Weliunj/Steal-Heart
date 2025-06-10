@@ -7,7 +7,7 @@ public class Ground : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player = FindObjectOfType<Player>();
+        player = FindAnyObjectByType<Player>();
     }
 
     // Update is called once per frame

@@ -34,15 +34,15 @@ public class Deceased : EnemyBase
         audioSource[0].volume = 6f;
 
         audioSource[1].loop = false;      //Hit
-        audioSource[1].volume = 0.8f;
+        audioSource[1].volume = 0.6f;
 
         audioSource[2].volume = 0.6f;       //Run
         audioSource[2].loop = false;
 
-        audioSource[3].volume = 1.4f;     //Free
+        audioSource[3].volume = 1f;     //Free
         audioSource[3].loop = false;
 
-        audioSource[4].volume = 1f;     //Dead
+        audioSource[4].volume = 0.8f;     //Dead
         audioSource[4].loop = false;
     }
 
@@ -62,6 +62,7 @@ public class Deceased : EnemyBase
             {
                 audioSource[4].Play();
             }
+            ItemDrop();
             Destroy(this.Prefab, 1.5f);
         }
         if (Dead) { return; }
@@ -229,7 +230,7 @@ public class Deceased : EnemyBase
     {
         for (int i = 0; i < dura && player.Hp > 0; i++)
         {
-            ui.Poison.SetActive(true);
+            ui.Burn.SetActive(true);
             int audio = Random.Range(0, 1);
             if (audio <= 0.5f) { player.audioSources[5].Play(); }
             

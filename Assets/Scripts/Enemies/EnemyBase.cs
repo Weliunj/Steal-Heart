@@ -32,7 +32,7 @@ public class EnemyBase : MonoBehaviour
 
     // ========== JUMP SETTINGS ==========
     [Header("--------------Jump setting-------------")]
-    [SerializeField] protected float SetupY = 0.5f;
+    [SerializeField] protected float SetupY = 0.23f;
     [SerializeField] protected float StartRay;
     [SerializeField] protected float LengthRay;
     [SerializeField] protected float HightJump = 1f;
@@ -62,6 +62,10 @@ public class EnemyBase : MonoBehaviour
     protected float stuned;                          // Th?i gian b? stun còn l?i c?a enemy
     protected bool Dead = false;                     // Tr?ng thái ?ã ch?t hay ch?a
 
+    // ========== Drop ==========  
+    [Header("---------------Item Drop----------")]
+    public GameObject[] items;
+
     // ========== AUDIO & ANIMATION ==========
     [Header("--------------------Audio---------------")]
     [SerializeField] protected AudioSource[] audioSource;
@@ -72,5 +76,47 @@ public class EnemyBase : MonoBehaviour
     {
         ui = FindAnyObjectByType<UI>();
         player = FindAnyObjectByType<Player>();
+    }
+    public void ItemDrop()
+    {
+        int percent = Random.Range(0, 100); // Theo %
+
+        int dropCount = 0;
+        if (percent > 55)
+        {
+            dropCount = 1;
+        }
+        else if (percent > 30)
+        {
+            dropCount = 2;
+        }
+        else
+        {
+            dropCount = 3;
+        }
+
+        for (int i = 0; i < dropCount; i++)
+        {
+            float min = transform.position.x - 0.5f;
+            float max = transform.position.x + 0.5f;
+            Vector3 pos = new Vector3(Random.Range(min, max), transform.position.y + Random.Range(0f, 1f), transform.position.z);
+
+            Instantiate(RandomItem(), pos, Quaternion.identity);
+        }
+    }
+    public GameObject RandomItem()
+    {
+        int percent = Random.Range(0, 100);
+
+        if (percent < 40)          // 0 - 39
+            return items[0];                    // Coin
+        else if (percent < 60)     // 40 - 59
+            return items[1];                    // HP
+        else if (percent < 75)     // 60 - 74
+            return items[2];                    // Speed
+        else if (percent < 90)     // 75 - 89
+            return items[3];                    // Jump
+        else                       // 90 - 99
+            return items[4];                    // Strength
     }
 }

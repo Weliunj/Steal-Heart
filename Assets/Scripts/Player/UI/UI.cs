@@ -5,18 +5,20 @@ public partial class UI : MonoBehaviour
 {
     [Header("           --------------- Toggle ---------------")]
     public DataManager dataManager;
-    public Player player;
+    private Player player;
 
     public GameObject backpack;
     bool toggle = false;
-    private float AutoClose = 5f;
+    private float AutoClose = 0f;
 
     AudioSource audioSource;    //Using
 
     public void Start()
     {
+        toggle = true;
         backpack.SetActive(toggle);
         audioSource = GetComponent<AudioSource>();
+        player = FindAnyObjectByType<Player>();
         audioSource.loop = false;
         audioSource.playOnAwake = false;
 
@@ -37,7 +39,8 @@ public partial class UI : MonoBehaviour
             else
             {
                 backpack.SetActive(false);
-                AutoClose = 5f;
+                toggle = false; // ĐỒNG BỘ LẠI trạng thái
+                AutoClose = 8f;
             }
         }
 

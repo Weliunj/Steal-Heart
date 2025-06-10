@@ -54,6 +54,7 @@ public class Hyena : EnemyBase
             anim.SetTrigger("Dead");
             audioSource[1].Stop();
             audioSource[3].Stop();
+            ItemDrop();
             Destroy(this.Prefab, 1.4f);
         }
         if (Dead) { return; }

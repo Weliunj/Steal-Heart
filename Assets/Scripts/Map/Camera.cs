@@ -2,10 +2,15 @@ using UnityEngine;
 
 public class Camera : MonoBehaviour
 {
-    public Transform player;
-    public float speed;
+    private Transform player;
+    public float speed = 7.4f;
     public Vector3 target;
 
+    public void Start()
+    {
+        player = GameObject.FindWithTag("Player").transform;
+        speed = 7.4f;
+    }
 
     void Update()
     {

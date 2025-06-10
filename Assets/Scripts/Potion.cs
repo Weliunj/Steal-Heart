@@ -33,7 +33,7 @@ public class Position : MonoBehaviour
                 }
                 else if(select == 2)
                 {
-                    dataManager.Speed_bottle--;
+                    dataManager.Speed_bottle++;
                 }
                 else if (select == 3)
                 {
@@ -41,7 +41,7 @@ public class Position : MonoBehaviour
                 }
                 else if (select == 4)
                 {
-                    dataManager.Strength_bottle--;
+                    dataManager.Strength_bottle++;
                 }
             }
             Destroy(this.gameObject, 0.17f);

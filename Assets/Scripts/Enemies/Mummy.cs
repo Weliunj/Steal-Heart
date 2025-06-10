@@ -21,10 +21,10 @@ public class Mummy : EnemyBase
 
         //Audio
         audioSource[0].loop = false;      //atk
-        audioSource[0].volume = 6f;
+        audioSource[0].volume = 4.5f;
 
         audioSource[1].loop = false;      //Hit
-        audioSource[1].volume = 0.8f;
+        audioSource[1].volume = 0.6f;
 
         audioSource[2].volume = 0.6f;       //Run
         audioSource[2].loop = false;
@@ -32,7 +32,7 @@ public class Mummy : EnemyBase
         audioSource[3].volume = 1.4f;     //Free
         audioSource[3].loop = false;
 
-        audioSource[4].volume = 1f;     //Dead
+        audioSource[4].volume = 0.8f;     //Dead
         audioSource[4].loop = false;
     }
 
@@ -52,6 +52,7 @@ public class Mummy : EnemyBase
             {
                 audioSource[4].Play();
             }
+            ItemDrop();
             Destroy(this.Prefab, 1.5f);
         }
         if (Dead) { return; }

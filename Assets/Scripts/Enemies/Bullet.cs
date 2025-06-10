@@ -12,8 +12,8 @@ public class Bullet : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        player = FindObjectOfType<Player>();
-        dec = FindObjectOfType<Deceased>();
+        player = FindAnyObjectByType<Player>();
+        dec = FindAnyObjectByType<Deceased>();
 
         Vector2 direction = transform.up;       //Huong dau vien dan
         transform.rotation *= Quaternion.Euler(0, 0, -90);      //Chinh lai rotation
