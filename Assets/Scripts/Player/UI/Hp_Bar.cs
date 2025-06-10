@@ -21,15 +21,17 @@ public partial class Player : MonoBehaviour
     float holdTime = 0f;
     bool isHoldingH = false;
 
-    public void Setup()
+    public void Hp_Start()
     {
         Hp_Eff.SetActive(true);
         Hpbar.maxValue = maxHealth;
         Hp = maxHealth;
+        Hp = dataManager.Hp_temp;
+
         DashBar.maxValue = 1f;
     }
 
-    public void HPCheck()
+    public void HP_Update()
     {
         Hpbar.value = Hp;
         DashBar.value = dashcd;
@@ -42,7 +44,10 @@ public partial class Player : MonoBehaviour
         }
         else 
         { 
-            Hp_Eff.SetActive(true) ;
+            if(dataManager.Hp_bottle > 0)
+            {
+                Hp_Eff.SetActive(true);
+            }
             UsingHp(); 
         }
 

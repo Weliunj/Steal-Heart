@@ -9,7 +9,7 @@ public partial class UI : MonoBehaviour
     public GameObject Poison;
     public GameObject Slow;
 
-    public void EFFECT()
+    public void effect_Start()
     {
         Slow.SetActive(false);
         Burn.SetActive(false);

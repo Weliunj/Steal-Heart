@@ -25,6 +25,7 @@ public class Lv1_Manager : MonoBehaviour
         dataManager.Jump_bottle = 0;
         dataManager.Speed_bottle = 0;
         dataManager.Strength_bottle = 0;
+        dataManager.Hp_temp = 300;
 
         Debug.Log("DataManager đã được reset về mặc định.");
     }

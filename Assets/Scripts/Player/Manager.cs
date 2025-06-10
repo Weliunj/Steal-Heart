@@ -2,10 +2,11 @@ using UnityEngine;
 
 public partial class Player : MonoBehaviour
 {
-    public void IgnoreObj()
+    public void Ignore_Start()
     {
         Ignore("Item", "Enemy");
-
+        Ignore("Shop", "Bullet");
+        Ignore("Shop", "Enemy");
         //Bullet
         Ignore("Bullet", "Item");
         Ignore("Bullet", "Enemy");

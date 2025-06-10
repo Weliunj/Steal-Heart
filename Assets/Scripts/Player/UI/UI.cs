@@ -3,7 +3,7 @@ using UnityEngine;
 
 public partial class UI : MonoBehaviour
 {
-    [Header("           --------------- Toggle ---------------")]
+    [Header("           --------------- Inventory ---------------")]
     public DataManager dataManager;
     private Player player;
 
@@ -21,12 +21,11 @@ public partial class UI : MonoBehaviour
         player = FindAnyObjectByType<Player>();
         audioSource.loop = false;
         audioSource.playOnAwake = false;
-
-        EFFECT();
+        effect_Start();
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             toggle = !toggle; // Cập nhật toggle
             backpack.SetActive(toggle);
@@ -46,7 +45,20 @@ public partial class UI : MonoBehaviour
 
         if(player.Hp > 0)
         {
-            BUFFS();
+            buffs_Update();
         }
     }
+
+    public void OpenBackpack()
+    {
+        toggle = true;
+        backpack.SetActive(true);
+        AutoClose = 8f;
+    }
+    public void CloseBackPack()
+    {
+        toggle = false;
+        backpack.SetActive(false);
+    }
+
 }

@@ -11,6 +11,7 @@ public partial class Player : MonoBehaviour
     {
         if (index >= 0 && index < SceneManager.sceneCountInBuildSettings)
         {
+            dataManager.Hp_temp = Hp;
             SceneManager.LoadScene(index);
         }
         else

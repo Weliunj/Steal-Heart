@@ -82,24 +82,37 @@ public class EnemyBase : MonoBehaviour
         int percent = Random.Range(0, 100); // Theo %
 
         int dropCount = 0;
-        if (percent > 55)
+        if (percent < 40)
         {
-            dropCount = 1;
+            dropCount = 1;      // 40%
         }
-        else if (percent > 30)
+        else if (percent < 60)
         {
-            dropCount = 2;
+            dropCount = 2;      // 20%
+        }
+        else if (percent < 75)
+        {
+            dropCount = 3;      // 15%
+        }
+        else if (percent < 87)
+        {
+            dropCount = 4;      // 12%
+        }
+        else if (percent < 95)
+        {
+            dropCount = 5;        // 8%
         }
         else
         {
-            dropCount = 3;
+            dropCount = 6;      // 5%
         }
+
 
         for (int i = 0; i < dropCount; i++)
         {
             float min = transform.position.x - 0.5f;
             float max = transform.position.x + 0.5f;
-            Vector3 pos = new Vector3(Random.Range(min, max), transform.position.y + Random.Range(0f, 1f), transform.position.z);
+            Vector3 pos = new Vector3(Random.Range(min, max), transform.position.y + Random.Range(0.3f, 1.5f), transform.position.z);
 
             Instantiate(RandomItem(), pos, Quaternion.identity);
         }
@@ -108,15 +121,15 @@ public class EnemyBase : MonoBehaviour
     {
         int percent = Random.Range(0, 100);
 
-        if (percent < 40)          // 0 - 39
+        if (percent < 70)          // 0 - 69
             return items[0];                    // Coin
-        else if (percent < 60)     // 40 - 59
+        else if (percent < 80)     // 70 - 79
             return items[1];                    // HP
-        else if (percent < 75)     // 60 - 74
+        else if (percent < 87)     // 80 - 86
             return items[2];                    // Speed
-        else if (percent < 90)     // 75 - 89
+        else if (percent < 94)     // 87 - 93
             return items[3];                    // Jump
-        else                       // 90 - 99
+        else                       // 94 - 99
             return items[4];                    // Strength
     }
 }

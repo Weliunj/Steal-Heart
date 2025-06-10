@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Hyena : EnemyBase
 {
-    [SerializeField] protected float volumeR = 2.5f;
+    [SerializeField] protected float volumeR = 0.5f;
     [SerializeField] protected float playR = 6;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public override void Start()
@@ -24,9 +24,10 @@ public class Hyena : EnemyBase
 
         //Audio
         audioSource[0].loop = false;      //atk
-        audioSource[0].volume = 1.2f;
+        audioSource[0].volume = 0.6f;
 
         audioSource[1].loop = false;      //Hit
+        audioSource[1].volume = 0.4f;
 
         audioSource[2].volume = 1.5f;       //Run
         audioSource[2].loop = false;
@@ -34,7 +35,7 @@ public class Hyena : EnemyBase
         audioSource[3].volume = 0.5f;     //Free
         audioSource[3].loop = false;
 
-        audioSource[4].volume = 1.3f;     //Dead
+        audioSource[4].volume = 0.6f;     //Dead
         audioSource[4].loop = false;
 
         playR = Random.Range(playR - 1f, playR + 2f);
@@ -213,12 +214,11 @@ public class Hyena : EnemyBase
         while (true)
         {
             yield return new WaitForSeconds(playR);
-            audioSource[3].volume = Random.Range(volumeR, volumeR + 3);
             if (!audioSource[3].isPlaying)
             {
                 audioSource[3].Play();
             }
-            playR = Random.Range(volumeR, volumeR + 5);
+            playR = Random.Range(volumeR, volumeR + 3);
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)

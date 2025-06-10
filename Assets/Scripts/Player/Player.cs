@@ -11,7 +11,7 @@ public partial class Player : MonoBehaviour
 
     [Header("-------------Display")]
     public DataManager dataManager;
-    public UI inventory;
+    UI inventory;
     public Rigidbody2D rb;
     public Animator anim;
 
@@ -33,27 +33,32 @@ public partial class Player : MonoBehaviour
 
     void Start()
     {
-        Setup();
-        IgnoreObj();
+        inventory = FindAnyObjectByType<UI>();
+        Hp_Start();
+        Ignore_Start();
 
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponentInChildren<Animator>();
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
 
         foreach (AudioSource source in audioSources) { source.playOnAwake = false; }
         audioSources[0].loop = true;
-        audioSources[0].volume= 2.5f;
+        audioSources[0].volume= 20f;
+        audioSources[4].volume = 50f;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        HPCheck();
-        if (Hp <= 0 && !dead) { dead = true;  anim.SetTrigger("Dead"); audioSources[4].Stop(); audioSources[4].Play(); }
+        HP_Update();
+        if (Hp <= 0 && !dead) { dead = true; anim.ResetTrigger("Hit") ; anim.SetTrigger("Dead"); audioSources[4].Stop(); audioSources[4].Play(); }
         if (dead) return; // Nếu đã chết rồi, không xử lý gì tiếp
         if(IsStun > 0) 
         { 
             IsStun -= Time.deltaTime;
-            rb.linearVelocity = new Vector2(0, -0.3f);
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         }
         else
         {

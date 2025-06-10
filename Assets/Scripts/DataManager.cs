@@ -11,4 +11,6 @@ public class DataManager : ScriptableObject
     public int Jump_bottle = 0;
     public int Speed_bottle = 0;
     public int Strength_bottle = 0;
+    public int Hp_temp;
+
 }

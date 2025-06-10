@@ -54,7 +54,7 @@ public partial class UI : MonoBehaviour
         Stre_Buff = 1f;
         Stre.SetActive(false);
     }
-    public void BUFFS()
+    public void buffs_Update()
     {
         coin_T.text = $"{dataManager.Coin_Quan}";
         Jump_T.text = $"{dataManager.Jump_bottle}";
