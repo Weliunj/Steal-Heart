@@ -415,11 +415,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f1754978a10cae4cb618b8b07743f95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  v2: 1
+  Leader_Enemy: 0
   PatrolMode: 0
   JumpMode: 1
   movespeed: 3.1
   Stay_StartPos: {fileID: 8884659323245095087}
-  phamvistay: 0.57
+  phamvistay: 13
   patrolDistance: 5
   detectionRange: 8.88
   chaseSpeed: 5
@@ -453,6 +455,8 @@ MonoBehaviour:
   - {fileID: 8685459229493918013}
   - {fileID: 3007085222367620246}
   - {fileID: 7431684176679202346}
+  Leader_Buff: 1.2
+  v2_Buff: 1.2
   ui: {fileID: 0}
   volumeR: 2.5
   playR: 6

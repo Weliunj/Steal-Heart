@@ -73,7 +73,7 @@ public partial class Player : MonoBehaviour
         {
             if (dashDirec != 0 && dashcd > 0.75f) // không cho di chuyển khi đang dash
             {
-                rb.linearVelocity = new Vector2(dashDirec * speed * 2f * (1.15f * inventory.speed_Buff), 0);
+                rb.linearVelocity = new Vector2(dashDirec * speed * 2f *   inventory.speed_Buff, 0);
                 anim.SetTrigger("Dash");
             }
             else if (atk1cd <= 0f && atk2cd <= 0.2f && dashcd < 0.75f)
