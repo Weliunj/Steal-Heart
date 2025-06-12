@@ -1,15 +1,26 @@
 ﻿using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BOD : EnemyBase
 {
     [Header("-------------Unique-----------")]
-    private bool isV2 = false;
-    private bool isV3 = false;
+    public bool isV2 = false;
+    public bool isV3 = false;
+
+    public GameObject Atk2Prefab;
+    public int Atk2Damage = 100;
+    public float Atk2Speed = 1f;
+    public Vector3 Atk2_Scale;
+
+    private Coroutine skill2Coroutine;
+    private Coroutine skill3Coroutine;
+
+    private bool IsUsingAnySkill => skill2Coroutine != null || skill3Coroutine != null;
+
     [Header("------------- Skill 2 Settings -------------")]
-    public GameObject skill2Prefab;
-    public int skill2Damage = 100;
-    public float skill2Speed = 1f;
+    private bool OnSkill2 = false;
+    public float skill2_Speed = 1f;
     public float skill2CooldownMin = 5f;
     public float skill2CooldownMax = 10f;
     public int skill2ProjectileCount = 5;
@@ -19,21 +30,23 @@ public class BOD : EnemyBase
 
     [Header("------------- Skill 3 Settings -------------")]
     public GameObject[] skill3RandomZones; // [xMin, xMax, yMin, yMax]
-    public float skill3Speed = 3f;
+    public float skill3_Speed = 3f;
+    private bool OnSkill3 = false;
+
+    public int soluong = 10;
+    public int dot = 3;
+
+
     public float skill3CooldownMin = 5f;
     public float skill3CooldownMax = 10f;
     public int skill3BaseCount = 3;
     public int skill3MaxCount = 15;
 
     private float skill3CooldownTimer = 0f;
-    private int currentSkill3Count = 3;
-    private float skill3LockDuration = 0.4f;
 
 
-    [Header("-------------Slow_Effects")]
-    public float Slow_Strength = 1;
-    public float Slow_dura;
-    public Coroutine slowCoroutine;       // Theo dõi coroutine hiện tại
+
+
 
 
     public override void Start()
@@ -64,12 +77,13 @@ public class BOD : EnemyBase
 
         audioSource[4].volume = 0.8f;     //Dead
         audioSource[4].loop = false;
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        V2();
         HP();
         if (!Dead && Hp <= 0) //Dead
         {
@@ -89,10 +103,13 @@ public class BOD : EnemyBase
         }
         if (Dead) { return; }
 
+
+
         if (stuned > 0)
         {
             stuned -= Time.deltaTime;
         }
+
         else if (Hp > 0 && stuned <= 0 && player.Hp > 0)        //Player song
         {
             // Tinh khoang cach den player
@@ -109,6 +126,9 @@ public class BOD : EnemyBase
                 isChasing = false;
             }
 
+            // Đặt bên trong Update() trước đoạn kiểm tra isChasing
+            if (skill2CooldownTimer > 0) skill2CooldownTimer -= Time.deltaTime;
+            if (skill3CooldownTimer > 0) skill3CooldownTimer -= Time.deltaTime;
 
             if (isChasing)
             {
@@ -131,8 +151,6 @@ public class BOD : EnemyBase
             anim.SetBool("Walk", false);
 
             Atk1();
-            TryUseSkill2();
-            TryUseSkill3();
         }
         else
         {
@@ -147,6 +165,31 @@ public class BOD : EnemyBase
                 transform.position = Vector3.MoveTowards(transform.position, player.transform.position, chaseSpeed * Time.deltaTime);
             }
         }
+        // --- Thay đổi ở đây ---
+        if (!IsUsingAnySkill) // Chỉ khi không có skill nào đang chạy
+        {
+            if (skill2CooldownTimer <= 0 && skill3CooldownTimer <= 0)
+            {
+                // Cả hai skill đều sẵn sàng, chọn ngẫu nhiên
+                if (Random.value < 0.5f) // 50% cơ hội dùng Skill 2, 50% dùng Skill 3
+                {
+                    TryUseSkill2();
+                }
+                else
+                {
+                    TryUseSkill3();
+                }
+            }
+            else if (skill2CooldownTimer <= 0)
+            {
+                TryUseSkill2(); // Chỉ Skill 2 sẵn sàng
+            }
+            else if (skill3CooldownTimer <= 0)
+            {
+                TryUseSkill3(); // Chỉ Skill 3 sẵn sàng
+            }
+        }
+        // ----------------------
     }
 
     public void JUMP()
@@ -201,6 +244,7 @@ public class BOD : EnemyBase
         }
     }
 
+    float atk1;
     public void Atk1()
     {
         if (speed > 0)
@@ -211,71 +255,141 @@ public class BOD : EnemyBase
         {
             //Atk
             anim.SetTrigger("Atk1");
-            audioSource[0].Play();
+            StartCoroutine(fixSound());
             //Player Hit
             speed = atkspeed;
-        }
-        
 
+        }
+    }
+    public IEnumerator fixSound()
+    {
+        yield return new WaitForSeconds(0.23f);
+        audioSource[0].Play();
     }
     void TryUseSkill2()
     {
-        if (skill2CooldownTimer > 0)
-        {
-            skill2CooldownTimer -= Time.deltaTime;
-            return;
-        }
+        if (skill2CooldownTimer > 0 || IsUsingAnySkill) return;
 
-        anim.SetTrigger("Atk2");
-        StartCoroutine(Skill2Coroutine());
+        skill2Coroutine = StartCoroutine(Skill2Coroutine());
         skill2CooldownTimer = Random.Range(skill2CooldownMin, skill2CooldownMax);
     }
 
+
     IEnumerator Skill2Coroutine()
     {
+        OnSkill2 = true;
         for (int i = 0; i < skill2ProjectileCount; i++)
         {
             skill2LockDuration = 0.4f;
-            anim.SetTrigger("Atk2");
-            yield return new WaitForSeconds(0.3f); // tránh bị trùng animation
-            Instantiate(skill2Prefab, player.transform.position + new Vector3(0, 1.1f, 0), Quaternion.identity);
-            yield return new WaitForSeconds(skill2Speed);
+
+            AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+            if (!stateInfo.IsName("Atk1"))
+            {
+                anim.SetTrigger("Atk2");
+            }
+
+            yield return new WaitForSeconds(0.3f); // tránh trùng animation
+            Instantiate(Atk2Prefab, player.transform.position + new Vector3(0, 0.7f, 0), Quaternion.identity);
+            yield return new WaitForSeconds(skill2_Speed);
         }
+
+        OnSkill2 = false;
+        skill2Coroutine = null;
     }
+
 
 
     void TryUseSkill3()
     {
-        if (skill3CooldownTimer > 0)
-        {
-            skill3CooldownTimer -= Time.deltaTime;
-            return;
-        }
+        if (skill3CooldownTimer > 0 || IsUsingAnySkill) return;
 
-        anim.SetTrigger("Atk2");
-        StartCoroutine(Skill3Coroutine());
+        skill3Coroutine = StartCoroutine(Skill3Coroutine());
         skill3CooldownTimer = Random.Range(skill3CooldownMin, skill3CooldownMax);
     }
 
+
     IEnumerator Skill3Coroutine()
     {
-        int spawnCount = currentSkill3Count;
+        OnSkill3 = true;
 
-        currentSkill3Count = Mathf.Min(currentSkill3Count + 3, skill3MaxCount);
+        float currentSoluong = soluong;
 
-        for (int i = 0; i < spawnCount; i++)
+        for (int i = 0; i < dot; i++)
         {
-            skill2LockDuration = 0.4f;
-            anim.SetTrigger("Atk2");
-            yield return new WaitForSeconds(0.3f); // tránh bị trùng animator
+            AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+            if (!stateInfo.IsName("Atk1"))
+            {
+                anim.SetTrigger("Atk2");
+            }
 
-            float x = Random.Range(skill3RandomZones[0].transform.position.x, skill3RandomZones[1].transform.position.x);
-            float y = Random.Range(skill3RandomZones[2].transform.position.y, skill3RandomZones[3].transform.position.y);
-            Vector3 spawnPos = new Vector3(x, y, 0f);
+            yield return new WaitForSeconds(0.3f); // khớp animator
 
-            Instantiate(skill2Prefab, spawnPos, Quaternion.identity); // dùng chung prefab
-            yield return new WaitForSeconds(skill3Speed);
+            for (int j = 0; j < currentSoluong; j++)
+            {
+                int zoneIndex = Random.Range(0, skill3RandomZones.Length);
+                float x = Random.Range(skill3RandomZones[0].transform.position.x, skill3RandomZones[1].transform.position.x);
+                float y = Random.Range(skill3RandomZones[2].transform.position.y, skill3RandomZones[3].transform.position.y);
+                Vector3 spawnPos = new Vector3(x, y, 0f);
+
+                Instantiate(Atk2Prefab, spawnPos, Quaternion.identity);
+                yield return new WaitForSeconds(Random.Range(0.01f, 0.13f));
+            }
+
+            yield return new WaitForSeconds(skill3_Speed);
+
+            currentSoluong += Random.Range(5, 10); // tăng thêm mỗi đợt
         }
+
+        OnSkill3 = false;
+        skill3Coroutine = null;
+    }
+
+
+
+    public void EnterPhase2()
+    {
+        if (isV2) return;
+        isV2 = true;
+
+        skill2ProjectileCount = Random.Range(12, 17);
+        dot = Mathf.CeilToInt(dot * 1.2f);
+        chaseSpeed *= 1.2f;
+        soluong = Mathf.CeilToInt(soluong * 1.2f); // tăng số lượng skill3 spawn mỗi đợt
+        skill2CooldownMin *= 0.8f;
+        skill2CooldownMax *= 0.8f;
+        skill3CooldownMin *= 0.8f;
+        skill3CooldownMax *= 0.8f;
+        atkDMG = Mathf.CeilToInt(atkDMG * 1.2f);
+        Atk2Damage = Mathf.CeilToInt(Atk2Damage * 1.2f);
+        Atk2Speed = 0.6f;
+        // Đổi màu cam đậm
+        GetComponent<SpriteRenderer>().color = new Color(1f, 0.4f, 0f);
+
+        Debug.Log("=== Entered Phase 2 ===");
+    }
+
+    public void EnterPhase3()
+    {
+        if (isV3) return;
+        isV3 = true;
+
+        skill2ProjectileCount = Random.Range(18, 25);
+        soluong = Mathf.CeilToInt(soluong * 1.3f); // tăng số lượng skill3 spawn mỗi đợt
+        dot = Mathf.CeilToInt(dot * 1.3f);
+        chaseSpeed *= 1.3f;
+
+        skill2CooldownMin *= 0.7f;
+        skill2CooldownMax *= 0.7f;
+        skill3CooldownMin *= 0.7f;
+        skill3CooldownMax *= 0.7f;
+
+
+        Atk2Speed = 0.4f;
+        atkDMG = Mathf.CeilToInt(atkDMG * 1.3f);
+        Atk2Damage = Mathf.CeilToInt(Atk2Damage * 1.3f);
+        // Đổi màu đỏ
+        GetComponent<SpriteRenderer>().color = Color.red;
+        Debug.Log("=== Entered Phase 3 ===");
     }
 
 
@@ -283,25 +397,13 @@ public class BOD : EnemyBase
     {
         slider.value = Hp;
 
-        // ==== Buff theo phần trăm máu ================
         if (!isV2 && Hp <= maxHealth * 0.6f)
         {
-            isV2 = true;
-            skill2Speed *= 1.2f;
-            skill3Speed *= 1.2f;
-            atkspeed *= 0.8f;   // tấn công nhanh hơn
-            Debug.Log("==> BOD V2 Activated!");
+            EnterPhase2();
         }
-
         if (!isV3 && Hp <= maxHealth * 0.3f)
         {
-            isV3 = true;
-            skill2Speed *= 1.3f;
-            skill3Speed *= 1.3f;
-            atkspeed *= 0.7f;   // tấn công càng nhanh hơn
-            skill2ProjectileCount += 2;
-            skill3BaseCount += 2;
-            Debug.Log("==> BOD V3 Activated!");
+            EnterPhase3();
         }
 
         // ==== Color Hp bar ============================
@@ -334,15 +436,7 @@ public class BOD : EnemyBase
         }
     }
 
-    public IEnumerator SlowEffects(float speed, float dura)
-    {
 
-        ui.Slow.SetActive(true);
-        Slow_Strength = 0.45f;
-        yield return new WaitForSeconds(dura);
-        Slow_Strength = 1f;
-        ui.Slow.SetActive(false);
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

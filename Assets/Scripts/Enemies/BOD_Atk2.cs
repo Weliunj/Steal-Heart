@@ -16,7 +16,22 @@ public class BOD_Atk2 : MonoBehaviour
         boss = FindAnyObjectByType<BOD>();
         ui = FindAnyObjectByType<UI>();
         anim = GetComponent<Animator>();
-        speedAtk = boss.skill2Speed;
+        speedAtk = boss.Atk2Speed;
+
+        audiosource.volume = 3f;
+
+        float v2 = Random.Range(1.1f, 1.25f);
+        float v3 = Random.Range(1.15f, 1.4f);
+        if (boss.isV2)
+        {
+            transform.localScale = new Vector3(v2,v2);
+            speedAtk = boss.Atk2Speed - Random.Range(0.1f, 0.4f);
+        }
+        else if (boss.isV3)
+        {
+            transform.localScale = new Vector3(v3, v3);
+            speedAtk = boss.Atk2Speed - Random.Range(0.3f, 0.7f);
+        }
     }
     public void Update()
     {
@@ -46,17 +61,14 @@ public class BOD_Atk2 : MonoBehaviour
             audiosource.Play();
             player.audioSources[5].Play();
             player.IsStun = boss.StunedPlayer;
-            player.Hp -= boss.skill2Damage;
+            player.Hp -= boss.Atk2Damage;
             player.StartCoroutine(player.dashThrougt(0.9f)); // Bat tu tam thoi
 
-            if (boss != null)
-            {
-                if (boss.slowCoroutine != null)
+                if (player.slowCoroutine != null)
                 {
-                    boss.StopCoroutine(boss.slowCoroutine);
+                    player.StopCoroutine(player.slowCoroutine);
                 }
-                boss.slowCoroutine = boss.StartCoroutine(boss.SlowEffects(boss.Slow_Strength, boss.Slow_dura));
-            }
+                player.slowCoroutine = player.StartCoroutine(player.SlowEffects(player.Slow_dura));
         }
     }
 }

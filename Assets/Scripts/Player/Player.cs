@@ -24,6 +24,11 @@ public partial class Player : MonoBehaviour
 
     public float IsStun = 0f;
 
+    [Header("-------------Slow_Effects")]
+    public Coroutine slowCoroutine;       // Theo dõi coroutine hiện tại
+    public float Slow_Strength = 1;
+    public float Slow_dura;
+
     [HideInInspector] public bool isDashingThroughBullet = false;
     [Header("-------------Settings")]
     public float speed;
@@ -37,7 +42,10 @@ public partial class Player : MonoBehaviour
         dataManager.LastSceneName = SceneManager.GetActiveScene().name;
 
         inventory = FindAnyObjectByType<UI>();
-        BOD = FindAnyObjectByType<BOD>();
+        if(BOD != null)
+        {
+            BOD = FindAnyObjectByType<BOD>();
+        }
 
         Hp_Start();
         Ignore_Start();
@@ -92,7 +100,7 @@ public partial class Player : MonoBehaviour
         {
             if (dashDirec != 0 && dashcd > 0.75f) // không cho di chuyển khi đang dash
             {
-                rb.linearVelocity = new Vector2(dashDirec * speed * 2f * BOD.Slow_Strength, 0);
+                rb.linearVelocity = new Vector2(dashDirec * speed * 2f * Slow_Strength, 0);
                 anim.SetTrigger("Dash");
             }
             else if (atk1cd <= 0f && atk2cd <= 0.2f && dashcd < 0.75f)
@@ -101,7 +109,7 @@ public partial class Player : MonoBehaviour
                 if (move != 0) { anim.SetBool("Run", true); audioSources[0].Play(); }
                 else { anim.SetBool("Run", false); audioSources[0].Pause(); }
 
-                rb.linearVelocity = new Vector2(move * speed * inventory.speed_Buff * BOD.Slow_Strength, rb.linearVelocity.y);
+                rb.linearVelocity = new Vector2(move * speed * inventory.speed_Buff * Slow_Strength, rb.linearVelocity.y);
 
                 FLIP(move);
             }
@@ -126,7 +134,9 @@ public partial class Player : MonoBehaviour
             audioSources[4].Play();
             doubleJump++;
             anim.SetTrigger("Jump");
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, forcejump * BOD.Slow_Strength);
+
+            float temp = Slow_Strength != 1 ? Slow_Strength* 0.9f : 1;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, forcejump * temp);
         }
     }
 
@@ -152,6 +162,15 @@ public partial class Player : MonoBehaviour
                 StartCoroutine(dashThrougt(0.4f));
             }
         }
+    }
+    public IEnumerator SlowEffects(float dura)
+    {
+
+        inventory.Slow.SetActive(true);
+        Slow_Strength = 0.5f;
+        yield return new WaitForSeconds(dura);
+        Slow_Strength = 1f;
+        inventory.Slow.SetActive(false);
     }
     public IEnumerator dashThrougt(float dura)
     {

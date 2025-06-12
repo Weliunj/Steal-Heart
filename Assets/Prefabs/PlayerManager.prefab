@@ -454,6 +454,8 @@ MonoBehaviour:
   doubleJump: 0
   dashcd: 0
   IsStun: 0
+  Slow_Strength: 1
+  Slow_dura: 3
   isDashingThroughBullet: 0
   speed: 7.5
   forcejump: 11

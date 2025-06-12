@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\Enemies\Vulture.cs" />
     <Compile Include="Assets\Scripts\Player\Atk.cs" />
     <Compile Include="Assets\Scripts\Player\UI\UI.cs" />
+    <Compile Include="Assets\Scenes\Lv4_Manager.cs" />
     <Compile Include="Assets\Scripts\Enemies\Boar_V2.cs" />
     <Compile Include="Assets\Scripts\Map\Camera.cs" />
     <Compile Include="Assets\Scripts\DataManager.cs" />

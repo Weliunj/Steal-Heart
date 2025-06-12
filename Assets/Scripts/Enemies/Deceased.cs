@@ -53,6 +53,13 @@ public class Deceased : EnemyBase
             rb.linearVelocity = new Vector2(0, 0);
             Dead = true;
 
+            // STOP burn effect if active
+            if (burnCoroutine != null)
+            {
+                StopCoroutine(burnCoroutine);
+                burnCoroutine = null;
+            }
+
             ui.Burn.SetActive(false);
             anim.ResetTrigger("Hit");
             anim.SetTrigger("Dead");
