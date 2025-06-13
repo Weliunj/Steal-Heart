@@ -132,7 +132,7 @@ public class Hyena : EnemyBase
             {
                 audioSource[2].Stop();
                 anim.SetBool("Walk", false);
-                rb.linearVelocity = new Vector2(0, -1f);
+                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             }
             else
             {
@@ -225,7 +225,13 @@ public class Hyena : EnemyBase
         if (collision.gameObject.CompareTag("Atk") && !Dead)
         {
             audioSource[1].Play();
-            anim.SetTrigger("Hit");
+            // Chỉ chơi animation Hit nếu không đang Atk
+            AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);
+            if (!state.IsName("Atk"))
+            {
+                anim.SetTrigger("Hit");
+            }
+
             if (player.atktype == "Atk1")           //Trung Atk1
             {
                 this.Hp -= player.atk1_dmg;
