@@ -23,9 +23,6 @@ public class Snake_Scorpio : EnemyBase
         else { transform.position = Stay_StartPos.position; targetPos = Stay_StartPos.position + Vector3.right * patrolDistance; }
         chaseSpeed += Random.Range(0f, 1.5f);
 
-        //Hp
-        slider.maxValue = maxHealth;
-        Hp = maxHealth;
 
         //Audio
         audioSource[0].loop = false;      //atk
@@ -50,6 +47,7 @@ public class Snake_Scorpio : EnemyBase
     // Update is called once per frame
     void Update()
     {
+        V2();
         HP();
         if (!Dead && Hp <= 0) //Dead
         {
@@ -307,5 +305,14 @@ public class Snake_Scorpio : EnemyBase
         //Pham vi atk
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attakRange);
+
+        if (JumpMode)
+        {
+            // Ray phía trước để nhảy
+            Gizmos.color = Color.green;
+            Vector3 direc = transform.rotation.y == 180f ? Vector3.left : Vector3.right;
+            Vector3 rayStart = transform.position + new Vector3(StartRay, SetupY, 0);
+            Gizmos.DrawLine(rayStart, rayStart + direc * LengthRay);
+        }
     }
 }

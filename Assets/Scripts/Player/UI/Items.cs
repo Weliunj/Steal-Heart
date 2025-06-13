@@ -17,7 +17,7 @@ public partial class UI : MonoBehaviour
     private Coroutine speedCoroutine;
 
     public TMP_Text Jump_T;
-    public int Jump_Buff = 1;
+    public int Jump_Buff = 0;
     [SerializeField] private float Jump_Timer = 20f;
     public float Jump_cd = 0f;
     private Coroutine jumpCoroutine;
@@ -30,7 +30,7 @@ public partial class UI : MonoBehaviour
 
     IEnumerator Speed_eff()
     {
-        speed_Buff = 1.3f;
+        speed_Buff = 1.2f;
         Speed.SetActive(true);
         yield return new WaitForSeconds(speed_Timer);
         speed_Buff = 1f;

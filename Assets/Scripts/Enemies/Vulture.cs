@@ -37,13 +37,11 @@ public class Vulture : EnemyBase
 
         playR = Random.Range(playR - 1f, playR + 2f);
         StartCoroutine(Free_Sound());
-        //Hp
-        slider.maxValue = maxHealth;
-        Hp = maxHealth;
     }
 
     void Update()
     {
+        V2();
         HP();
         if (Hp <= 0)
         {

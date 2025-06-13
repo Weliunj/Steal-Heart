@@ -1,4 +1,4 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,24 +10,26 @@ public class EnemyBase : MonoBehaviour
     protected Player player;
     protected Rigidbody2D rb;
     protected Animator anim;
+    [SerializeField] protected bool v2 = false;
+    [SerializeField] protected bool Leader_Enemy = false;
     [SerializeField] protected bool PatrolMode = false;
     [SerializeField] protected bool JumpMode = false;
 
     // ========== PATROL SETTINGS ==========
     [Header("-------------Patrol Settings-----------")]
     [SerializeField] protected float movespeed = 2f;                 // T?c ?? di chuy?n khi tu?n tra
-    [SerializeField] protected Transform Stay_StartPos;                      // V? trÌ ban ??u
+    [SerializeField] protected Transform Stay_StartPos;                      // V? tr√≠ ban ??u
     [SerializeField] protected float phamvistay;
 
-    [SerializeField] protected float patrolDistance = 5f;             // Kho?ng c·ch tu?n tra
-    protected Vector3 targetPos;                                      // V? trÌ ti?p theo
+    [SerializeField] protected float patrolDistance = 5f;             // Kho?ng c√°ch tu?n tra
+    protected Vector3 targetPos;                                      // V? tr√≠ ti?p theo
     protected bool movingToEnd;                                       // H??ng di chuy?n
 
     // ========== CHASE SETTINGS ==========
     [Header("--------------Chase setting-------------")]
-    [SerializeField] protected float detectionRange = 3f;             // Ph?m vi ph·t hi?n player
+    [SerializeField] protected float detectionRange = 3f;             // Ph?m vi ph√°t hi?n player
     [SerializeField] protected float chaseSpeed = 3f;                // T?c ?? ?u?i
-    [SerializeField] protected float attakRange = 1f;                 //Pham vi t?n cÙng
+    [SerializeField] protected float attakRange = 1f;                 //Pham vi t?n c√¥ng
     protected bool isChasing;                                         // Doi trang thai
 
     // ========== JUMP SETTINGS ==========
@@ -51,16 +53,16 @@ public class EnemyBase : MonoBehaviour
 
     // ========== COMBAT ==========  
     [Header("---------------Combat Settings----------")]
-    [SerializeField] public int atkDMG;                      // S·t th??ng t?n cÙng
-    [SerializeField] protected float atkspeed;                 // T?c ?? ?·nh (th?i gian h?i gi?a 2 ?Ún t?n cÙng)
-    [SerializeField] public float StunedPlayer;             // Th?i gian stun c?a player khi b? tr˙ng ?Ún
+    [SerializeField] public int atkDMG;                      // S√°t th??ng t?n c√¥ng
+    [SerializeField] protected float atkspeed;                 // T?c ?? ?√°nh (th?i gian h?i gi?a 2 ?√≤n t?n c√¥ng)
+    [SerializeField] public float StunedPlayer;             // Th?i gian stun c?a player khi b? tr√∫ng ?√≤n
 
     [SerializeField] protected float[] onStun;
 
-    // Bi?n n?i b? ?? x? l˝ tr?ng th·i chi?n ??u
-    protected float speed;                           // Bi?n ??m th?i gian h?i chiÍu t?n cÙng
-    protected float stuned;                          // Th?i gian b? stun cÚn l?i c?a enemy
-    protected bool Dead = false;                     // Tr?ng th·i ?„ ch?t hay ch?a
+    // Bi?n n?i b? ?? x? l√Ω tr?ng th√°i chi?n ??u
+    protected float speed;                           // Bi?n ??m th?i gian h?i chi√™u t?n c√¥ng
+    protected float stuned;                          // Th?i gian b? stun c√≤n l?i c?a enemy
+    protected bool Dead = false;                     // Tr?ng th√°i ?√£ ch?t hay ch?a
 
     // ========== Drop ==========  
     [Header("---------------Item Drop----------")]
@@ -69,6 +71,13 @@ public class EnemyBase : MonoBehaviour
     // ========== AUDIO & ANIMATION ==========
     [Header("--------------------Audio---------------")]
     [SerializeField] protected AudioSource[] audioSource;
+
+    [Header("--------------- Setting ----------")]
+    [SerializeField] protected float Leader_Buff = 1.2f;
+    [SerializeField] protected float v2_Buff = 1.2f;
+    private bool v2Activated = false;
+    protected SpriteRenderer leader_Sprite;
+
     [HideInInspector]
     [SerializeField] public UI ui;
 
@@ -76,47 +85,72 @@ public class EnemyBase : MonoBehaviour
     {
         ui = FindAnyObjectByType<UI>();
         player = FindAnyObjectByType<Player>();
+
+        //Hp
+        slider.maxValue = maxHealth;
+        Hp = maxHealth;
+
+        LEADER();
     }
+    public void LEADER()
+    {
+        leader_Sprite = GetComponent<SpriteRenderer>();
+        if(Leader_Enemy && leader_Sprite != null)
+        {
+            leader_Sprite.color = new Color(1f, 0.5f, 0.5f); // m√†u ƒë·ªè nh·∫°t
+            movespeed *= Leader_Buff;
+            detectionRange *= Leader_Buff;
+            chaseSpeed *= Leader_Buff;
+            maxHealth = Mathf.RoundToInt(maxHealth * Leader_Buff);
+            atkDMG = Mathf.RoundToInt(atkDMG * Leader_Buff);
+            atkspeed /= Leader_Buff;
+            transform.localScale = new Vector3(transform.localScale.x * Leader_Buff, transform.localScale.y * Leader_Buff, transform.localScale.z * Leader_Buff);
+        }
+    }
+    public void V2()
+    {
+        if (v2 && !v2Activated && (float)Hp / maxHealth < 0.35f)
+        {
+            v2Activated = true;
+            leader_Sprite.color = new Color(1f, 0.5f, 0.5f); // m√†u ƒë·ªè nh·∫°t
+            movespeed *= v2_Buff;
+            chaseSpeed *= v2_Buff;
+            atkDMG = Mathf.RoundToInt(atkDMG * v2_Buff);
+            atkspeed /= v2_Buff;
+        }
+    }
+
     public void ItemDrop()
     {
-        int percent = Random.Range(0, 100); // Theo %
+        int percent = Random.Range(0, 100);
+        int dropCount;
 
-        int dropCount = 0;
         if (percent < 40)
-        {
-            dropCount = 1;      // 40%
-        }
+            dropCount = 1;
         else if (percent < 60)
-        {
-            dropCount = 2;      // 20%
-        }
+            dropCount = 2;
         else if (percent < 75)
-        {
-            dropCount = 3;      // 15%
-        }
+            dropCount = 3;
         else if (percent < 87)
-        {
-            dropCount = 4;      // 12%
-        }
+            dropCount = 4;
         else if (percent < 95)
-        {
-            dropCount = 5;        // 8%
-        }
+            dropCount = 5;
         else
-        {
-            dropCount = 6;      // 5%
-        }
+            dropCount = 6;
 
+        // N·∫øu l√† Leader th√¨ nh√¢n ƒë√¥i s·ªë l∆∞·ª£ng drop
+        if (Leader_Enemy)
+            dropCount *= 2;
 
         for (int i = 0; i < dropCount; i++)
         {
             float min = transform.position.x - 0.5f;
             float max = transform.position.x + 0.5f;
             Vector3 pos = new Vector3(Random.Range(min, max), transform.position.y + Random.Range(0.3f, 1.5f), transform.position.z);
-
             Instantiate(RandomItem(), pos, Quaternion.identity);
         }
     }
+
     public GameObject RandomItem()
     {
         int percent = Random.Range(0, 100);

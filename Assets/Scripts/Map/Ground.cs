@@ -2,11 +2,13 @@ using UnityEngine;
 
 public class Ground : MonoBehaviour
 {
+    UI ui;
     Player player;
     bool Onground = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        ui = FindAnyObjectByType<UI>();
         player = FindAnyObjectByType<Player>();
     }
 
@@ -21,7 +23,15 @@ public class Ground : MonoBehaviour
         {
             player.rb.linearVelocity = new Vector2(player.rb.linearVelocity.x, -0.3f);
             player.anim.SetBool("Wall", true);
-            player.doubleJump = 1;
+            if (ui.Jump_Buff == 0)
+            {
+                player.doubleJump = 0;
+            }
+            else
+            {
+                player.doubleJump = 1;
+            }
+
             player.rb.gravityScale = 0f;
         }
     }
@@ -56,7 +66,7 @@ public class Ground : MonoBehaviour
             player.anim.SetBool("Wall", false);
             player.anim.SetBool("Jump_E", true);
             player.dashcd = 0f;
-            player.doubleJump = 0;
+            //player.doubleJump = 0;
             player.rb.gravityScale = 2.3f;
         }
     }

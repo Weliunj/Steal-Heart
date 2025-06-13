@@ -1,21 +1,37 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Camera : MonoBehaviour
 {
-    private Transform player;
     public float speed = 7.4f;
-    public Vector3 target;
+    private Player player;
+    private Vector3 target;
+    private bool isLocked = false;  // camera có bị ghim không
 
-    public void Start()
+    void Start()
     {
-        player = GameObject.FindWithTag("Player").transform;
-        speed = 7.4f;
+        player = FindAnyObjectByType<Player>();
+        target = player.transform.position + new Vector3(0, 3.2f, 0);
     }
 
     void Update()
     {
-        target = player.position + new Vector3(0, 3.2f, 0);
+        if (!isLocked && player != null)
+        {
+            target = player.transform.position + new Vector3(0, 3.2f, 0);
+        }
+
         target.z = -10f;
         transform.position = Vector3.Lerp(transform.position, target, speed * Time.deltaTime);
+    }
+
+    public void SetTarget(Vector3 newTarget)
+    {
+        target = newTarget;
+        isLocked = true;
+    }
+
+    public void Unlock()
+    {
+        isLocked = false;
     }
 }
