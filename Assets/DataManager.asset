@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 370c49d0be36dce4582714b7b2c07976, type: 3}
   m_Name: DataManager
   m_EditorClassIdentifier: 
-  Coin_Quan: 0
-  Hp_bottle: 52
-  Jump_bottle: 47
-  Speed_bottle: 44
-  Strength_bottle: 50
+  Coin_Quan: 2
+  Hp_bottle: 20
+  Jump_bottle: 22
+  Speed_bottle: 22
+  Strength_bottle: 21
   Hp_temp: 300
   LastSceneName: Lv4
