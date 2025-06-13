@@ -25,12 +25,12 @@ public class BOD_Atk2 : MonoBehaviour
         if (boss.isV2)
         {
             transform.localScale = new Vector3(v2,v2);
-            speedAtk = boss.Atk2Speed - Random.Range(0.1f, 0.4f);
+            speedAtk = boss.Atk2Speed - Random.Range(0.1f, 0.2f);
         }
         else if (boss.isV3)
         {
             transform.localScale = new Vector3(v3, v3);
-            speedAtk = boss.Atk2Speed - Random.Range(0.3f, 0.7f);
+            speedAtk = boss.Atk2Speed - Random.Range(0.2f, 0.3f);
         }
     }
     public void Update()
