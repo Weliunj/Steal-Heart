@@ -134,7 +134,7 @@ public class Snake_Scorpio : EnemyBase
             {
                 audioSource[2].Stop();
                 anim.SetBool("Walk", false);
-                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+                rb.linearVelocity = new Vector2(0, -1f);
             }
             else
             {
