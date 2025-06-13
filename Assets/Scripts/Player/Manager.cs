@@ -2,6 +2,7 @@ using UnityEngine;
 
 public partial class Player : MonoBehaviour
 {
+    BOD BOD;
     public void Ignore_Start()
     {
         Ignore("Item", "Enemy");

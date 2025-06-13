@@ -12,6 +12,7 @@ public class Coin : MonoBehaviour
     public void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        audioSource.volume = 3f;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

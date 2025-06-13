@@ -20,7 +20,7 @@ public partial class Player : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void LoadScene_TriggerEnter(Collider2D collision)
     {
         int currentScene = SceneManager.GetActiveScene().buildIndex;
 
@@ -31,7 +31,7 @@ public partial class Player : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Prev"))
         {
-            LOADSCENE(currentScene -1);
+            LOADSCENE(currentScene - 1);
         }
     }
 

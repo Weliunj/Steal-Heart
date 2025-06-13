@@ -1,5 +1,6 @@
 ﻿using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public partial class UI : MonoBehaviour
 {
@@ -22,10 +23,15 @@ public partial class UI : MonoBehaviour
         audioSource.loop = false;
         audioSource.playOnAwake = false;
         effect_Start();
+
+        Jump_Buff = 0;
+        speed_Buff = 1f;
+        Stre_Buff = 1f;
+        buffs_Update();
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (Input.GetKeyDown(KeyCode.Tab) && player.Hp > 0)
         {
             toggle = !toggle; // Cập nhật toggle
             backpack.SetActive(toggle);

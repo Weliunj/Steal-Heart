@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public partial class Player : MonoBehaviour
@@ -23,6 +24,11 @@ public partial class Player : MonoBehaviour
 
     public float IsStun = 0f;
 
+    [Header("-------------Slow_Effects")]
+    public Coroutine slowCoroutine;       // Theo dõi coroutine hiện tại
+    public float Slow_Strength = 1;
+    public float Slow_dura;
+
     [HideInInspector] public bool isDashingThroughBullet = false;
     [Header("-------------Settings")]
     public float speed;
@@ -33,7 +39,14 @@ public partial class Player : MonoBehaviour
 
     void Start()
     {
+        dataManager.LastSceneName = SceneManager.GetActiveScene().name;
+
         inventory = FindAnyObjectByType<UI>();
+        if(BOD != null)
+        {
+            BOD = FindAnyObjectByType<BOD>();
+        }
+
         Hp_Start();
         Ignore_Start();
 
@@ -53,11 +66,25 @@ public partial class Player : MonoBehaviour
     void Update()
     {
         HP_Update();
-        if (Hp <= 0 && !dead) { dead = true; anim.ResetTrigger("Hit") ; anim.SetTrigger("Dead"); audioSources[4].Stop(); audioSources[4].Play(); }
-        if (dead) return; // Nếu đã chết rồi, không xử lý gì tiếp
+        if (Hp <= 0 && !dead)
+        { 
+            dead = true; anim.ResetTrigger("Hit") ; 
+            anim.SetTrigger("Dead"); 
+            audioSources[4].Stop(); 
+            audioSources[4].Play();
+
+            // Trừ tài nguyên
+            dataManager.Coin_Quan = Mathf.FloorToInt(dataManager.Coin_Quan * 0.7f);
+            dataManager.Hp_bottle = Mathf.FloorToInt(dataManager.Hp_bottle * 0.7f);
+            dataManager.Jump_bottle = Mathf.FloorToInt(dataManager.Jump_bottle * 0.7f);
+            dataManager.Speed_bottle = Mathf.FloorToInt(dataManager.Speed_bottle * 0.7f);
+            dataManager.Strength_bottle = Mathf.FloorToInt(dataManager.Strength_bottle * 0.7f);
+        }
+        if (dead) { rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); return; }// Nếu đã chết rồi, không xử lý gì tiếp
         if(IsStun > 0) 
         { 
             IsStun -= Time.deltaTime;
+            anim.SetBool("Run", false);
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         }
         else
@@ -73,7 +100,7 @@ public partial class Player : MonoBehaviour
         {
             if (dashDirec != 0 && dashcd > 0.75f) // không cho di chuyển khi đang dash
             {
-                rb.linearVelocity = new Vector2(dashDirec * speed * 2f * (1.15f * inventory.speed_Buff), 0);
+                rb.linearVelocity = new Vector2(dashDirec * speed * 2f * Slow_Strength, 0);
                 anim.SetTrigger("Dash");
             }
             else if (atk1cd <= 0f && atk2cd <= 0.2f && dashcd < 0.75f)
@@ -82,7 +109,7 @@ public partial class Player : MonoBehaviour
                 if (move != 0) { anim.SetBool("Run", true); audioSources[0].Play(); }
                 else { anim.SetBool("Run", false); audioSources[0].Pause(); }
 
-                rb.linearVelocity = new Vector2(move * speed * inventory.speed_Buff, rb.linearVelocity.y);
+                rb.linearVelocity = new Vector2(move * speed * inventory.speed_Buff * Slow_Strength, rb.linearVelocity.y);
 
                 FLIP(move);
             }
@@ -101,15 +128,18 @@ public partial class Player : MonoBehaviour
     }
     public void JUMP()
     {
-        int countjump = inventory.Jump_Buff + 2;
-        if (Input.GetKeyDown(KeyCode.Space) && doubleJump < countjump)
+        int count = 2 + inventory.Jump_Buff;
+        if (Input.GetKeyDown(KeyCode.Space) && doubleJump < count)
         {
             audioSources[4].Play();
             doubleJump++;
             anim.SetTrigger("Jump");
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, forcejump);
+
+            float temp = Slow_Strength != 1 ? Slow_Strength* 0.9f : 1;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, forcejump * temp);
         }
     }
+
     public void DASH()
     {
         if(dashcd > 0) 
@@ -132,6 +162,15 @@ public partial class Player : MonoBehaviour
                 StartCoroutine(dashThrougt(0.4f));
             }
         }
+    }
+    public IEnumerator SlowEffects(float dura)
+    {
+
+        inventory.Slow.SetActive(true);
+        Slow_Strength = 0.5f;
+        yield return new WaitForSeconds(dura);
+        Slow_Strength = 1f;
+        inventory.Slow.SetActive(false);
     }
     public IEnumerator dashThrougt(float dura)
     {
@@ -162,5 +201,14 @@ public partial class Player : MonoBehaviour
             false
         );
         isDashingThroughBullet = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        LoadScene_TriggerEnter(collision);
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+
     }
 }

@@ -15,9 +15,6 @@ public class Mummy : EnemyBase
         else { transform.position = Stay_StartPos.position; targetPos = Stay_StartPos.position + Vector3.right * patrolDistance; }
         chaseSpeed += Random.Range(0f, 1.5f);
 
-        //Hp
-        slider.maxValue = maxHealth;
-        Hp = maxHealth;
 
         //Audio
         audioSource[0].loop = false;      //atk
@@ -39,6 +36,7 @@ public class Mummy : EnemyBase
     // Update is called once per frame
     void Update()
     {
+        V2();
         HP();
         if (!Dead && Hp <= 0) //Dead
         {
