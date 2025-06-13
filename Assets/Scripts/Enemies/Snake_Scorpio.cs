@@ -255,7 +255,13 @@ public class Snake_Scorpio : EnemyBase
         if (collision.gameObject.CompareTag("Atk") && !Dead)
         {
             audioSource[1].Play();
-            anim.SetTrigger("Hit");
+            // Chỉ chơi animation Hit nếu không đang Atk
+            AnimatorStateInfo state = anim.GetCurrentAnimatorStateInfo(0);
+            if (!state.IsName("Atk"))
+            {
+                anim.SetTrigger("Hit");
+            }
+
             if (player.atktype == "Atk1")           //Trung Atk1
             {
                 this.Hp -= player.atk1_dmg;

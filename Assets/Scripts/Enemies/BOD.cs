@@ -48,7 +48,7 @@ public class BOD : EnemyBase
     [Header("------------- SPAWM -------------")]
     public GameObject[] enemies;
     public int spawnCount = 1;
-    public float Spawn_cd = 15f;
+    public float Spawn_cd = 10f;
     private float Spawn_cdPrivate = 15f;
     public override void Start()
     {
@@ -389,7 +389,7 @@ public class BOD : EnemyBase
         CD_Skill = 3f;
 
         spawnCount = 2;
-        Spawn_cd = 12f;
+        Spawn_cd = 8f;
         // Đổi màu cam đậm
         GetComponent<SpriteRenderer>().color = new Color(1f, 0.4f, 0f);
 
@@ -418,7 +418,7 @@ public class BOD : EnemyBase
         CD_Skill = 1f;
 
         spawnCount = 3;
-        Spawn_cd = 8f;
+        Spawn_cd = 6f;
         // Đổi màu đỏ
         GetComponent<SpriteRenderer>().color = Color.red;
         Debug.Log("=== Entered Phase 3 ===");
