@@ -132,7 +132,7 @@ public class Hyena : EnemyBase
             {
                 audioSource[2].Stop();
                 anim.SetBool("Walk", false);
-                rb.linearVelocity = new Vector2(0, -1f);
+                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             }
             else
             {

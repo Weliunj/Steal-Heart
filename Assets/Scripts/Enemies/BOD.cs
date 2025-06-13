@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BOD : EnemyBase
 {
@@ -9,7 +10,7 @@ public class BOD : EnemyBase
     public bool isV3 = false;
 
     public GameObject Atk2Prefab;
-    public int Atk2Damage = 100;
+    public int Atk2Damage;
     public float Atk2Speed = 1f;
     public Vector3 Atk2_Scale;
 
@@ -17,7 +18,8 @@ public class BOD : EnemyBase
     private Coroutine skill3Coroutine;
 
     private bool IsUsingAnySkill => skill2Coroutine != null || skill3Coroutine != null;
-
+    public float CD_Skill = 5;
+    public float Cd_SkillPrivate = 5f;
     [Header("------------- Skill 2 Settings -------------")]
     private bool OnSkill2 = false;
     public float skill2_Speed = 1f;
@@ -43,12 +45,11 @@ public class BOD : EnemyBase
     public int skill3MaxCount = 15;
 
     private float skill3CooldownTimer = 0f;
-
-
-
-
-
-
+    [Header("------------- SPAWM -------------")]
+    public GameObject[] enemies;
+    public int spawnCount = 1;
+    public float Spawn_cd = 15f;
+    private float Spawn_cdPrivate = 15f;
     public override void Start()
     {
         // Compoment
@@ -80,7 +81,11 @@ public class BOD : EnemyBase
 
 
     }
-
+    public IEnumerator clear()
+    {
+        yield return new WaitForSeconds(5f);
+        SceneManager.LoadScene(0);
+    }
     // Update is called once per frame
     void Update()
     {
@@ -99,7 +104,7 @@ public class BOD : EnemyBase
                 audioSource[4].Play();
             }
             ItemDrop();
-            Destroy(this.Prefab, 1.5f);
+            StartCoroutine(clear());
         }
         if (Dead) { return; }
 
@@ -165,8 +170,12 @@ public class BOD : EnemyBase
                 transform.position = Vector3.MoveTowards(transform.position, player.transform.position, chaseSpeed * Time.deltaTime);
             }
         }
-        // --- Thay đổi ở đây ---
-        if (!IsUsingAnySkill) // Chỉ khi không có skill nào đang chạy
+        if(Cd_SkillPrivate > 0)
+        {
+            Cd_SkillPrivate -= Time.deltaTime;
+            SPAWN();
+        }
+        else if (!IsUsingAnySkill && Cd_SkillPrivate <= 0) // Chỉ khi không có skill nào đang chạy
         {
             if (skill2CooldownTimer <= 0 && skill3CooldownTimer <= 0)
             {
@@ -244,6 +253,19 @@ public class BOD : EnemyBase
         }
     }
 
+    void SPAWN()
+    {
+        if(Spawn_cdPrivate > 0) { Spawn_cdPrivate -= Time.deltaTime;  }
+        else
+        {
+            for(int s = 0 ; s < spawnCount; s++)
+            {
+                int randomS = Random.Range(0, enemies.Length);
+                Instantiate(enemies[randomS], new Vector3(transform.position.x + Random.Range(-1f, 1f), transform.position.y + Random.Range(1f, 4f), 0), Quaternion.identity);
+            }
+            Spawn_cdPrivate = Random.Range(Spawn_cd, Spawn_cd + 5);
+        }
+    }
     float atk1;
     public void Atk1()
     {
@@ -295,6 +317,7 @@ public class BOD : EnemyBase
 
         OnSkill2 = false;
         skill2Coroutine = null;
+        Cd_SkillPrivate = Random.Range(CD_Skill, CD_Skill + 5f);
     }
 
 
@@ -342,6 +365,7 @@ public class BOD : EnemyBase
 
         OnSkill3 = false;
         skill3Coroutine = null;
+        Cd_SkillPrivate = Random.Range(CD_Skill, CD_Skill + 5f);
     }
 
 
@@ -360,8 +384,12 @@ public class BOD : EnemyBase
         skill3CooldownMin *= 0.8f;
         skill3CooldownMax *= 0.8f;
         atkDMG = Mathf.CeilToInt(atkDMG * 1.2f);
-        Atk2Damage = Mathf.CeilToInt(Atk2Damage * 1.2f);
+        Atk2Damage = Random.Range(45, 50);
         Atk2Speed = 0.6f;
+        CD_Skill = 3f;
+
+        spawnCount = 2;
+        Spawn_cd = 12f;
         // Đổi màu cam đậm
         GetComponent<SpriteRenderer>().color = new Color(1f, 0.4f, 0f);
 
@@ -386,7 +414,11 @@ public class BOD : EnemyBase
 
         Atk2Speed = 0.4f;
         atkDMG = Mathf.CeilToInt(atkDMG * 1.3f);
-        Atk2Damage = Mathf.CeilToInt(Atk2Damage * 1.3f);
+        Atk2Damage = Random.Range(50, 55);
+        CD_Skill = 1f;
+
+        spawnCount = 3;
+        Spawn_cd = 8f;
         // Đổi màu đỏ
         GetComponent<SpriteRenderer>().color = Color.red;
         Debug.Log("=== Entered Phase 3 ===");
@@ -411,7 +443,7 @@ public class BOD : EnemyBase
         {
             hpbar.color = Color.green;
         }
-        else if (slider.value < (maxHealth * 0.6f) && slider.value > (maxHealth * 0.4f))
+        else if (slider.value < (maxHealth * 0.6f) && slider.value > (maxHealth * 0.3f))
         {
             hpbar.color = new Color(1f, 0.65f, 0f); // Orange
         }

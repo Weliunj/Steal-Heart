@@ -370,15 +370,18 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 4.0311594, y: -1.4665176}
+    - - {x: 3.0852144, y: -0.53864694}
+      - {x: 3.4456384, y: 1.2538573}
+      - {x: 5.2020187, y: 2.7130303}
       - {x: 3.9416113, y: 3.190903}
       - {x: 0.5041561, y: 2.9733605}
       - {x: -1.7257347, y: 2.4794538}
-      - {x: -3.1938381, y: 1.5998268}
-      - {x: -3.5383883, y: -0.9843875}
-      - {x: -2.8226929, y: -2.1359622}
+      - {x: -2.9931147, y: 1.584386}
+      - {x: -3.2759018, y: -0.8763083}
+      - {x: -2.5910878, y: -1.5183628}
       - {x: -1.126739, y: -2.1887417}
       - {x: 0.36688614, y: -2.0944967}
+      - {x: 1.7541431, y: -1.9522946}
       - {x: 2.881044, y: -1.689775}
   m_UseDelaunayMesh: 0
 --- !u!1 &3945817266886494194
@@ -654,7 +657,7 @@ Transform:
   m_GameObject: {fileID: 6906192128270712815}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.07, y: -2.31, z: 0}
+  m_LocalPosition: {x: 6, y: -2.31, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -695,7 +698,7 @@ Transform:
   m_GameObject: {fileID: 6911742353469115715}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.22, y: -3.1, z: -0.36054745}
+  m_LocalPosition: {x: 5.9, y: -3.1, z: -0.36054745}
   m_LocalScale: {x: 1.3, y: 1.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -863,9 +866,9 @@ MonoBehaviour:
   Stay_StartPos: {fileID: 3655347669388410452}
   phamvistay: 31.1
   patrolDistance: 5
-  detectionRange: 23.2
+  detectionRange: 21.7
   chaseSpeed: 3.34
-  attakRange: 9.52
+  attakRange: 8.89
   SetupY: 0.23
   StartRay: 0
   LengthRay: 0
@@ -904,6 +907,8 @@ MonoBehaviour:
   Atk2Damage: 40
   Atk2Speed: 1
   Atk2_Scale: {x: 0, y: 0, z: 0}
+  CD_Skill: 5
+  Cd_SkillPrivate: 5
   skill2_Speed: 0.8
   skill2CooldownMin: 5
   skill2CooldownMax: 10
@@ -920,6 +925,21 @@ MonoBehaviour:
   skill3CooldownMax: 10
   skill3BaseCount: 3
   skill3MaxCount: 15
+  enemies:
+  - {fileID: 2669810216891255783, guid: 7a07cd9ca92824c488b4b8a90dbbeda5, type: 3}
+  - {fileID: 1521434240176358675, guid: dcf65f526d501c64c9ddbe86ce6563ff, type: 3}
+  - {fileID: 8272658285535731826, guid: aabdb63c6739cac47b2cb749584b2e7c, type: 3}
+  - {fileID: 919917192974139558, guid: e02e4f5152d68a34e9abdec07d13d992, type: 3}
+  - {fileID: 8549556554023021952, guid: 62eda3b1ff1237a4380024fc567450f8, type: 3}
+  - {fileID: 1620371540474726502, guid: c03b732690aaf3c4abfe9c23244b6b7f, type: 3}
+  - {fileID: 3523208428072084540, guid: 174a6ca19f383064f994ab1aa0ef8cbf, type: 3}
+  - {fileID: 1095550659118985849, guid: bc2604afcd1196245925715e48114587, type: 3}
+  - {fileID: 2923348913546820938, guid: d960f28c7ca312e45a33a1166bfc77d5, type: 3}
+  - {fileID: 1394817249019783846, guid: 32989f4420c6476458c333b496b28c65, type: 3}
+  - {fileID: 5705388077582204593, guid: 2ee7e8cc1dc51c440979569805b8621c, type: 3}
+  - {fileID: 6956812523697237166, guid: 5e709a42118a50b45982399f435b016a, type: 3}
+  spawnCount: 1
+  Spawn_cd: 20
 --- !u!82 &8446871209206308779
 AudioSource:
   m_ObjectHideFlags: 0

@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scenes\Lv4_Manager.cs" />
     <Compile Include="Assets\Scripts\Enemies\Boar_V2.cs" />
     <Compile Include="Assets\Scripts\Map\Camera.cs" />
+    <Compile Include="Assets\Scripts\Dead.cs" />
     <Compile Include="Assets\Scripts\DataManager.cs" />
     <Compile Include="Assets\Scripts\Coin.cs" />
     <Compile Include="Assets\Scripts\Shop.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Assets\Scripts\Enemies\Mummy.cs" />
     <Compile Include="Assets\Scripts\Enemies\BOD_Atk2.cs" />
     <Compile Include="Assets\Scripts\Player\UI\Items.cs" />
+    <Compile Include="Assets\Scripts\Menu.cs" />
     <Compile Include="Assets\Scripts\Player\UI\Effect.cs" />
     <Compile Include="Assets\Scripts\Enemies\Boar.cs" />
   </ItemGroup>
