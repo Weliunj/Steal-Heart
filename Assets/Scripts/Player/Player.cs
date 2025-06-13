@@ -17,6 +17,7 @@ public partial class Player : MonoBehaviour
     public Animator anim;
 
     private bool dead = false;
+    public GameObject DeadPanel;
     float move;
     public int doubleJump =0;
     public float dashcd = 0f;
@@ -55,6 +56,8 @@ public partial class Player : MonoBehaviour
         rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         rb.interpolation = RigidbodyInterpolation2D.Interpolate;
 
+        DeadPanel.SetActive(false);
+
         foreach (AudioSource source in audioSources) { source.playOnAwake = false; }
         audioSources[0].loop = true;
         audioSources[0].volume= 20f;
@@ -67,18 +70,13 @@ public partial class Player : MonoBehaviour
     {
         HP_Update();
         if (Hp <= 0 && !dead)
-        { 
+        {
+            DeadPanel.SetActive(true);
             dead = true; anim.ResetTrigger("Hit") ; 
             anim.SetTrigger("Dead"); 
             audioSources[4].Stop(); 
             audioSources[4].Play();
 
-            // Trừ tài nguyên
-            dataManager.Coin_Quan = Mathf.FloorToInt(dataManager.Coin_Quan * 0.7f);
-            dataManager.Hp_bottle = Mathf.FloorToInt(dataManager.Hp_bottle * 0.7f);
-            dataManager.Jump_bottle = Mathf.FloorToInt(dataManager.Jump_bottle * 0.7f);
-            dataManager.Speed_bottle = Mathf.FloorToInt(dataManager.Speed_bottle * 0.7f);
-            dataManager.Strength_bottle = Mathf.FloorToInt(dataManager.Strength_bottle * 0.7f);
         }
         if (dead) { rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); return; }// Nếu đã chết rồi, không xử lý gì tiếp
         if(IsStun > 0) 
@@ -135,7 +133,7 @@ public partial class Player : MonoBehaviour
             doubleJump++;
             anim.SetTrigger("Jump");
 
-            float temp = Slow_Strength != 1 ? Slow_Strength* 0.9f : 1;
+            float temp = Slow_Strength != 1 ? 0.9f : 1;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, forcejump * temp);
         }
     }
@@ -167,7 +165,7 @@ public partial class Player : MonoBehaviour
     {
 
         inventory.Slow.SetActive(true);
-        Slow_Strength = 0.5f;
+        Slow_Strength = 0.65f;
         yield return new WaitForSeconds(dura);
         Slow_Strength = 1f;
         inventory.Slow.SetActive(false);
