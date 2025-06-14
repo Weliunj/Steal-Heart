@@ -48,8 +48,8 @@ public class BOD : EnemyBase
     [Header("------------- SPAWM -------------")]
     public GameObject[] enemies;
     public int spawnCount = 1;
-    public float Spawn_cd = 10f;
-    private float Spawn_cdPrivate = 15f;
+    public float Spawn_cd = 20f;
+    private float Spawn_cdPrivate = 20f;
     public override void Start()
     {
         // Compoment
@@ -175,7 +175,7 @@ public class BOD : EnemyBase
             Cd_SkillPrivate -= Time.deltaTime;
             SPAWN();
         }
-        else if (!IsUsingAnySkill && Cd_SkillPrivate <= 0) // Chỉ khi không có skill nào đang chạy
+        if (!IsUsingAnySkill && Cd_SkillPrivate <= 0) // Chỉ khi không có skill nào đang chạy
         {
             if (skill2CooldownTimer <= 0 && skill3CooldownTimer <= 0)
             {
@@ -383,13 +383,13 @@ public class BOD : EnemyBase
         skill2CooldownMax *= 0.8f;
         skill3CooldownMin *= 0.8f;
         skill3CooldownMax *= 0.8f;
-        atkDMG = Mathf.CeilToInt(atkDMG * 1.2f);
+        atkDMG = Mathf.CeilToInt(atkDMG * 1.3f);
         Atk2Damage = Random.Range(45, 50);
         Atk2Speed = 0.6f;
         CD_Skill = 3f;
 
         spawnCount = 2;
-        Spawn_cd = 8f;
+        Spawn_cd = 15f;
         // Đổi màu cam đậm
         GetComponent<SpriteRenderer>().color = new Color(1f, 0.4f, 0f);
 
@@ -413,12 +413,12 @@ public class BOD : EnemyBase
 
 
         Atk2Speed = 0.4f;
-        atkDMG = Mathf.CeilToInt(atkDMG * 1.3f);
+        atkDMG = Mathf.CeilToInt(atkDMG * 1.5f);
         Atk2Damage = Random.Range(50, 55);
         CD_Skill = 1f;
 
         spawnCount = 3;
-        Spawn_cd = 6f;
+        Spawn_cd = 10f;
         // Đổi màu đỏ
         GetComponent<SpriteRenderer>().color = Color.red;
         Debug.Log("=== Entered Phase 3 ===");
