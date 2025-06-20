@@ -39,7 +39,7 @@ public class Lv4_Manager : MonoBehaviour
             spawnEvent.SetActive(false);
         }
 
-        if(player.transform.position.x < daidien.transform.position.x + 1f  && (daidien.transform.position.y - player.transform.position.y) < 1f)
+        if(player.transform.position.x < daidien.transform.position.x + 1f)
         {
             player.audioSources[5].Play();
             player.Hp = 0;
