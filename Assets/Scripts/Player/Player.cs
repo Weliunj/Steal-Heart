@@ -165,7 +165,7 @@ public partial class Player : MonoBehaviour
     {
 
         inventory.Slow.SetActive(true);
-        Slow_Strength = 0.65f;
+        Slow_Strength = 0.75f;
         yield return new WaitForSeconds(dura);
         Slow_Strength = 1f;
         inventory.Slow.SetActive(false);
