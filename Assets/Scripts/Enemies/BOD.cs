@@ -47,8 +47,8 @@ public class BOD : EnemyBase
     [Header("------------- SPAWM -------------")]
     public GameObject[] enemies;
     public int spawnCount = 1;
-    public float Spawn_cd = 20f;
-    private float Spawn_cdPrivate = 20f;
+    public float Spawn_cd = 18f;
+    private float Spawn_cdPrivate = 18f;
     [Header("------------- Teleport -------------")]
     public Transform[] pos;
     public float cdTele;
@@ -138,9 +138,6 @@ public class BOD : EnemyBase
             if (skill2CooldownTimer > 0) skill2CooldownTimer -= Time.deltaTime;
             if (skill3CooldownTimer > 0) skill3CooldownTimer -= Time.deltaTime;
 
-            SPAWN();
-            TELE();
-
             if (isChasing)
             {
                 ChasePlayer(distanceToPlayer);
@@ -176,6 +173,9 @@ public class BOD : EnemyBase
                 transform.position = Vector3.MoveTowards(transform.position, player.transform.position + new Vector3(0, 0.5f, 0), chaseSpeed * Time.deltaTime);
             }
         }
+
+        SPAWN();
+        TELE();
 
         if (Cd_SkillPrivate > 0) Cd_SkillPrivate -= Time.deltaTime;
         if (!IsUsingAnySkill && Cd_SkillPrivate <= 0) // Chỉ khi không có skill nào đang chạy
@@ -423,7 +423,7 @@ public class BOD : EnemyBase
         CD_Skill = 3f;
         atkspeed = 2.7f;
         spawnCount = 2;
-        Spawn_cd = 11f;
+        Spawn_cd = 14f;
         transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
         // Đổi màu cam đậm
         GetComponent<SpriteRenderer>().color = new Color(1f, 0.4f, 0f);
@@ -457,7 +457,7 @@ public class BOD : EnemyBase
         CD_Skill = 1f;
 
         spawnCount = 3;
-        Spawn_cd = 7f;
+        Spawn_cd = 10f;
         transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
         // Đổi màu đỏ
         GetComponent<SpriteRenderer>().color = Color.red;
