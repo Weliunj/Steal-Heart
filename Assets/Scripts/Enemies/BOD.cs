@@ -33,7 +33,6 @@ public class BOD : EnemyBase
     [Header("------------- Skill 3 Settings -------------")]
     public GameObject[] skill3RandomZones; // [xMin, xMax, yMin, yMax]
     public float skill3_Speed = 3f;
-    private bool OnSkill3 = false;
 
     public int soluong = 10;
     public int dot = 3;
@@ -48,8 +47,12 @@ public class BOD : EnemyBase
     [Header("------------- SPAWM -------------")]
     public GameObject[] enemies;
     public int spawnCount = 1;
-    public float Spawn_cd = 20f;
-    private float Spawn_cdPrivate = 20f;
+    public float Spawn_cd = 18f;
+    private float Spawn_cdPrivate = 18f;
+    [Header("------------- Teleport -------------")]
+    public Transform[] pos;
+    public float cdTele;
+    private float cdtelePrivate;
     public override void Start()
     {
         // Compoment
@@ -83,7 +86,7 @@ public class BOD : EnemyBase
     }
     public IEnumerator clear()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3.5f);
         SceneManager.LoadScene(0);
     }
     // Update is called once per frame
@@ -95,7 +98,7 @@ public class BOD : EnemyBase
             rb.linearVelocity = new Vector2(0, 0);
             Dead = true;
 
-
+            StopAllCoroutines();
             anim.ResetTrigger("Atk1");
             anim.ResetTrigger("Atk2");
             anim.SetTrigger("Dead");
@@ -118,7 +121,7 @@ public class BOD : EnemyBase
         else if (Hp > 0 && stuned <= 0 && player.Hp > 0)        //Player song
         {
             // Tinh khoang cach den player
-            float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
+            float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position + new Vector3(0, 0.5f, 0));
 
             //Neu player trong pham vi
             if (distanceToPlayer < detectionRange)
@@ -134,6 +137,9 @@ public class BOD : EnemyBase
             // Đặt bên trong Update() trước đoạn kiểm tra isChasing
             if (skill2CooldownTimer > 0) skill2CooldownTimer -= Time.deltaTime;
             if (skill3CooldownTimer > 0) skill3CooldownTimer -= Time.deltaTime;
+
+            SPAWN();
+            TELE();
 
             if (isChasing)
             {
@@ -167,7 +173,7 @@ public class BOD : EnemyBase
             }
             else
             {
-                transform.position = Vector3.MoveTowards(transform.position, player.transform.position, chaseSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, player.transform.position + new Vector3(0, 0.5f, 0), chaseSpeed * Time.deltaTime);
             }
         }
         if(Cd_SkillPrivate > 0)
@@ -198,7 +204,6 @@ public class BOD : EnemyBase
                 TryUseSkill3(); // Chỉ Skill 3 sẵn sàng
             }
         }
-        // ----------------------
     }
 
     public void JUMP()
@@ -255,18 +260,34 @@ public class BOD : EnemyBase
 
     void SPAWN()
     {
-        if(Spawn_cdPrivate > 0) { Spawn_cdPrivate -= Time.deltaTime;  }
+        if (Spawn_cdPrivate > 0)
+        {
+            Spawn_cdPrivate -= Time.deltaTime;
+        }
         else
         {
-            for(int s = 0 ; s < spawnCount; s++)
+            for (int s = 0; s < spawnCount; s++)
             {
                 int randomS = Random.Range(0, enemies.Length);
-                Instantiate(enemies[randomS], new Vector3(transform.position.x + Random.Range(-1f, 1f), transform.position.y + Random.Range(1f, 4f), 0), Quaternion.identity);
+                Instantiate(enemies[randomS], new Vector3(
+                    transform.position.x + Random.Range(-1f, 1f),
+                    transform.position.y + Random.Range(1f, 4f),
+                    0), Quaternion.identity);
             }
             Spawn_cdPrivate = Random.Range(Spawn_cd, Spawn_cd + 5);
         }
     }
-    float atk1;
+    void TELE()
+    {
+        if(cdtelePrivate > 0) { cdtelePrivate-= Time.deltaTime; }
+        else
+        {
+            int rd = Random.Range(0, pos.Length);
+            this.transform.position = pos[rd].position;
+            cdtelePrivate = cdTele + Random.Range(-1f, 3f);
+        }
+    }
+
     public void Atk1()
     {
         if (speed > 0)
@@ -275,14 +296,28 @@ public class BOD : EnemyBase
         }
         else
         {
+            // Nếu đang dùng skill 2 hoặc 3 thì hủy
+            if (skill2Coroutine != null)
+            {
+                StopCoroutine(skill2Coroutine);
+                skill2Coroutine = null;
+                OnSkill2 = false;
+            }
+            if (skill3Coroutine != null)
+            {
+                StopCoroutine(skill3Coroutine);
+                skill3Coroutine = null;
+            }
+
             //Atk
             anim.SetTrigger("Atk1");
             StartCoroutine(fixSound());
-            //Player Hit
-            speed = atkspeed;
 
+            //Player Hit
+            speed = atkspeed + Random.Range(-0.3f, 0.5f);
         }
     }
+
     public IEnumerator fixSound()
     {
         yield return new WaitForSeconds(0.23f);
@@ -311,7 +346,7 @@ public class BOD : EnemyBase
             }
 
             yield return new WaitForSeconds(0.3f); // tránh trùng animation
-            Instantiate(Atk2Prefab, player.transform.position + new Vector3(0, 0.7f, 0), Quaternion.identity);
+            Instantiate(Atk2Prefab, player.transform.position + new Vector3(0, 0.65f, 0), Quaternion.identity);
             yield return new WaitForSeconds(skill2_Speed);
         }
 
@@ -333,8 +368,6 @@ public class BOD : EnemyBase
 
     IEnumerator Skill3Coroutine()
     {
-        OnSkill3 = true;
-
         float currentSoluong = soluong;
 
         for (int i = 0; i < dot; i++)
@@ -363,7 +396,6 @@ public class BOD : EnemyBase
             currentSoluong += Random.Range(5, 10); // tăng thêm mỗi đợt
         }
 
-        OnSkill3 = false;
         skill3Coroutine = null;
         Cd_SkillPrivate = Random.Range(CD_Skill, CD_Skill + 5f);
     }
@@ -383,11 +415,16 @@ public class BOD : EnemyBase
         skill2CooldownMax *= 0.8f;
         skill3CooldownMin *= 0.8f;
         skill3CooldownMax *= 0.8f;
+
+        skill2_Speed = 0.75f;
+        skill3_Speed = 2.3f;
+        cdTele = 13f;
+
         atkDMG = Mathf.CeilToInt(atkDMG * 1.3f);
         Atk2Damage = Random.Range(45, 50);
         Atk2Speed = 0.6f;
         CD_Skill = 3f;
-
+        atkspeed = 2.7f;
         spawnCount = 2;
         Spawn_cd = 15f;
         // Đổi màu cam đậm
@@ -411,7 +448,11 @@ public class BOD : EnemyBase
         skill3CooldownMin *= 0.7f;
         skill3CooldownMax *= 0.7f;
 
+        skill2_Speed = 0.5f;
+        skill3_Speed = 1.5f;
+        cdTele = 10f;
 
+        atkspeed = 2.4f;
         Atk2Speed = 0.4f;
         atkDMG = Mathf.CeilToInt(atkDMG * 1.5f);
         Atk2Damage = Random.Range(50, 55);
@@ -496,7 +537,8 @@ public class BOD : EnemyBase
         {
             player.anim.SetTrigger("Hit");
             player.audioSources[5].Play();
-            player.Hp -= atkDMG;
+            player.Hp -= atkDMG + Random.Range(0, 10);
+            player.IsStun = StunedPlayer;
             player.StartCoroutine(player.dashThrougt(0.9f)); // Bat tu tam thoi
 
         }
