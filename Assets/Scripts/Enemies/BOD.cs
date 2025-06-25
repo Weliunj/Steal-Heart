@@ -47,8 +47,8 @@ public class BOD : EnemyBase
     [Header("------------- SPAWM -------------")]
     public GameObject[] enemies;
     public int spawnCount = 1;
-    public float Spawn_cd = 20f;
-    private float Spawn_cdPrivate = 20f;
+    public float Spawn_cd = 18f;
+    private float Spawn_cdPrivate = 18f;
     [Header("------------- Teleport -------------")]
     public Transform[] pos;
     public float cdTele;
@@ -176,8 +176,11 @@ public class BOD : EnemyBase
                 transform.position = Vector3.MoveTowards(transform.position, player.transform.position + new Vector3(0, 0.5f, 0), chaseSpeed * Time.deltaTime);
             }
         }
-
-        if (Cd_SkillPrivate > 0) Cd_SkillPrivate -= Time.deltaTime;
+        if(Cd_SkillPrivate > 0)
+        {
+            Cd_SkillPrivate -= Time.deltaTime;
+            SPAWN();
+        }
         if (!IsUsingAnySkill && Cd_SkillPrivate <= 0) // Chỉ khi không có skill nào đang chạy
         {
             if (skill2CooldownTimer <= 0 && skill3CooldownTimer <= 0)
@@ -423,8 +426,7 @@ public class BOD : EnemyBase
         CD_Skill = 3f;
         atkspeed = 2.7f;
         spawnCount = 2;
-        Spawn_cd = 11f;
-        transform.localScale = new Vector3(1.4f, 1.4f, 1.4f);
+        Spawn_cd = 15f;
         // Đổi màu cam đậm
         GetComponent<SpriteRenderer>().color = new Color(1f, 0.4f, 0f);
 
@@ -457,8 +459,7 @@ public class BOD : EnemyBase
         CD_Skill = 1f;
 
         spawnCount = 3;
-        Spawn_cd = 7f;
-        transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        Spawn_cd = 10f;
         // Đổi màu đỏ
         GetComponent<SpriteRenderer>().color = Color.red;
         Debug.Log("=== Entered Phase 3 ===");
