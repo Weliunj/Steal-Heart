@@ -21,7 +21,7 @@ public class BOD : EnemyBase
     public float CD_Skill = 5;
     public float Cd_SkillPrivate = 5f;
     [Header("------------- Skill 2 Settings -------------")]
-    private bool OnSkill2 = false;
+
     public float skill2_Speed = 1f;
     public float skill2CooldownMin = 5f;
     public float skill2CooldownMax = 10f;
@@ -298,7 +298,6 @@ public class BOD : EnemyBase
             {
                 StopCoroutine(skill2Coroutine);
                 skill2Coroutine = null;
-                OnSkill2 = false;
             }
             if (skill3Coroutine != null)
             {
@@ -331,7 +330,6 @@ public class BOD : EnemyBase
 
     IEnumerator Skill2Coroutine()
     {
-        OnSkill2 = true;
         for (int i = 0; i < skill2ProjectileCount; i++)
         {
             skill2LockDuration = 0.4f;
@@ -347,7 +345,6 @@ public class BOD : EnemyBase
             yield return new WaitForSeconds(skill2_Speed);
         }
 
-        OnSkill2 = false;
         skill2Coroutine = null;
         Cd_SkillPrivate = Random.Range(CD_Skill, CD_Skill + 5f);
     }
