@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Quy
-  productName: StealHeart_Sybau
+  productName: StealHeart_Demo
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -291,7 +291,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: da821e17d8efb66408a1ca77d4e7068a, type: 3}
+      m_Icon: {fileID: 2800000, guid: 23f2405387920c14aa916b9eb55f60aa, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0

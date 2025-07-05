@@ -10,7 +10,6 @@ public partial class Player : MonoBehaviour
     [Range(0, 300)] protected int maxHealth = 300;
     [Range(0, 300)] public int Hp;
     public Slider Hpbar;
-    public Image HpImage;
     public TMP_Text Hp_T;
     public float Hp_cd = 0f;
     public GameObject Hp_Eff;
@@ -51,19 +50,7 @@ public partial class Player : MonoBehaviour
             UsingHp(); 
         }
 
-        float healthPercent = (float)Hp / maxHealth;
-        if (healthPercent > 0.7f)
-        {
-            HpImage.color = Color.green;
-        }
-        else if (healthPercent > 0.3f)
-        {
-            HpImage.color = new Color(1f, 0.65f, 0f); // Orange
-        }
-        else
-        {
-            HpImage.color = Color.red;
-        }
+        
     }
     public void UsingHp()
     {
