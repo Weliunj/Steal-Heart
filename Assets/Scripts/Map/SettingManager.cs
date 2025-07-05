@@ -6,7 +6,6 @@ public class SettingManager : MonoBehaviour
 {
     [Header("Setting UI")]
     public GameObject settingPanel;
-    public Button settingButton;
     public Button resumeButton;
     public Button menuButton;
     public Button quitButton;
@@ -22,10 +21,6 @@ public class SettingManager : MonoBehaviour
         // Khởi tạo UI
         if (settingPanel != null)
             settingPanel.SetActive(false);
-
-        // Thiết lập button listeners
-        if (settingButton != null)
-            settingButton.onClick.AddListener(ToggleSetting);
 
         if (resumeButton != null)
             resumeButton.onClick.AddListener(ResumeGame);
@@ -55,8 +50,8 @@ public class SettingManager : MonoBehaviour
 
     void Update()
     {
-        // Cho phép mở setting bằng phím ESC
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // Cho phép mở setting bằng phím ESC (chỉ trên PC)
+        if (Application.platform != RuntimePlatform.Android && Input.GetKeyDown(KeyCode.Escape))
         {
             ToggleSetting();
         }

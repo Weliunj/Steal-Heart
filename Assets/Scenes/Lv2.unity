@@ -3098,11 +3098,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1766746424943163148, guid: 4e82161ca7b35ce4c858fd8fef02cfa7, type: 3}
   m_PrefabInstance: {fileID: 1054944236}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &201154138 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1767761334148715395, guid: 4e82161ca7b35ce4c858fd8fef02cfa7, type: 3}
-  m_PrefabInstance: {fileID: 1054944236}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &214345250
 GameObject:
   m_ObjectHideFlags: 0
@@ -4575,6 +4570,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &367237445 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5302875511262949719, guid: 4e82161ca7b35ce4c858fd8fef02cfa7, type: 3}
+  m_PrefabInstance: {fileID: 1054944236}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &367719708
 GameObject:
   m_ObjectHideFlags: 0
@@ -6507,7 +6507,7 @@ PrefabInstance:
     - target: {fileID: 93610690973303918, guid: d7181a4ec4e934e44941b6f13608095d, type: 3}
       propertyPath: Key
       value: 
-      objectReference: {fileID: 201154138}
+      objectReference: {fileID: 367237445}
     - target: {fileID: 93610690973303918, guid: d7181a4ec4e934e44941b6f13608095d, type: 3}
       propertyPath: Shop_Panel
       value: 

@@ -67,39 +67,48 @@ public partial class Player : MonoBehaviour
     }
     public void UsingHp()
     {
-        if (dataManager.Hp_bottle <= 0 || Hp <= 0 || Hp_cd > 0)  return;        //delta.time
+        if (dataManager.Hp_bottle <= 0 || Hp <= 0 || Hp_cd > 0) return;
+
+        // ==== KEYBOARD: giữ phím H ====
         if (Input.GetKeyDown(KeyCode.H))
         {
-            isHoldingH = true; //kiem tra t gian
-            holdTime = 0f; //reset bo dem
+            isHoldingH = true;
+            holdTime = 0f;
         }
 
-        // Đang giữ phím H
         if (isHoldingH && Input.GetKey(KeyCode.H))
         {
             holdTime += Time.deltaTime;
         }
 
-        // Thả phím H ra
         if (isHoldingH && Input.GetKeyUp(KeyCode.H))
         {
-            if (holdTime < 1.5f)
-            {
-                Hp += 130;
-                Debug.Log("HP + 130");
-            }
-            else
-            {
-                Hp += 230;
-                Debug.Log("HP + 230");
-            }
-
-            dataManager.Hp_bottle--;
-            inventory.usingItems.Play();
-            if (Hp > 300) { Hp = maxHealth; }
+            int healAmount = holdTime < 1.5f ? 130 : 230;
+            ApplyHeal(healAmount);
             isHoldingH = false;
             holdTime = 0f;
-            Hp_cd = 5f;
+        }
+
+        // ==== MOBILE: giữ nút Heal ====
+        if (mobile.isHoldingHeal)
+        {
+            mobile.healHoldTime += Time.deltaTime;
+        }
+        else if (mobile.healHoldTime > 0f) // Khi thả nút
+        {
+            int healAmount = mobile.healHoldTime < 1.5f ? 130 : 230;
+            ApplyHeal(healAmount);
+            mobile.healHoldTime = 0f;
         }
     }
+    private void ApplyHeal(int amount)
+    {
+        Hp += amount;
+        Debug.Log($"Mobile: HP + {amount}");
+        dataManager.Hp_bottle--;
+        inventory.usingItems.Play();
+        if (Hp > maxHealth) Hp = maxHealth;
+        Hp_cd = 5f;
+    }
+
 }

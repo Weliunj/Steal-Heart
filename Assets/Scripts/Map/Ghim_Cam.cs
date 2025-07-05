@@ -3,13 +3,13 @@
 public class Ghim_Cam : MonoBehaviour
 {
     Player player;
-    Camera cam;
+    CameraController cam;
     AudioSource bossAu;
 
     private void Start()
     {
         player = FindAnyObjectByType<Player>();
-        cam = FindAnyObjectByType<Camera>();
+        cam = FindAnyObjectByType<CameraController>();
         bossAu = GetComponent<AudioSource>();
         bossAu.loop = true;
     }

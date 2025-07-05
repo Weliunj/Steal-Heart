@@ -885,6 +885,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e82161ca7b35ce4c858fd8fef02cfa7, type: 3}
+--- !u!1 &102721916 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5302875511262949719, guid: 4e82161ca7b35ce4c858fd8fef02cfa7, type: 3}
+  m_PrefabInstance: {fileID: 102721915}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &103693459
 GameObject:
   m_ObjectHideFlags: 0
@@ -11704,7 +11709,7 @@ PrefabInstance:
     - target: {fileID: 93610690973303918, guid: d7181a4ec4e934e44941b6f13608095d, type: 3}
       propertyPath: Key
       value: 
-      objectReference: {fileID: 1375123141}
+      objectReference: {fileID: 102721916}
     - target: {fileID: 93610690973303918, guid: d7181a4ec4e934e44941b6f13608095d, type: 3}
       propertyPath: Shop_Panel
       value: 
@@ -13729,11 +13734,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 227413653468997129, guid: aceeaef6994ea4c4da0fd0bf93afc4e2, type: 3}
   m_PrefabInstance: {fileID: 1366409892}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1375123141 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1767761334148715395, guid: 4e82161ca7b35ce4c858fd8fef02cfa7, type: 3}
-  m_PrefabInstance: {fileID: 102721915}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1376643767
 GameObject:
