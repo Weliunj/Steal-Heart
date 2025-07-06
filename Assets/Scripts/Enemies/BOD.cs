@@ -1,10 +1,14 @@
 ﻿using System.Collections;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class BOD : EnemyBase
 {
+    public Image Icon;
+    public TMP_Text ClearDemo;
     [Header("-------------Unique-----------")]
     public bool isV2 = false;
     public bool isV3 = false;
@@ -21,7 +25,7 @@ public class BOD : EnemyBase
     public float CD_Skill = 5;
     public float Cd_SkillPrivate = 5f;
     [Header("------------- Skill 2 Settings -------------")]
-    private bool OnSkill2 = false;
+
     public float skill2_Speed = 1f;
     public float skill2CooldownMin = 5f;
     public float skill2CooldownMax = 10f;
@@ -55,6 +59,7 @@ public class BOD : EnemyBase
     private float cdtelePrivate;
     public override void Start()
     {
+        ClearDemo.text = "";
         // Compoment
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
@@ -86,6 +91,7 @@ public class BOD : EnemyBase
     }
     public IEnumerator clear()
     {
+        ClearDemo.text = "CLEAR DEMO";
         yield return new WaitForSeconds(3.5f);
         SceneManager.LoadScene(0);
     }
@@ -301,7 +307,6 @@ public class BOD : EnemyBase
             {
                 StopCoroutine(skill2Coroutine);
                 skill2Coroutine = null;
-                OnSkill2 = false;
             }
             if (skill3Coroutine != null)
             {
@@ -334,7 +339,6 @@ public class BOD : EnemyBase
 
     IEnumerator Skill2Coroutine()
     {
-        OnSkill2 = true;
         for (int i = 0; i < skill2ProjectileCount; i++)
         {
             skill2LockDuration = 0.4f;
@@ -350,7 +354,6 @@ public class BOD : EnemyBase
             yield return new WaitForSeconds(skill2_Speed);
         }
 
-        OnSkill2 = false;
         skill2Coroutine = null;
         Cd_SkillPrivate = Random.Range(CD_Skill, CD_Skill + 5f);
     }
@@ -429,6 +432,7 @@ public class BOD : EnemyBase
         Spawn_cd = 15f;
         // Đổi màu cam đậm
         GetComponent<SpriteRenderer>().color = new Color(1f, 0.4f, 0f);
+        Icon.color = new Color(1f, 0.4f, 0f);
 
         Debug.Log("=== Entered Phase 2 ===");
     }
@@ -462,6 +466,7 @@ public class BOD : EnemyBase
         Spawn_cd = 10f;
         // Đổi màu đỏ
         GetComponent<SpriteRenderer>().color = Color.red;
+        Icon.color = Color.red;
         Debug.Log("=== Entered Phase 3 ===");
     }
 
@@ -479,19 +484,7 @@ public class BOD : EnemyBase
             EnterPhase3();
         }
 
-        // ==== Color Hp bar ============================
-        if (slider.value >= (maxHealth * 0.6f))
-        {
-            hpbar.color = Color.green;
-        }
-        else if (slider.value < (maxHealth * 0.6f) && slider.value > (maxHealth * 0.3f))
-        {
-            hpbar.color = new Color(1f, 0.65f, 0f); // Orange
-        }
-        else
-        {
-            hpbar.color = Color.red;
-        }
+        
     }
 
     void FlipSprite(Vector3 Flip)

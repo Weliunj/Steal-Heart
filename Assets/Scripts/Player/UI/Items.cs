@@ -64,10 +64,10 @@ public partial class UI : MonoBehaviour
         //Test
         if ( player.Hp > 0)
         {
-            if (speed_cd >= 0) { speed_cd -= Time.deltaTime; }
+            if (speed_cd >= 0) { speed_cd -= Time.deltaTime; mobileController.Speed = false; }
             else
             {
-                if (Input.GetKeyDown(KeyCode.U) && dataManager.Speed_bottle > 0)
+                if (mobileController.Speed && dataManager.Speed_bottle > 0)
                 {
                     dataManager.Speed_bottle--;
                     speed_cd = 10f;
@@ -77,10 +77,10 @@ public partial class UI : MonoBehaviour
                 }
             }
 
-            if (Jump_cd >= 0) { Jump_cd -= Time.deltaTime; }
+            if (Jump_cd >= 0) { Jump_cd -= Time.deltaTime; mobileController.Jump = false; }
             else
             {
-                if (Input.GetKeyDown(KeyCode.I) && dataManager.Jump_bottle > 0)
+                if (mobileController.Jump && dataManager.Jump_bottle > 0)
                 {
                     dataManager.Jump_bottle--;
                     Jump_cd = 15f;
@@ -90,10 +90,10 @@ public partial class UI : MonoBehaviour
                 }
             }
 
-            if (Stre_cd >= 0) { Stre_cd -= Time.deltaTime; }
+            if (Stre_cd >= 0) { Stre_cd -= Time.deltaTime; mobileController.Strength = false; }
             else
             {
-                if (Input.GetKeyDown(KeyCode.O) && dataManager.Strength_bottle > 0)
+                if (mobileController.Strength && dataManager.Strength_bottle > 0)
                 {
                     dataManager.Strength_bottle--;
                     Stre_cd = 15f;

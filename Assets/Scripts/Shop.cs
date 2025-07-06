@@ -9,6 +9,7 @@ public partial class Shop : MonoBehaviour
     public GameObject Shop_Panel;
     public DataManager dataManager;
 
+    private MobileController mobileController;
     // ========== SHOP DATA ==========
     private UI ui;
     private bool toggleShop;
@@ -18,6 +19,7 @@ public partial class Shop : MonoBehaviour
     public void Start()
     {
         ui = FindAnyObjectByType<UI>();
+        mobileController = FindAnyObjectByType<MobileController>();
 
         m_AudioSource = GetComponent<AudioSource>();
         Key.SetActive(false);
@@ -43,10 +45,11 @@ public partial class Shop : MonoBehaviour
         //Chi cho phep buy khi dang o shop
         if(Key.activeSelf == true)
         {
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E) || mobileController.ShopPressed)
             {
                 toggleShop = !toggleShop;
                 Shop_Panel.SetActive(toggleShop);
+                mobileController.ShopPressed = false; // reset để không bị lặp
             }
         }
         else
@@ -60,10 +63,10 @@ public partial class Shop : MonoBehaviour
         if(timebuying > 0) { timebuying -= Time.deltaTime; }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1)) BuyItem(15, ref dataManager.Hp_bottle);
-            else if (Input.GetKeyDown(KeyCode.Alpha2)) BuyItem(8, ref dataManager.Speed_bottle);
-            else if (Input.GetKeyDown(KeyCode.Alpha3)) BuyItem(5, ref dataManager.Jump_bottle);
-            else if (Input.GetKeyDown(KeyCode.Alpha4)) BuyItem(10, ref dataManager.Strength_bottle);
+            if (mobileController.item1) BuyItem(15, ref dataManager.Hp_bottle);
+            else if (mobileController.item2) BuyItem(8, ref dataManager.Speed_bottle);
+            else if (mobileController.item3) BuyItem(5, ref dataManager.Jump_bottle);
+            else if (mobileController.item4) BuyItem(10, ref dataManager.Strength_bottle);
         }
     }
     void BuyItem(int cost, ref int itemCount)
@@ -79,6 +82,10 @@ public partial class Shop : MonoBehaviour
                 m_AudioSource.Play();
             }
         }
+        mobileController.item1 = false;
+        mobileController.item2 = false;
+        mobileController.item3 = false;
+        mobileController.item4 = false;
         timebuying = 0.5f;
     }
 
