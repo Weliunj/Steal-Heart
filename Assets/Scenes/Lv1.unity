@@ -75190,10 +75190,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 790650371011064938, guid: 4e82161ca7b35ce4c858fd8fef02cfa7, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 15.429993
-      objectReference: {fileID: 0}
     - target: {fileID: 2256509913139457633, guid: 4e82161ca7b35ce4c858fd8fef02cfa7, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -75280,10 +75276,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1882452441499797577, guid: e28e83be807af6146ab8a69755cac8db, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 132.52002
-      objectReference: {fileID: 0}
     - target: {fileID: 2711440552980517858, guid: e28e83be807af6146ab8a69755cac8db, type: 3}
       propertyPath: m_Pivot.x
       value: 0

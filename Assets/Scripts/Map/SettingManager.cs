@@ -1,9 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.IO; // Thêm dòng này để dùng File IO
 
 public class SettingManager : MonoBehaviour
 {
+    public DataManager dataManager;
+
     [Header("Setting UI")]
     public GameObject settingPanel;
     public Button resumeButton;
@@ -86,6 +89,7 @@ public class SettingManager : MonoBehaviour
 
     public void BackToMenu()
     {
+        SaveToFile(); // << Gọi
         // Đảm bảo game tiếp tục trước khi chuyển scene
         Time.timeScale = 1f;
         SceneManager.LoadScene(0); // Load scene menu (index 0)
@@ -93,6 +97,7 @@ public class SettingManager : MonoBehaviour
 
     public void QuitGame()
     {
+        SaveToFile(); // << Gọi
         // Đảm bảo game tiếp tục trước khi quit
         Time.timeScale = 1f;
         
@@ -144,5 +149,22 @@ public class SettingManager : MonoBehaviour
     public bool IsGamePaused()
     {
         return isPaused;
+    }
+
+    private void SaveToFile()
+    {
+        string path = Application.persistentDataPath + "/saveData.txt";
+
+        string line = $"{dataManager.LastSceneName}\t" +
+                      $"{dataManager.Coin_Quan}\t" +
+                      $"{dataManager.Hp_bottle}\t" +
+                      $"{dataManager.Jump_bottle}\t" +
+                      $"{dataManager.Speed_bottle}\t" +
+                      $"{dataManager.Strength_bottle}\t" +
+                      $"{dataManager.Hp_temp}";
+
+        File.WriteAllText(path, line);
+
+        Debug.Log("Đã lưu dữ liệu vào: " + path);
     }
 } 
