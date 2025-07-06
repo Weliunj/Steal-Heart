@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DataManager
   m_EditorClassIdentifier: 
   Coin_Quan: 0
-  Hp_bottle: 109
+  Hp_bottle: 0
   Jump_bottle: 0
   Speed_bottle: 0
   Strength_bottle: 0

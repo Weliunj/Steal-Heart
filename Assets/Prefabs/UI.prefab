@@ -9805,6 +9805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aac0512622bf4545960aa523cb4c87e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dataManager: {fileID: 11400000, guid: f80b9c2a9b943b242976dde8efbc9832, type: 2}
   settingPanel: {fileID: 8200198130633512879}
   resumeButton: {fileID: 5804957042031043687}
   menuButton: {fileID: 8068796874128301351}
