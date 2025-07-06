@@ -38,11 +38,17 @@ public partial class Player : MonoBehaviour
     [Header("-------------Audio")]
     public AudioSource[] audioSources;      //0: Run, 1: Atk1, 2: Atk2, 3: Atk3, 4: Jump, 5: Hit
 
+    [Header("-------------Audio")]
+    private MobileController mobile;
     void Start()
     {
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0; // Đảm bảo không bị giới hạn bởi V-Sync
+
         dataManager.LastSceneName = SceneManager.GetActiveScene().name;
 
-        inventory = FindAnyObjectByType<UI>();
+        mobile = FindAnyObjectByType<MobileController>();
+         inventory = FindAnyObjectByType<UI>();
         if(BOD != null)
         {
             BOD = FindAnyObjectByType<BOD>();
@@ -50,6 +56,7 @@ public partial class Player : MonoBehaviour
 
         Hp_Start();
         Ignore_Start();
+
 
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
@@ -68,6 +75,7 @@ public partial class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         HP_Update();
         if (Hp <= 0 && !dead)
         {
@@ -90,6 +98,7 @@ public partial class Player : MonoBehaviour
             MOVE();
             DASH();
             ATK();
+           
         }
     }
     public void MOVE()
@@ -103,7 +112,17 @@ public partial class Player : MonoBehaviour
             }
             else if (atk1cd <= 0f && atk2cd <= 0.2f && dashcd < 0.75f)
             {
-                move = Input.GetAxisRaw("Horizontal");
+
+                    if(mobile != null)
+                {
+                    move = mobile.move;
+                    
+                }
+                else
+                {
+                    move = Input.GetAxisRaw("Horizontal");
+                }
+
                 if (move != 0) { anim.SetBool("Run", true); audioSources[0].Play(); }
                 else { anim.SetBool("Run", false); audioSources[0].Pause(); }
 
@@ -127,7 +146,17 @@ public partial class Player : MonoBehaviour
     public void JUMP()
     {
         int count = 2 + inventory.Jump_Buff;
-        if (Input.GetKeyDown(KeyCode.Space) && doubleJump < count)
+
+        bool wantToJump = Input.GetKeyDown(KeyCode.Space);
+
+        // Nếu trên mobile: chỉ cho nhảy nếu flag = true
+        if (mobile != null && mobile.jumpPressed)
+        {
+            wantToJump = true;
+            mobile.jumpPressed = false; // ✅ RESET NGAY tại đây để chỉ nhảy 1 lần
+        }
+
+        if (wantToJump && doubleJump < count)
         {
             audioSources[4].Play();
             doubleJump++;
@@ -143,10 +172,11 @@ public partial class Player : MonoBehaviour
         if(dashcd > 0) 
         { 
             dashcd -= Time.deltaTime;
+            mobile.isDash = false;
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.L) && move != 0 && atk2cd <= 0.2f)
+             if (mobile.isDash && move != 0 && atk2cd <= 0.2f)
             {
                 dashcd = 1f;
                 if (move < 0)
@@ -159,6 +189,7 @@ public partial class Player : MonoBehaviour
                 }
                 StartCoroutine(dashThrougt(0.4f));
             }
+
         }
     }
     public IEnumerator SlowEffects(float dura)

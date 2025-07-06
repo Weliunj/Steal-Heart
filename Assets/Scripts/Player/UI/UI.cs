@@ -7,6 +7,7 @@ public partial class UI : MonoBehaviour
     [Header("           --------------- Inventory ---------------")]
     public DataManager dataManager;
     private Player player;
+    private MobileController mobileController;
 
     public GameObject backpack;
     bool toggle = false;
@@ -20,6 +21,8 @@ public partial class UI : MonoBehaviour
         backpack.SetActive(toggle);
         audioSource = GetComponent<AudioSource>();
         player = FindAnyObjectByType<Player>();
+        mobileController = FindAnyObjectByType<MobileController>();
+
         audioSource.loop = false;
         audioSource.playOnAwake = false;
         effect_Start();
@@ -31,10 +34,13 @@ public partial class UI : MonoBehaviour
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab) && player.Hp > 0)
+        // Toggle khi nhấn nút (chỉ toggle 1 lần mỗi khi nhấn)
+        if (mobileController.InvePressed && player.Hp > 0)
         {
-            toggle = !toggle; // Cập nhật toggle
+            toggle = !toggle;
             backpack.SetActive(toggle);
+            AutoClose = 8f;
+            mobileController.InvePressed = false; // RESET để không bị spam
         }
 
         //Tu dong dong inventory

@@ -3,13 +3,18 @@
 public class Ghim_Cam : MonoBehaviour
 {
     Player player;
-    Camera cam;
+    CameraController cam;
     AudioSource bossAu;
+
+    public Vector3 Setpos;
+    public GameObject Hp;
 
     private void Start()
     {
+        Hp.SetActive(false);
+
         player = FindAnyObjectByType<Player>();
-        cam = FindAnyObjectByType<Camera>();
+        cam = FindAnyObjectByType<CameraController>();
         bossAu = GetComponent<AudioSource>();
         bossAu.loop = true;
     }
@@ -18,7 +23,8 @@ public class Ghim_Cam : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            cam.SetTarget(transform.position); // Ghim vào vị trí hiện tại
+            //cam.SetTarget(transform.position); // Ghim vào vị trí hiện tại
+            Hp.SetActive(true);
             bossAu.Play();
         }
     }
