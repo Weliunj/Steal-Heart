@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class Camera : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
     public float speed = 7.4f;
     private Player player;
@@ -34,4 +34,4 @@ public class Camera : MonoBehaviour
     {
         isLocked = false;
     }
-}
+} 

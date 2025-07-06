@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public partial class Player : MonoBehaviour
 {
@@ -27,8 +27,10 @@ public partial class Player : MonoBehaviour
         if (atk1cd > 0) { atk1cd -= Time.deltaTime; }
         else
         {
-            if (Input.GetKeyDown(KeyCode.J))
+            if (Input.GetKeyDown(KeyCode.J) || mobile.Atk1Pressed)
             {
+                
+
                 audioSources[1].Stop(); audioSources[1].Play();
                 atktype = "Atk1";
                 anim.SetTrigger(atktype);
@@ -46,8 +48,10 @@ public partial class Player : MonoBehaviour
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.K) && (dashcd > 0.55f && dashcd < 0.85f))
+            if ((Input.GetKeyDown(KeyCode.K) || mobile.Atk2Pressed) && (dashcd > 0.55f && dashcd < 0.85f))
             {
+                
+
                 direcatk3 = dashDirec;
                 audioSources[3].Stop(); audioSources[3].Play();
                 atk2cd = 0.70f;
@@ -55,8 +59,10 @@ public partial class Player : MonoBehaviour
                 anim.SetTrigger("Atk2");
                 atk2cd = 0.7f;
             }
-            else if (Input.GetKeyDown(KeyCode.K))
+            else if ((Input.GetKeyDown(KeyCode.K) || mobile.Atk2Pressed))
             {
+                
+
                 audioSources[2].Stop(); audioSources[2].Play();
                 atktype = "Atk2";
                 anim.SetTrigger(atktype);

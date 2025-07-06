@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{51761751-8670-A83F-B0D1-E808503331F4}</ProjectGuid>
+    <ProjectGuid>{1F0AB32F-C629-700D-76CD-53254165CD74}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -67,17 +67,20 @@
     <Compile Include="Assets\Scripts\Enemies\Hyena.cs" />
     <Compile Include="Assets\Scripts\Enemies\Snake_Scorpio.cs" />
     <Compile Include="Assets\Scripts\Enemies\Vulture.cs" />
+    <Compile Include="Assets\Scripts\Mobile\MobileController.cs" />
+    <Compile Include="Assets\Scripts\Map\CameraController.cs" />
     <Compile Include="Assets\Scripts\Player\Atk.cs" />
+    <Compile Include="Assets\Scripts\Map\FixedAspectRatio.cs" />
     <Compile Include="Assets\Scripts\Player\UI\UI.cs" />
     <Compile Include="Assets\Scenes\Lv4_Manager.cs" />
     <Compile Include="Assets\Scripts\Enemies\Boar_V2.cs" />
-    <Compile Include="Assets\Scripts\Map\Camera.cs" />
     <Compile Include="Assets\Scripts\Dead.cs" />
     <Compile Include="Assets\Scripts\DataManager.cs" />
     <Compile Include="Assets\Scripts\Coin.cs" />
     <Compile Include="Assets\Scripts\Shop.cs" />
     <Compile Include="Assets\Scripts\Enemies\BOD.cs" />
     <Compile Include="Assets\Scripts\Map\Ground.cs" />
+    <Compile Include="Assets\Scripts\Map\SettingManager.cs" />
     <Compile Include="Assets\Scripts\Player\Load_Scene.cs" />
     <Compile Include="Assets\Scripts\Player\Player.cs" />
     <Compile Include="Assets\Scripts\Map\Ghim_Cam.cs" />
