@@ -11,6 +11,7 @@ public partial class Player : MonoBehaviour
         //Bullet
         Ignore("Bullet", "Item");
         Ignore("Bullet", "Enemy");
+        Ignore("Bullet", "BossRoom");
     }
     public void Ignore(string layer1, string layer2)
     {

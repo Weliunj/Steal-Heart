@@ -51,8 +51,8 @@ public class BOD : EnemyBase
     [Header("------------- SPAWM -------------")]
     public GameObject[] enemies;
     public int spawnCount = 1;
-    public float Spawn_cd = 18f;
-    private float Spawn_cdPrivate = 18f;
+    public float Spawn_cd = 30f;
+    private float Spawn_cdPrivate = 30f;
     [Header("------------- Teleport -------------")]
     public Transform[] pos;
     public float cdTele;
@@ -429,7 +429,7 @@ public class BOD : EnemyBase
         CD_Skill = 3f;
         atkspeed = 2.7f;
         spawnCount = 2;
-        Spawn_cd = 15f;
+        Spawn_cd = 23f;
         // Đổi màu cam đậm
         GetComponent<SpriteRenderer>().color = new Color(1f, 0.4f, 0f);
         Icon.color = new Color(1f, 0.4f, 0f);
@@ -463,7 +463,7 @@ public class BOD : EnemyBase
         CD_Skill = 1f;
 
         spawnCount = 3;
-        Spawn_cd = 10f;
+        Spawn_cd = 18f;
         // Đổi màu đỏ
         GetComponent<SpriteRenderer>().color = Color.red;
         Icon.color = Color.red;

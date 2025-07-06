@@ -7,7 +7,7 @@ public partial class Player : MonoBehaviour
 {
     [Header("           -------------- HP ---------------")]
     [Header("-------------Display")]
-    [Range(0, 300)] protected int maxHealth = 300;
+    [HideInInspector] [Range(0, 300)] public int maxHealth = 300;
     [Range(0, 300)] public int Hp;
     public Slider Hpbar;
     public TMP_Text Hp_T;

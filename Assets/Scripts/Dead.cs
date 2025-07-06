@@ -6,9 +6,12 @@ public class Dead : MonoBehaviour
 {
     public Button replay;
     public Button menu;
+    private Player player;
     public DataManager dataManager;
     private void Start()
     {
+        player = FindAnyObjectByType<Player>();
+
         if (replay != null)
             replay.onClick.AddListener(OnReplay);
 
@@ -25,6 +28,8 @@ public class Dead : MonoBehaviour
         dataManager.Speed_bottle = Mathf.Max(0, Mathf.FloorToInt(dataManager.Speed_bottle * 0.75f));
         dataManager.Strength_bottle = Mathf.Max(0, Mathf.FloorToInt(dataManager.Strength_bottle * 0.75f));
 
+        dataManager.Hp_temp = player.maxHealth;
+        player.Hp = player.maxHealth;
         // Load lại scene hiện tại
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

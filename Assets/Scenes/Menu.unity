@@ -752,7 +752,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: PLAY
+  m_text: New Game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: beb7ad21bc592274e9e97c4bba2bda74, type: 2}
   m_sharedMaterial: {fileID: -9132972914954540240, guid: beb7ad21bc592274e9e97c4bba2bda74, type: 2}
@@ -779,8 +779,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 74.42
-  m_fontSizeBase: 74.42
+  m_fontSize: 61.66
+  m_fontSizeBase: 61.66
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
