@@ -1,12 +1,12 @@
 # ninja log v5
-34	3658	7734705341110224	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	4c115e3227682df5
-1	3788	7734705342298112	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	5c621547698159f6
-44	3816	7734705342647518	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	27911fca3ad64b59
-11	4335	7734705347671638	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	532ec4aa0f637405
-3817	4723	7734705351950707	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	12f6e31e2985f04b
-55	4917	7734705353901390	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	59a6b262a3c1f38e
-23	5350	7734705358130130	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	b2f4d5bb4a0708b6
-4723	5416	7734705359172197	E:/Project/Unity_Project/StealHeart/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2u3q2j1k/obj/arm64-v8a/libswappywrapper.so	b27f2e5de1baa5ee
-3662	6034	7734705365415621	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	455dba0f3d68425
-3789	6111	7734705366167839	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	4b3ae5040678a848
-6111	6309	7734705368156908	E:/Project/Unity_Project/StealHeart/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2u3q2j1k/obj/arm64-v8a/libgame.so	864752b810543428
+52	3049	7734789408788090	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	4c115e3227682df5
+10	3165	7734789410144730	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	5c621547698159f6
+32	3295	7734789411699200	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	27911fca3ad64b59
+21	3668	7734789414641458	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	532ec4aa0f637405
+3296	4111	7734789419777613	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	12f6e31e2985f04b
+42	4128	7734789419777613	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	59a6b262a3c1f38e
+4112	4456	7734789423436825	E:/Project/Unity_Project/StealHeart/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2u3q2j1k/obj/arm64-v8a/libswappywrapper.so	b27f2e5de1baa5ee
+1	4517	7734789423978402	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	b2f4d5bb4a0708b6
+3054	5064	7734789429587452	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	455dba0f3d68425
+3166	5121	7734789430157767	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	4b3ae5040678a848
+5122	5295	7734789431944162	E:/Project/Unity_Project/StealHeart/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/2u3q2j1k/obj/arm64-v8a/libgame.so	864752b810543428
