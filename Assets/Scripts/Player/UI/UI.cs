@@ -17,6 +17,11 @@ public partial class UI : MonoBehaviour
 
     public void Start()
     {
+        Canvas canvas = GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = Camera.main;
+
+
         toggle = true;
         backpack.SetActive(toggle);
         audioSource = GetComponent<AudioSource>();

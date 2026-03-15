@@ -252,6 +252,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7929421267131307749
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -270,6 +271,8 @@ SpriteRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -291,9 +294,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -2120152911
   m_SortingLayer: 1
   m_SortingOrder: 1
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -3318188226485093758, guid: ae72133dacba6ec4eb33ecde48f50e56, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -303,7 +308,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &8963452036054954238
 Animator:
@@ -451,6 +455,7 @@ MonoBehaviour:
   dataManager: {fileID: 11400000, guid: f80b9c2a9b943b242976dde8efbc9832, type: 2}
   rb: {fileID: 4970548675917130149}
   anim: {fileID: 0}
+  DeadPanel: {fileID: 0}
   doubleJump: 0
   dashcd: 0
   IsStun: 0
@@ -466,9 +471,9 @@ MonoBehaviour:
   - {fileID: 3788998269575806150}
   - {fileID: 6360724768173379155}
   - {fileID: 8991006040501763977}
+  maxHealth: 300
   Hp: 300
   Hpbar: {fileID: 0}
-  HpImage: {fileID: 0}
   Hp_T: {fileID: 0}
   Hp_cd: 5
   Hp_Eff: {fileID: 0}
@@ -483,10 +488,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 1014eb82c5719d64e91962d30c80e340, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 1014eb82c5719d64e91962d30c80e340, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.839
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -580,10 +585,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 3d67ca0e831badc40865650a14cfbd0d, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 3d67ca0e831badc40865650a14cfbd0d, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.779
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -677,10 +682,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: ca741a86ccd2db24c9f03454ac2c1838, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: ca741a86ccd2db24c9f03454ac2c1838, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.803
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -774,10 +779,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 3c5437f8f15ba4d45b5c98f1d66ba347, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 3c5437f8f15ba4d45b5c98f1d66ba347, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.809
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -871,10 +876,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 9ce88ae52811ce046b4750c7a59911ac, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 9ce88ae52811ce046b4750c7a59911ac, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.773
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -968,10 +973,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: cff7ec9b6dfeed64196e7657ca636ed1, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: cff7ec9b6dfeed64196e7657ca636ed1, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.773
   m_Pitch: 1
   Loop: 0
   Mute: 0

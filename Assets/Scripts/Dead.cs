@@ -10,6 +10,9 @@ public class Dead : MonoBehaviour
     public DataManager dataManager;
     private void Start()
     {
+        Canvas canvas = GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = Camera.main;
         player = FindAnyObjectByType<Player>();
 
         if (replay != null)

@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "StealHeart.sln"
+    "dotnet.defaultSolution": "Steal-Heart.slnx"
 }

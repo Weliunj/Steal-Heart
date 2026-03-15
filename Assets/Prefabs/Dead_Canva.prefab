@@ -289,7 +289,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Choi lai tu dau
+  m_text: ' Main menu'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: beb7ad21bc592274e9e97c4bba2bda74, type: 2}
   m_sharedMaterial: {fileID: -9132972914954540240, guid: beb7ad21bc592274e9e97c4bba2bda74, type: 2}
@@ -327,6 +327,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -488,8 +489,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 307.71, y: -189.53}
-  m_SizeDelta: {x: 219.27, y: 68.77}
+  m_AnchoredPosition: {x: 334.46, y: -189.53}
+  m_SizeDelta: {x: 272.77, y: 68.77}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3869567497564749798
 CanvasRenderer:
@@ -519,7 +520,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: -25% items
+  m_text: Restart level
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: beb7ad21bc592274e9e97c4bba2bda74, type: 2}
   m_sharedMaterial: {fileID: -9132972914954540240, guid: beb7ad21bc592274e9e97c4bba2bda74, type: 2}
@@ -557,6 +558,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
